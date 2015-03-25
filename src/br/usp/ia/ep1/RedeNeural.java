@@ -9,10 +9,12 @@ import java.util.Scanner;
 public class RedeNeural {
 	
 	private static final int NUM_ATRIBUTOS = 65;
+	private static final float MIN_ATRIB = 0;
+	private static final float MAX_ATRIB = 16;
 	
 	// Um dos tipos de normalizacao que existem no livro de data mining.
 	// Acho melhor fazer com outra normalizacao, essa aqui vai ficar ruim com os valores que tem no arquivo.
-	private float[][] decimalScaling(float[][] dados) {
+	private float[][] decimalScalingNormal(float[][] dados) {
 		float min = Float.MAX_VALUE;
 		float max = Float.MIN_VALUE;
 		float decimalAux, decimal;
@@ -38,6 +40,21 @@ public class RedeNeural {
 			// dados[i].length-2 faz ignorar o atributo de classe, que eh o da ultima posicao.
 			for(int j = dados[i].length-2; j > -1; j--) {
 				dados[i][j] /= decimal;
+			}
+		}
+		
+		return dados;
+	}
+	
+	private float[][] minMaxNormal(float[][] dados, float novoMin, float novoMax) {
+		float difAnt = RedeNeural.MAX_ATRIB - RedeNeural.MIN_ATRIB;
+		float difNovo = novoMax - novoMin;
+		float difDif = difNovo / difAnt;
+		float difAux = (RedeNeural.MIN_ATRIB * difNovo + difAnt * novoMin) / difAnt;
+		
+		for(int i = dados.length-1; i > -1; i--) {
+			for(int j = dados[i].length-2; j > -1; j--) {
+				dados[i][j] = dados[i][j] * difDif - difAux;
 			}
 		}
 		
@@ -72,7 +89,11 @@ public class RedeNeural {
 	
 	public RedeNeural() throws FileNotFoundException {
 		float[][] dados = processarDados(lerArquivo("./res/optdigits.tra"));
-		decimalScaling(dados);
+		for(float fl : dados[2]) {
+			System.out.println(fl);
+		}
+		System.out.println();
+		minMaxNormal(dados, 0, 1);
 		for(float fl : dados[2]) {
 			System.out.println(fl);
 		}
