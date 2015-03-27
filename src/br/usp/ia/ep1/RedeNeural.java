@@ -3,7 +3,9 @@ package br.usp.ia.ep1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class RedeNeural {
@@ -55,6 +57,30 @@ public class RedeNeural {
 		for(int i = dados.length-1; i > -1; i--) {
 			for(int j = dados[i].length-2; j > -1; j--) {
 				dados[i][j] = dados[i][j] * difDif - difAux;
+			}
+		}
+		
+		return dados;
+	}
+	
+	/*
+	  Selecao de Atributos
+	  Usar arvore de decisao
+	  Attribute Subset Selection
+	  Bom link: http://www.public.asu.edu/~huanliu/papers/tkde05.pdf
+	*/
+	private float[][] attribSelect(float[][] dados) {
+		//float[][] contador = new float[9][Math.rou];
+		return null;
+	}
+	
+	private float[][] excluiAtrib(float[][] dados) {
+		Map<Float, Integer> qtdVlr = new HashMap<Float, Integer>();
+		int numReg = dados.length;
+		
+		for(int i = dados.length-1; i > -1; i--) {
+			for(int j = dados[i].length-2; i > -1; i--) {
+				qtdVlr.put(dados[i][j], (qtdVlr.get(dados[i][j]) == null ? 1 : qtdVlr.get(dados[i][j]) + 1));
 			}
 		}
 		
