@@ -6,8 +6,7 @@
 /res/: Arquivos de entrada do programa
 /out/: Arquivos de saida gerados
 ```
-```
-```
+
 **Parâmetros da entrada padrão:**
 ```
   1. Nome do arquivo do conjunto de dados de treino
