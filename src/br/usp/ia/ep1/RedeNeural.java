@@ -48,13 +48,16 @@ public class RedeNeural {
 	}
 	
 	// Leitura do arquivo de dados
-	private String[] lerArquivo(String arquivo) throws FileNotFoundException {
+	private String[] lerArquivo(String[] arquivos) throws FileNotFoundException {
 		List<String> dados = new ArrayList<String>();
-		Scanner s = new Scanner(new File(arquivo));
-		while(s.hasNext()) {
-			dados.add(s.nextLine());
+		Scanner s;
+		for(String arq : arquivos) {
+			s = new Scanner(new File(arq));
+			while(s.hasNext()) {
+				dados.add(s.nextLine());
+			}
+			s.close();
 		}
-		s.close();
 		return dados.toArray(new String[0]);
 	}
 	
@@ -134,6 +137,14 @@ public class RedeNeural {
 		return dadosProc;
 	}
 	
+	private List<float[]> converteDadosList(float[][] dados) {
+		List<float[]> dadosList = new ArrayList<float[]>();
+		for(float[] dado : dados) {
+			dadosList.add(dado);
+		}
+		return dadosList;
+	}
+	
 	/*
 	 * Ta demorando pra criar o arquivo. Tentei colocar tudo em uma 
 	 * String soh e fazer io apenas uma vez mas tava demorando demais.
@@ -142,16 +153,26 @@ public class RedeNeural {
 	 * 
 	 * Lembrete: o atributo classe esta sendo gravado no arquivo como float
 	 */
-	private void criarArquivo(float[][] dados) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("./res/preproc_optdigits.tra")));
+	private void criarArquivo(List<float[]> dados, int qtdTotDados, String arq, float pctDados) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(arq)));
 		String dadosArq = new String();
 		
-		for(int i = dados.length-1; i > -1; i--) {
-			for(int j = dados[i].length-2; j > -1; j--) {
-				dadosArq += String.valueOf(dados[i][j]) + ",";
+		int qtdDadosPct = Math.round(qtdTotDados * pctDados);
+		
+		if(qtdDadosPct > dados.size()) {
+			qtdDadosPct = dados.size();
+		}
+		
+		int cntDados = 0;
+		int ind;
+		while(qtdDadosPct > cntDados) {
+			ind = (int) Math.round(Math.random())%dados.size();
+			for(int j = dados.get(ind).length-2; j > -1; j--) {
+				dadosArq += String.valueOf(dados.get(ind)[j]) + ",";
 			}
-			dadosArq += String.valueOf(dados[i][dados[i].length-1]) + "\n";
-			if(i % (Math.round((dados.length-1)*0.1)) == 0) {
+			dadosArq += String.valueOf(dados.get(ind)[dados.get(ind).length-1]) + "\n";
+			dados.remove(ind);
+			if(cntDados++ % (Math.round(qtdDadosPct*0.1)) == 0) {
 				bw.write(dadosArq);
 				dadosArq = new String();
 			}
@@ -160,8 +181,12 @@ public class RedeNeural {
 		bw.close();
 	}
 	
-	public RedeNeural() throws IOException {
-		float[][] dados = processarDados(lerArquivo("./res/optdigits.tra"));
-		criarArquivo(dados);
+	public RedeNeural(String[] arqsDados, Map<String, Float> arqsSaida) throws IOException {
+		List<float[]> dados = converteDadosList(processarDados(lerArquivo(arqsDados)));
+		int qtdDados = dados.size();
+		
+		for(String arq : arqsSaida.keySet().toArray(new String[0])) {
+			criarArquivo(dados, qtdDados, arq, arqsSaida.get(arq));
+		}
 	}
 }

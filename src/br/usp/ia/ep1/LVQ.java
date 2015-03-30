@@ -17,17 +17,41 @@ public class LVQ {
 	}
 	
 	public void exec(float[][] dados, boolean treina) {
+		float txAprend = this.txAprend;
+		float condParada = txAprend*((float)Math.pow(0.9F, 100));
 		float menorDist;
+		float menorDistAux;
 		int menorDistPeso;
+		float novoPeso;
+		int qtdAcertos = 0;
 		
-		while(true) {
+		while(txAprend > condParada) {
 			for(float[] linha : dados) {
 				menorDistPeso = 0;
-				menorDist = Float.MIN_VALUE;
+				menorDist = Float.MAX_VALUE;
 				for(int i = neuronios.length-1; i > -1; i--) {
-					menorDistPeso = distEuclid(linha, neuronios[i]) < menorDist ?
-							i : menorDistPeso;
+					menorDistAux = distEuclid(linha, neuronios[i]);
+					if(menorDistAux < menorDist) {
+						menorDistPeso = i;
+						menorDist = menorDistAux;
+					}
 				}
+				if(treina) {
+					novoPeso = txAprend*menorDist;
+					novoPeso *= neuronios[menorDistPeso][neuronios.length-1] == linha[neuronios.length-1] ?
+							1 : -1;
+					for(int j = neuronios[menorDistPeso].length-2; j > -1; j--) {
+						neuronios[menorDistPeso][j] += novoPeso;
+					}
+				} else {
+					qtdAcertos++;
+				}
+			}
+			if(treina) {
+				txAprend = condParada - 1F;
+				System.out.println(qtdAcertos);
+			} else {
+				txAprend *= 0.9;
 			}
 		}
 	}
