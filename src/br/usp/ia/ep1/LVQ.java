@@ -58,9 +58,9 @@ public class LVQ {
 	
 	public LVQ(float txAprend, int qtdNeuronios, boolean pesosAleatorios) {
 		this.txAprend = txAprend;
-		this.neuronios = new float[qtdNeuronios*(RedeNeural.MAX_VLR_CLASSE+1)][RedeNeural.NUM_ATRIBS];
+		this.neuronios = new float[qtdNeuronios*(PreProcessamento.MAX_VLR_CLASSE+1)][PreProcessamento.NUM_ATRIBS];
 		
-		int vlrClasse = RedeNeural.MIN_VLR_CLASSE;
+		int vlrClasse = PreProcessamento.MIN_VLR_CLASSE;
 		int qtdClasses = 0;
 		if(pesosAleatorios) {
 			for(int i = this.neuronios.length-1; i > -1; i--) {

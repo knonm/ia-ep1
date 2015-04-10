@@ -1,8 +1,9 @@
 package br.usp.ia.ep1;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
+import br.usp.ia.ep1.utils.ES;
 
 public class Main {
 	
@@ -19,7 +20,22 @@ public class Main {
 		}
 	}
 	
+	private static void printDescDados(String caminho, PreProcessamento pre) throws FileNotFoundException {
+		float[][] dados = pre.stringToFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
+		float[] desc = pre.descDados(dados, dados[0].length-1);
+		
+		System.out.println(caminho);
+		System.out.println("Pos. Classe: " + (dados[0].length-1));
+		System.out.println("Min. Vlr. Atrib.: " + desc[0]);
+		System.out.println("Max. Vlr. Atrib.: " + desc[1]);
+		System.out.println("Min. Vlr. Classe: " + desc[2]);
+		System.out.println("Max. Vlr. Classe: " + desc[3]);
+		System.out.println("Qtd. Atrib.: " + desc[4]);
+		System.out.println();
+	}
+	
 	public static void main(String[] args) throws IOException {
+		PreProcessamento pre;
 		try {
 			String nmArqTreino = args[0];
 			String nmArqValida = args[1];
@@ -29,12 +45,15 @@ public class Main {
 			//int numNeuroLVQ = Integer.valueOf(args[5]);
 			//boolean iniPesos = Integer.valueOf(args[6]) == 0 ? false : true;
 			
-			Map<String, Float> mp = new HashMap<String, Float>();
-			mp.put(nmArqTreino, 0.6F);
-			mp.put(nmArqValida, 0.2F);
-			mp.put(nmArqTeste, 0.2F);
+			pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
+					new String[] { nmArqTreino, nmArqValida, nmArqTeste },
+					new float[] { 0.6F, 0.2F, 0.2F });
 			
-			new RedeNeural(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" }, mp);
+			printDescDados("./res/optdigits.tra", pre);
+			printDescDados("./res/optdigits.tes", pre);
+			printDescDados(nmArqTreino, pre);
+			printDescDados(nmArqValida, pre);
+			printDescDados(nmArqTeste, pre);
 		} catch (NumberFormatException ex) {
 			Main.log(Main.LOG_ERRO, "Conversão do parâmetro de entrada falhou. Corrija o formato dos parâmetros de entradas.");
 		}
