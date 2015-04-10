@@ -31,6 +31,7 @@ public class Main {
 		System.out.println("Min. Vlr. Classe: " + desc[2]);
 		System.out.println("Max. Vlr. Classe: " + desc[3]);
 		System.out.println("Qtd. Atrib.: " + desc[4]);
+		System.out.println("Qtd. Dados: " + desc[5]);
 		System.out.println();
 	}
 	

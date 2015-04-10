@@ -202,6 +202,7 @@ public class PreProcessamento {
 		float[] minMaxAtrib = new float[] { Float.MAX_VALUE, Float.MIN_VALUE };
 		float[] minMaxRef;
 		float qtdAtrib = 0F;
+		float qtdDados = 0F;
 		boolean qtdAtribOK = true;
 		
 		for(float[] dado : dados) {
@@ -225,13 +226,14 @@ public class PreProcessamento {
 				qtdAtribOK = dado.length == qtdAtrib;
 				qtdAtrib = dado.length;
 			}
+			qtdDados++;
 		}
 		
 		if(!qtdAtribOK) {
 			qtdAtrib = -1F;
 		}
 		
-		return new float[] { minMaxAtrib[0], minMaxAtrib[1], minMaxClasse[0], minMaxClasse[1], qtdAtrib };
+		return new float[] { minMaxAtrib[0], minMaxAtrib[1], minMaxClasse[0], minMaxClasse[1], qtdAtrib, qtdDados };
 	}
 	
 	public PreProcessamento(String[] arqsDados, String[] arqsSaida, float[] pctsDadosSaida) throws IOException {
