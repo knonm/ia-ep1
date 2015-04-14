@@ -3,6 +3,7 @@ package br.usp.ia.ep1;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -133,14 +134,13 @@ public class PreProcessamento {
 		attribSelect(dadosProc); // soh pra tirar o warning
 		return dadosProc;
 	}
-	
+
 	private float[][][] splitDados(float[][] dados, float[] pcts) {
-		float[][][] dadosSplit;
-		float[][] novoSplit;
+		float[][][] dadosSplit = new float[pcts.length][][];
 		int[] splitLengths = new int[pcts.length];
-		int totLength;
+		int totLength = 0;
+		int from = 0;
 		
-		totLength = 0;
 		for(int i = pcts.length-1; i > -1; i--) {
 			splitLengths[i] = Math.round(dados.length * Math.abs(pcts[i]));
 			if((splitLengths[i]+totLength) > dados.length) {
@@ -150,16 +150,10 @@ public class PreProcessamento {
 				totLength += splitLengths[i];
 			}
 		}
-
-		totLength = 0;
-		dadosSplit = new float[splitLengths.length][][];
+		
 		for(int i = 0; i < splitLengths.length; i++) {
-			novoSplit = new float[splitLengths[i]][];
-			for(int j = novoSplit.length-1; j > -1; j--) {
-				novoSplit[j] = dados[j+totLength];
-			}
-			totLength += novoSplit.length;
-			dadosSplit[i] = novoSplit;
+			dadosSplit[i] = Arrays.copyOfRange(dados, from, from+splitLengths[i]);
+			from = splitLengths[i];
 		}
 		
 		return dadosSplit;
