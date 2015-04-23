@@ -126,11 +126,31 @@ public class PreProcessamento {
 		}
 	}
 	
+	private void zScoreNormal(float[][] dados) {
+		float media, desvioPadrao;
+		for(int j = dados[0].length-2; j > -1; j--) {
+			media = 0F;
+			for(int i = dados.length-1; i > -1; i--) {
+				media += Math.pow(dados[i][j], 2F);
+			}
+			media /= dados.length;
+			desvioPadrao = 0F;
+			for(int i = dados.length-1; i > -1; i--) {
+				desvioPadrao += Math.pow(dados[i][j] - media, 2F);
+			}
+			desvioPadrao = (float) Math.sqrt(desvioPadrao / dados.length);
+			for(int i = dados.length-1; i > -1; i--) {
+				dados[i][j] = (dados[i][j] - media) / desvioPadrao;
+			}
+		}
+	}
+	
 	// Preprocessamento dos dados obtidos apos a leitura do arquivo
 	private float[][] processarDados(String[] dados) throws FileNotFoundException {
 		float[][] dadosProc = stringToFloat(dados, PreProcessamento.CHR_DELIMIT);
 		dadosProc = excluirAtrib(dadosProc);
-		minMaxNormal(dadosProc, 0, 1);
+		//minMaxNormal(dadosProc, 0, 1);
+		zScoreNormal(dadosProc);
 		attribSelect(dadosProc); // soh pra tirar o warning
 		return dadosProc;
 	}
