@@ -1,5 +1,4 @@
 package br.usp.ia.ep1;
-
 import java.util.*;
 
 public class MLP {
