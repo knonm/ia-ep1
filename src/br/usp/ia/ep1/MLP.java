@@ -11,6 +11,14 @@ public class MLP {
 			this.pesos[i] = (float)Math.random();
 	}
 	
+	private void ExecutarFeedFoward(){}
+	
+	private void ExecutarBackPropagation(){}
+	
+	private double CalcularFuncaoDeAtivacaoDeSigmoid(double variavel){
+		return 1/(1 + Math.exp(variavel * -1));
+	}
+	
 	public MLP(float[] dadosDeEntrada, float taxaAprendizado, int quantidadeNeuronios, boolean pesosAleatorios)
 	{
 		pesos = new float[dadosDeEntrada.length];
