@@ -21,7 +21,7 @@ public class Main {
 	}
 	
 	private static void printDescDados(String caminho, PreProcessamento pre) throws FileNotFoundException {
-		float[][] dados = pre.stringToFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
+		float[][] dados = pre.transformarArrayStringParaFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
 		float[] desc = pre.descDados(dados, dados[0].length-1);
 		
 		System.out.println(caminho);

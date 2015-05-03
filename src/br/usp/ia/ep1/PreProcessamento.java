@@ -18,24 +18,21 @@ public class PreProcessamento {
 	public static final String CHR_DELIMIT = ",";
 	
 	// Quantidade de atributos por instancia no conjunto de dados
-	public static final int NUM_ATRIBS = 65;
-	
-	// Posicao no vetor de atributos em que o atributo de classe esta localizado
-	//private static final int POS_ATRIB_CLASSE = 64;
+	public static final int numeroAtributosPorInstancia = 65;
 	
 	// Menor valor que um atributo pode assumir no conjunto de dados
-	private static final int MIN_VLR_ATRIB = 0;
+	private static final int valorMinimoAtributo = 0;
 	
 	// Maior valor que um atributo pode assumir no conjunto de dados
-	private static final int MAX_VLR_ATRIB = 16;
+	private static final int valorMaximoAtributo = 16;
 	
 	// Menor valor que um atributo classe pode assumir no conjunto de dados
-	public static final int MIN_VLR_CLASSE = 0;
+	public static final int valorMinimoClasse = 0;
 	
 	// Maior valor que um atributo classe pode assumir no conjunto de dados
-	public static final int MAX_VLR_CLASSE = 9;
+	public static final int valorMaximoClasse = 9;
 	
-	public float[][] stringToFloat(String[] dados, String chrDelimit) {
+	public float[][] transformarArrayStringParaFloat(String[] dados, String chrDelimit) {
 		float[][] dadosFloat = new float[dados.length][];
 		float[] dadoFloat;
 		String[] atribs;
@@ -48,8 +45,7 @@ public class PreProcessamento {
 			}
 			dadosFloat[i] = dadoFloat;
 			i++;
-		}
-		
+		}	
 		return dadosFloat;
 	}
 	
@@ -60,7 +56,7 @@ public class PreProcessamento {
 	 * Attribute Subset Selection
 	 * Bom link: http://www.public.asu.edu/~huanliu/papers/tkde05.pdf
 	*/
-	private float[][] attribSelect(float[][] dados) {
+	private float[][] SelecionarAtributos(float[][] dados) {
 		return null;
 	}
 	
@@ -75,12 +71,12 @@ public class PreProcessamento {
 		boolean ehAtribOk;
 		List<Integer> atribsOk = new ArrayList<Integer>();
 		float[][] novosDados;
-		Iterator<Integer> it;
+		Iterator<Integer> iterador;
 		int indAtrib, atribSelect;
 		
-		atribsOk.add(PreProcessamento.NUM_ATRIBS-1);
-		qtdVlr = new float[PreProcessamento.MAX_VLR_ATRIB + ((int)Math.pow(0, PreProcessamento.MIN_VLR_ATRIB))];
-		for(int j = PreProcessamento.NUM_ATRIBS-2; j > -1; j--) {
+		atribsOk.add(PreProcessamento.numeroAtributosPorInstancia-1);
+		qtdVlr = new float[PreProcessamento.valorMaximoAtributo + ((int)Math.pow(0, PreProcessamento.valorMinimoAtributo))];
+		for(int j = PreProcessamento.numeroAtributosPorInstancia-2; j > -1; j--) {
 			ehAtribOk = true;
 			for(int k = qtdVlr.length-1; k > -1; k--) {
 				qtdVlr[k] = 0F;
@@ -99,10 +95,10 @@ public class PreProcessamento {
 
 		novosDados = new float[dados.length][atribsOk.size()];
 		
-		it = atribsOk.iterator();
+		iterador = atribsOk.iterator();
 		indAtrib = atribsOk.size()-1;
-		while(it.hasNext()) {
-			atribSelect = it.next();
+		while(iterador.hasNext()) {
+			atribSelect = iterador.next();
 			for(int i = dados.length-1; i > -1; i--) {
 				novosDados[i][indAtrib] = dados[i][atribSelect];
 			}
@@ -114,10 +110,10 @@ public class PreProcessamento {
 	
 	// Normalizacao dos dados
 	private void minMaxNormal(float[][] dados, float novoMin, float novoMax) {
-		float difAnt = PreProcessamento.MAX_VLR_ATRIB - PreProcessamento.MIN_VLR_ATRIB;
+		float difAnt = PreProcessamento.valorMaximoAtributo - PreProcessamento.valorMinimoAtributo;
 		float difNovo = novoMax - novoMin;
 		float difDif = difNovo / difAnt;
-		float difAux = (PreProcessamento.MIN_VLR_ATRIB * difNovo + difAnt * novoMin) / difAnt;
+		float difAux = (PreProcessamento.valorMinimoAtributo * difNovo + difAnt * novoMin) / difAnt;
 		
 		for(int i = dados.length-1; i > -1; i--) {
 			for(int j = dados[i].length-2; j > -1; j--) {
@@ -147,11 +143,11 @@ public class PreProcessamento {
 	
 	// Preprocessamento dos dados obtidos apos a leitura do arquivo
 	private float[][] processarDados(String[] dados) throws FileNotFoundException {
-		float[][] dadosProc = stringToFloat(dados, PreProcessamento.CHR_DELIMIT);
+		float[][] dadosProc = transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
 		dadosProc = excluirAtrib(dadosProc);
 		//minMaxNormal(dadosProc, 0, 1);
 		zScoreNormal(dadosProc);
-		attribSelect(dadosProc); // soh pra tirar o warning
+		SelecionarAtributos(dadosProc); // soh pra tirar o warning
 		return dadosProc;
 	}
 
