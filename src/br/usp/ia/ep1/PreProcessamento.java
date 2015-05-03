@@ -76,21 +76,24 @@ public class PreProcessamento {
 		
 		atribsOk.add(PreProcessamento.numeroAtributosPorInstancia-1);
 		qtdVlr = new float[PreProcessamento.valorMaximoAtributo + ((int)Math.pow(0, PreProcessamento.valorMinimoAtributo))];
-		for(int j = PreProcessamento.numeroAtributosPorInstancia-2; j > -1; j--) {
+		
+		for(int j = PreProcessamento.numeroAtributosPorInstancia-2; j > -1; j--) 
+		{
 			ehAtribOk = true;
-			for(int k = qtdVlr.length-1; k > -1; k--) {
+			for(int k = qtdVlr.length-1; k > -1; k--) 
 				qtdVlr[k] = 0F;
-			}
-			for(int i = dados.length-1; i > -1; i--) {
+
+			for(int i = dados.length-1; i > -1; i--) 
+			{
 				qtdVlr[(int)dados[i][j]] += 1F;
-				if(qtdVlr[(int)dados[i][j]] > limite) {
+				if(qtdVlr[(int)dados[i][j]] > limite) 
+				{
 					i = -1;
 					ehAtribOk = false;
 				}
 			}
-			if(ehAtribOk) {
+			if(ehAtribOk)
 				atribsOk.add(j);
-			}
 		}
 
 		novosDados = new float[dados.length][atribsOk.size()];

@@ -2,8 +2,8 @@ package br.usp.ia.ep1;
 
 public abstract class Classificador {
 
-	private float[][] dadosTreina;
-	private float[][] dadosValida;
+	private float[][] dadosTreinamento;
+	private float[][] dadosValidacao;
 	private float[][] dadosTeste;
 	
 	private float txAprend;
@@ -18,18 +18,18 @@ public abstract class Classificador {
 		array2[pos2] = swapAux;
 	}
 	
-	public void aleatorizaDados(int limiteItera) {
+	public void aleatorizaDados(int limiteIteracao) {
 		int qtdItera = 0;
 		
-		while(qtdItera < limiteItera) {
+		while(qtdItera < limiteIteracao) {
 			if(((int)Math.random())%2 == 0) {
-				swapAleatorio(dadosTreina, dadosValida);
+				swapAleatorio(dadosTreinamento, dadosValidacao);
 			}
 			if(((int)Math.random())%2 == 0) {
-				swapAleatorio(dadosTreina, dadosTeste);
+				swapAleatorio(dadosTreinamento, dadosTeste);
 			}
 			if(((int)Math.random())%2 == 0) {
-				swapAleatorio(dadosValida, dadosTeste);
+				swapAleatorio(dadosValidacao, dadosTeste);
 			}
 			qtdItera++;
 		}

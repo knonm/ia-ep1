@@ -2,7 +2,7 @@ package br.usp.ia.ep1;
 
 public class LVQ {
 
-	private float txAprend;
+	private float taxaAprendizado;
 	private float[][] neuronios;
 	
 	public float distEuclid(float[] v1, float[] v2) {
@@ -17,7 +17,7 @@ public class LVQ {
 	}
 	
 	public void exec(float[][] dados, boolean treina) {
-		float txAprend = this.txAprend;
+		float txAprend = this.taxaAprendizado;
 		float condParada = txAprend*((float)Math.pow(0.9F, 100));
 		float menorDist;
 		float menorDistAux;
@@ -56,15 +56,17 @@ public class LVQ {
 		}
 	}
 	
-	public LVQ(float txAprend, int qtdNeuronios, boolean pesosAleatorios) {
-		this.txAprend = txAprend;
+	public LVQ(float taxaAprendizado, int qtdNeuronios, boolean pesosAleatorios) {
+		this.taxaAprendizado = taxaAprendizado;
 		this.neuronios = new float[qtdNeuronios*(PreProcessamento.valorMaximoClasse+1)][PreProcessamento.numeroAtributosPorInstancia];
 		
 		int vlrClasse = PreProcessamento.valorMinimoClasse;
 		int qtdClasses = 0;
 		if(pesosAleatorios) {
-			for(int i = this.neuronios.length-1; i > -1; i--) {
-				for(int j = this.neuronios[i].length-2; j > -1; j--) {
+			for(int i = this.neuronios.length-1; i > -1; i--) 
+			{
+				for(int j = this.neuronios[i].length-2; j > -1; j--) 
+				{
 					this.neuronios[i][j] = (((int)Math.random())%1000)/1000;
 				}
 				if(qtdClasses++ < qtdNeuronios) {
