@@ -200,15 +200,17 @@ public class PreProcessamento {
 			quantidadeClasse[aux]++;
 		}
                 
-			//for (int i = 0; i < quantidadeClasse.length; i++) System.out.print(quantidadeClasse[i] + " ");
-			//System.out.println();
+		//for (int i = 0; i < quantidadeClasse.length; i++) System.out.print(quantidadeClasse[i] + " ");
+		//System.out.println();
 		
+		/* \/\/\/\/\/\/\/\/\/\/ NAO FUTUCA NISSO AQUI QUE VAI DA MERDA \/\/\/\/\/\/\/\/\/\/ */
 		int [][] quantidadesFinais = new int [3][10]; // array que contem quanto pode ter de cada atributo em cada arquivo
 		for (int i = 0; i < quantidadesFinais[0].length; i++){ // contas para determinar a quantidade de valores para cada arquivo
 			quantidadesFinais[0][i] = (int) Math.round(quantidadeClasse[i]*porcentagem[0]);
 			quantidadesFinais[1][i] = quantidadeClasse[i] - quantidadesFinais[0][i] - (int) Math.round(quantidadeClasse[i]*porcentagem[2]);
 			quantidadesFinais[2][i] = quantidadeClasse[i] - quantidadesFinais[1][i] - quantidadesFinais[0][i];
 		}
+		/* /\/\/\/\/\/\/\/\/\/\ NAO FUTUCA NISSO AQUI QUE VAI DA MERDA /\/\/\/\/\/\/\/\/\/\ */
                 
 		//for (int i = 0; i < quantidadesFinais.length; i++){
 		//	for (int j = 0; j < quantidadesFinais[i].length; j++){
@@ -220,302 +222,45 @@ public class PreProcessamento {
 		//System.out.println((int) Math.floor(quantidadeTotal*porcentagem[0]) + " " + (int) Math.floor(quantidadeTotal*porcentagem[1]) + " " + (int) Math.floor(quantidadeTotal*porcentagem[2]));
 		//System.out.println("----------------------------");
 		
+		
+		// instanciando a matriz bidimensional de dados para cada arquivo
 		dadosSeparados[0] = new float[(int) Math.floor(quantidadeTotal*porcentagem[0])][dados[0].length];
 		dadosSeparados[1] = new float[(int) Math.floor(quantidadeTotal*porcentagem[1])][dados[0].length];
 		dadosSeparados[2] = new float[(int) Math.floor(quantidadeTotal*porcentagem[2])][dados[0].length];
 		
-		int posicaoMatriz1 = 0;
-		int posicaoMatriz2 = 0;
-		int posicaoMatriz3 = 0;
+		int[] posicoes = new int[3]; // array auxiliar que armazena quanto cada arquivo ja tem dentro dele
 		
-		//int contador = 0;
+		for (int i = 0; i < dados.length; i++){ // percorre todos os dados
 		
-		
-		for (int i = 0; i < dados.length; i++){
-			//contador++;
 			int aux = (int) dados[i][dados[i].length-1]; // valor da classe
-			//System.out.println(contador);
+
             //System.out.println("Classe entrando: " + aux);
-			//System.out.println(posicaoMatriz1 + " / " + Math.floor(quantidadeTotal*porcentagem[0]));
-			//System.out.println(posicaoMatriz2 + " / " + Math.floor(quantidadeTotal*porcentagem[1]));
-			//System.out.println(posicaoMatriz3 + " / " + Math.floor(quantidadeTotal*porcentagem[2]));
+			//System.out.println(posicoes[0] + " / " + Math.floor(quantidadeTotal*porcentagem[0]));
+			//System.out.println(posicoes[1] + " / " + Math.floor(quantidadeTotal*porcentagem[1]));
+			//System.out.println(posicoes[2] + " / " + Math.floor(quantidadeTotal*porcentagem[2]));
                         
             //System.out.println(quantidadesFinais[0][0]+" "+quantidadesFinais[0][1]+" "+quantidadesFinais[0][2]+" "+quantidadesFinais[0][3]+" "+quantidadesFinais[0][4]+" "+quantidadesFinais[0][5]+" "+quantidadesFinais[0][6]+" "+quantidadesFinais[0][7]+" "+quantidadesFinais[0][8]+" "+quantidadesFinais[0][9]);
             //System.out.println(quantidadesFinais[1][0]+" "+quantidadesFinais[1][1]+" "+quantidadesFinais[1][2]+" "+quantidadesFinais[1][3]+" "+quantidadesFinais[1][4]+" "+quantidadesFinais[1][5]+" "+quantidadesFinais[1][6]+" "+quantidadesFinais[1][7]+" "+quantidadesFinais[1][8]+" "+quantidadesFinais[1][9]);
             //System.out.println(quantidadesFinais[2][0]+" "+quantidadesFinais[2][1]+" "+quantidadesFinais[2][2]+" "+quantidadesFinais[2][3]+" "+quantidadesFinais[2][4]+" "+quantidadesFinais[2][5]+" "+quantidadesFinais[2][6]+" "+quantidadesFinais[2][7]+" "+quantidadesFinais[2][8]+" "+quantidadesFinais[2][9]);
                         
-			switch ((int) aux){ // switch case para ver qual classe esta sendo iterada
-				case 0: // a classe em questao tem valor 0
-					if(quantidadesFinais[0][0] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){ // ve se ja foram todos que devem ser no arquivo de treino (arredondado pro teto)
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2]; // copia todos os valores pra matriz final
-						posicaoMatriz1++; // acrecenta o contador para saber onde inserir o proximo
-						quantidadesFinais[0][0]--; // diminui o contador pois ja acrecentamos um
-						//System.out.println("Entrou na classe 0 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][0]);
-						break;
-					}
-					if(quantidadesFinais[1][0] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){ // ve se ja foram todos que devem ser no arquivo de validacao (arredondado pro teto)
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++ )	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][0]--;
-						//System.out.println("Entrou na classe 0 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][0]);
-						break;
-					}
-					if(quantidadesFinais[2][0] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){ // ve se ja foram todos que devem ser no arquivo de teste (arredondado pro chao)
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][0]--;
-						//System.out.println("Entrou na classe 0 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][0]);
-						break;
-					}				
-					break;
-				case 1:
-					if(quantidadesFinais[0][1] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][1]--;
-						//System.out.println("Entrou na classe 1 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][1]);
-						break;
-					}
-					if(quantidadesFinais[1][1] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][1]--;
-						//System.out.println("Entrou na classe 1 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][1]);
-						break;
-					}
-					if(quantidadesFinais[2][1] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][1]--;
-						//System.out.println("Entrou na classe 1 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][1]);
-						break;
-					}				
-					break;
-				case 2:
-					if(quantidadesFinais[0][2] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][2]--;
-						//System.out.println("Entrou na classe 2 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][2]);
-						break;
-					}
-					if(quantidadesFinais[1][2] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][2]--;
-						//System.out.println("Entrou na classe 2 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][2]);
-						break;
-					}
-					if(quantidadesFinais[2][2] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][2]--;
-						//System.out.println("Entrou na classe 2 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][2]);
-						break;
-					}				
-					break;
-				case 3:
-					if(quantidadesFinais[0][3] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][3]--;
-						//System.out.println("Entrou na classe 3 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][3]);
-						break;
-					}
-					if(quantidadesFinais[1][3] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][3]--;
-						//System.out.println("Entrou na classe 3 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][3]);
-						break;
-					}
-					if(quantidadesFinais[2][3] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][3]--;
-						//System.out.println("Entrou na classe 3 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][3]);
-						break;
-					}				
-					break;
-				case 4:
-					if(quantidadesFinais[0][4] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][4]--;
-						//System.out.println("Entrou na classe 4 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][4]);
-						break;
-					}
-					if(quantidadesFinais[1][4] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][4]--;
-						//System.out.println("Entrou na classe 4 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][4]);
-						break;
-					}
-					if(quantidadesFinais[2][4] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][4]--;
-						//System.out.println("Entrou na classe 4 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][4]);
-						break;
-					}				
-					break;
-				case 5:
-					if(quantidadesFinais[0][5] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][5]--;
-						//System.out.println("Entrou na classe 5 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][5]);
-						break;
-					}
-					if(quantidadesFinais[1][5] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][5]--;
-						//System.out.println("Entrou na classe 5 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][5]);
-						break;
-					}
-					if(quantidadesFinais[2][5] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][5]--;
-						//System.out.println("Entrou na classe 5 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][5]);
-						break;
-					}				
-					break;
-				case 6:
-					if(quantidadesFinais[0][6] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][6]--;
-						//System.out.println("Entrou na classe 6 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][6]);
-						break;
-					}
-					if(quantidadesFinais[1][6] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][6]--;
-						//System.out.println("Entrou na classe 6 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][6]);
-						break;
-					}
-					if(quantidadesFinais[2][6] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][6]--;
-						//System.out.println("Entrou na classe 6 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][6]);
-						break;
-					}				
-					break;
-				case 7:
-					if(quantidadesFinais[0][7] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][7]--;
-						//System.out.println("Entrou na classe 7 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][7]);
-						break;
-					}
-					if(quantidadesFinais[1][7] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][7]--;
-						//System.out.println("Entrou na classe 7 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][7]);
-						break;
-					}
-					if(quantidadesFinais[2][7] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][7]--;
-						//System.out.println("Entrou na classe 7 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][7]);
-						break;
-					}				
-					break;
-				case 8:
-					if(quantidadesFinais[0][8] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][8]--;
-						//System.out.println("Entrou na classe 8 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][8]);
-						break;
-					}
-					if(quantidadesFinais[1][8] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][8]--;
-						//System.out.println("Entrou na classe 8 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][8]);
-						break;
-					}
-					if(quantidadesFinais[2][8] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][8]--;
-						//System.out.println("Entrou na classe 8 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][8]);
-						break;
-					}				
-					break;
-				case 9:
-					if(quantidadesFinais[0][9] != 0 && posicaoMatriz1 < Math.floor(quantidadeTotal*porcentagem[0])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[0][posicaoMatriz1][aux2] = dados[i][aux2];
-						posicaoMatriz1++;
-						quantidadesFinais[0][9]--;
-						//System.out.println("Entrou na classe 9 e tentou inserir no arq 1");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[0][9]);
-						break;
-					}
-					if(quantidadesFinais[1][9] != 0 && posicaoMatriz2 < Math.floor(quantidadeTotal*porcentagem[1])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[1][posicaoMatriz2][aux2] = dados[i][aux2];
-						posicaoMatriz2++;
-						quantidadesFinais[1][9]--;
-						//System.out.println("Entrou na classe 9 e tentou inserir no arq 2");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[1][9]);
-						break;
-					}
-					if(quantidadesFinais[2][9] != 0 && posicaoMatriz3 < Math.floor(quantidadeTotal*porcentagem[2])){
-						for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[2][posicaoMatriz3][aux2] = dados[i][aux2];
-						posicaoMatriz3++;
-						quantidadesFinais[2][9]--;
-						//System.out.println("Entrou na classe 9 e tentou inserir no arq 3");
-						//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[2][9]);
-						break;
-					}				
-					break;
-			}
-	
+			
+			for (int j = 0; j < dadosSeparados.length; j++){
+				if(quantidadesFinais[j][aux] != 0 && posicoes[j] < Math.floor(quantidadeTotal*porcentagem[j])){ // ve se ja foram todos que devem ser no arquivo de treino (arredondado pro chao [?]) so deixa q ta funcionando
+					for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[j][posicoes[j]][aux2] = dados[i][aux2]; // copia todos os valores pra matriz final
+					posicoes[j]++; // acrecenta o contador para saber onde inserir o proximo
+					quantidadesFinais[j][aux]--; // diminui o contador pois acrecentamos um
+					//System.out.println("Entrou na classe " + aux + " e tentou inserir no arq " + j);
+					//System.out.println("falta inserir nessa classe nesse arquivo: " + quantidadesFinais[j][aux]);
+					break; // se teve sucesso quebra o laco pra procurar espaco valido
+				}
+			}	
 		}
 		
 		//System.out.println("Valores Finais:");
-		//System.out.println(contador);
-		//System.out.println(posicaoMatriz1 + " / " + Math.floor(quantidadeTotal*porcentagem[0]));
-		//System.out.println(posicaoMatriz2 + " / " + Math.floor(quantidadeTotal*porcentagem[1]));
-		//System.out.println(posicaoMatriz3 + " / " + Math.floor(quantidadeTotal*porcentagem[2]));
-                       
-		//System.out.println(quantidadesFinais[0][0]+" "+quantidadesFinais[0][1]+" "+quantidadesFinais[0][2]+" "+quantidadesFinais[0][3]+" "+quantidadesFinais[0][4]+" "+quantidadesFinais[0][5]+" "+quantidadesFinais[0][6]+" "+quantidadesFinais[0][7]+" "+quantidadesFinais[0][8]+" "+quantidadesFinais[0][9]);
+		//System.out.println(posicoes[0] + " / " + Math.floor(quantidadeTotal*porcentagem[0]));
+		//System.out.println(posicoes[1] + " / " + Math.floor(quantidadeTotal*porcentagem[1]));
+		//System.out.println(posicoes[2] + " / " + Math.floor(quantidadeTotal*porcentagem[2]));
+        //System.out.println(quantidadesFinais[0][0]+" "+quantidadesFinais[0][1]+" "+quantidadesFinais[0][2]+" "+quantidadesFinais[0][3]+" "+quantidadesFinais[0][4]+" "+quantidadesFinais[0][5]+" "+quantidadesFinais[0][6]+" "+quantidadesFinais[0][7]+" "+quantidadesFinais[0][8]+" "+quantidadesFinais[0][9]);
 		//System.out.println(quantidadesFinais[1][0]+" "+quantidadesFinais[1][1]+" "+quantidadesFinais[1][2]+" "+quantidadesFinais[1][3]+" "+quantidadesFinais[1][4]+" "+quantidadesFinais[1][5]+" "+quantidadesFinais[1][6]+" "+quantidadesFinais[1][7]+" "+quantidadesFinais[1][8]+" "+quantidadesFinais[1][9]);
 		//System.out.println(quantidadesFinais[2][0]+" "+quantidadesFinais[2][1]+" "+quantidadesFinais[2][2]+" "+quantidadesFinais[2][3]+" "+quantidadesFinais[2][4]+" "+quantidadesFinais[2][5]+" "+quantidadesFinais[2][6]+" "+quantidadesFinais[2][7]+" "+quantidadesFinais[2][8]+" "+quantidadesFinais[2][9]);
                 
