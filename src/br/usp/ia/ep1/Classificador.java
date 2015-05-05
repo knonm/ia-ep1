@@ -8,7 +8,7 @@ public abstract class Classificador {
 	
 	private float txAprend;
 	
-	private void swapAleatorio(float[][] array1, float[][] array2) {
+	private void swapAleatorio(float[][] array1, float[][] array2) { // fazer a validacao classes iguais
 		float[] swapAux;
 		int pos1 = ((int)Math.random())%array1.length;
 		int pos2 = ((int)Math.random())%array2.length;

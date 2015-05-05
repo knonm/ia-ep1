@@ -5,13 +5,14 @@ public class LVQ {
 	private float taxaAprendizado;
 	private float[][] neuronios;
 	
-	public float distEuclid(float[] v1, float[] v2) {
+	public float distEuclid(float[] v1, float[] v2) { // rever se a distancia ta sendo calculada certo
 		float dist = -1;
 		if(v1.length == v2.length) {
 			dist = 0;
 			for(int i = v1.length-1; i > -1; i--) {
 				dist += Math.pow(v1[i] - v2[i], 2);
 			}
+			dist = (float) Math.sqrt(dist);
 		}
 		return dist;
 	}
