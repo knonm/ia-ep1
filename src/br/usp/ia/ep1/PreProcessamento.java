@@ -230,7 +230,7 @@ public class PreProcessamento {
 		
 		//int contador = 0;
 		
-		// os dados vao ficar separados em Teto + Teto + Chao, para nunca dar valor quebrado (assim esperamos)
+		
 		for (int i = 0; i < dados.length; i++){
 			//contador++;
 			int aux = (int) dados[i][dados[i].length-1]; // valor da classe
