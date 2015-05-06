@@ -281,24 +281,26 @@ public class PreProcessamento {
 		float[][] dadosCrus = transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
 		dadosCrus = excluirAtrib(dadosCrus);
 		
+		zScoreNormal(dadosCrus);
+		
 		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem);
 		//minMaxNormal(dadosProc, 0, 1);
 		
 		
 		//System.out.println("Chamou transforma Bi pro arquivo 1");
-		float[][] aux1 = transformaBidimensional(dadosParticionados, 0);
+		//float[][] aux1 = transformaBidimensional(dadosParticionados, 0);
         //System.out.println("Chamou transforma Bi pro arquivo 2");
-		float[][] aux2 = transformaBidimensional(dadosParticionados, 1);
+		//float[][] aux2 = transformaBidimensional(dadosParticionados, 1);
         //System.out.println("Chamou transforma Bi pro arquivo 3");
-		float[][] aux3 = transformaBidimensional(dadosParticionados, 2);
+		//float[][] aux3 = transformaBidimensional(dadosParticionados, 2);
 		
 		//for( int i = 0; i < aux1.length; i++){
 		//	System.out.println(aux1[1][48]);
 		//}
 		
-		zScoreNormal(aux1);
-		zScoreNormal(aux2);
-		zScoreNormal(aux3);
+		//zScoreNormal(aux1);
+		//zScoreNormal(aux2);
+		//zScoreNormal(aux3);
                 
         //System.out.println(aux1[0].length);
         //for(int i = 0; i < aux1[0].length; i++){
@@ -306,7 +308,7 @@ public class PreProcessamento {
         //}
                 
                 
-		dadosParticionados = transformaTridimensional(aux1, aux2, aux3);
+		//dadosParticionados = transformaTridimensional(aux1, aux2, aux3);
 		
 		//System.out.println(dadosParticionados[0][0].length);
 		//for(int i = 0; i < dadosParticionados[0].length; i++){
