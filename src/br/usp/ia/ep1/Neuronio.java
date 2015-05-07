@@ -15,4 +15,14 @@ public class Neuronio {
 		this.bias = valor;
 	}
 	
+	public void setPeso(int index, double valor)
+	{
+		this.pesos[index] = valor;
+	}
+	
+	public void InicializarPesosAleatoriamente()
+	{
+		for(int i = 0; i < pesos.length; i++)
+			pesos[i] = Math.random();
+	}	
 }

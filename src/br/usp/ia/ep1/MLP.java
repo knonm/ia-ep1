@@ -3,24 +3,23 @@ import java.util.*;
 
 public class MLP {
 	
-	float[] pesos;
-	Neuronio[] camadaEscondida;
-	Neuronio[] camadaDeSaida;
+	private Neuronio[] camadaEscondida;
+	private Neuronio[] camadaDeSaida;
 
-	private void inicializarPesosComValoresAleatorios(){
-		for(int i = 0; i < this.pesos.length; i++)
-			this.pesos[i] = (float)Math.random();
-	}
+	public MLP(){ }
 	
-	public MLP(double[][] camadaEscondida, double[][] camadaSaida, double[] biasEscondida, double[] biasSaida)
+	public MLP(double[] teste)
+	{
+		
+	}
+		
+	public void CriarCamadasEscondidasEDeSaida(double[][] camadaEscondida, double[][] camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
 	{
 		this.camadaEscondida = new Neuronio[camadaEscondida.length];
 		this.camadaDeSaida = new Neuronio[camadaSaida.length];
 		
-		CriarNeuroniosDaCamadaEscondida(camadaEscondida[0].length, biasEscondida);
-		CriarNeuroniosDaCamadaDeSaida(camadaSaida[0].length, biasSaida);
-		
-		
+		CriarNeuroniosDaCamadaEscondida(camadaEscondida[0].length, biasCamadaEscondida);
+		CriarNeuroniosDaCamadaDeSaida(camadaSaida[0].length, biasCamadaSaida);		
 	}
 	
 	private void CriarNeuroniosDaCamadaEscondida(int quantidadeNeuroniosNaCamadaDeEntrada, double[] biasDaCamadaEscondida)
@@ -29,6 +28,7 @@ public class MLP {
 		{
 			this.camadaEscondida[i] = new Neuronio(quantidadeNeuroniosNaCamadaDeEntrada);
 			this.camadaEscondida[i].setBias(biasDaCamadaEscondida[i]);
+			this.camadaEscondida[i].InicializarPesosAleatoriamente();
 		}
 	}
 	
@@ -38,6 +38,7 @@ public class MLP {
 		{
 			this.camadaDeSaida[i] = new Neuronio(quantidadeNeuroniosNaCamadaEscondida);
 			this.camadaDeSaida[i].setBias(biasDaCamadaDeSaida[i]);
+			this.camadaDeSaida[i].InicializarPesosAleatoriamente();
 		}
 	}
 	
