@@ -169,23 +169,24 @@ public class PreProcessamento {
 		}
 	}
 	
-	private void zScoreNormal(float[][] dados) {
-		float media, desvioPadrao;
-		for(int j = dados[0].length-2; j > -1; j--) {
-			media = 0F;
-			for(int i = dados.length-1; i > -1; i--) {
-				media += Math.pow(dados[i][j], 2F);
+	private void zScoreNormal(float[][] dados){
+		for(int i = 0; i < dados[0].length-1; i++){ // caminha todas as colunas menos a de classes
+			double media = 0;
+			for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
+				media += dados[j][i];
+			} media /= dados.length; // soma todos os valores reais e divide pelo total ( media )
+						
+			double variancia = 0;
+			if(media != 0){
+				for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
+					variancia = variancia + (Math.pow((dados[j][i]-media), 2));
+				} variancia = Math.sqrt(variancia / (dados.length-1)); // acha a variancia ( Somatoria[valor-media^2] / (total de dados - 1))
 			}
-			media /= dados.length;
-			desvioPadrao = 0F;
-			for(int i = dados.length-1; i > -1; i--) {
-				desvioPadrao += Math.pow(dados[i][j] - media, 2F);
+			
+			for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
+				if(media != 0)	dados[j][i] = (float) ((dados[j][i] - media)/variancia); // zScore = (valor-media)/variancia
 			}
-			desvioPadrao = (float) Math.sqrt(desvioPadrao / dados.length);
-			for(int i = dados.length-1; i > -1; i--) {
-				dados[i][j] = (dados[i][j] - media) / desvioPadrao;
-			}
-		}
+		}		
 	}
 	
 	//Particao balanceada de arquivos
