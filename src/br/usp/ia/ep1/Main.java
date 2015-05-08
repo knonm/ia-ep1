@@ -3,7 +3,7 @@ package br.usp.ia.ep1;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import br.usp.ia.ep1.utils.ES;
+import br.usp.ia.ep1.utils.*;
 
 public class Main {
 	
@@ -20,9 +20,9 @@ public class Main {
 		}
 	}
 	
-	private static void printDescDados(String caminho, PreProcessamento pre) throws FileNotFoundException {
-		float[][] dados = pre.transformarArrayStringParaFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
-		float[] desc = pre.descDados(dados, dados[0].length-1);
+	private static void printDescDados(String caminho) throws FileNotFoundException {
+		float[][] dados = MN.transformarArrayStringParaFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
+		float[] desc = MN.descDados(dados, dados[0].length-1);
 		
 		System.out.println(caminho);
 		System.out.println("Pos. Classe: " + (dados[0].length-1));
@@ -30,13 +30,14 @@ public class Main {
 		System.out.println("Max. Vlr. Atrib.: " + desc[1]);
 		System.out.println("Min. Vlr. Classe: " + desc[2]);
 		System.out.println("Max. Vlr. Classe: " + desc[3]);
-		System.out.println("Qtd. Atrib.: " + desc[4]);
+		System.out.println("Qtd. Atrib.: " + (desc[4] - 1));
 		System.out.println("Qtd. Dados: " + desc[5]);
 		System.out.println();
 	}
 	
 	public static void main(String[] args) throws IOException {
 		PreProcessamento pre;
+		
 		try {
 			String nmArqTreino = args[0];
 			String nmArqValida = args[1];
@@ -47,16 +48,17 @@ public class Main {
 			//boolean iniPesos = Integer.valueOf(args[6]) == 0 ? false : true;
 			
 			pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
-					new String[] { nmArqTreino, nmArqValida, nmArqTeste },
-					new float[] { 0.6F, 0.2F, 0.2F });
+									   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
+									   new float[] { 0.6F, 0.2F, 0.2F });
 			
-			printDescDados("./res/optdigits.tra", pre);
-			printDescDados("./res/optdigits.tes", pre);
-			printDescDados(nmArqTreino, pre);
-			printDescDados(nmArqValida, pre);
-			printDescDados(nmArqTeste, pre);
+			printDescDados("./res/optdigits.tra");
+			printDescDados("./res/optdigits.tes");
+			printDescDados(nmArqTreino);
+			printDescDados(nmArqValida);
+			printDescDados(nmArqTeste);
+			
 		} catch (NumberFormatException ex) {
-			Main.log(Main.LOG_ERRO, "Conversão do parâmetro de entrada falhou. Corrija o formato dos parâmetros de entradas.");
+			Main.log(Main.LOG_ERRO, "ConversÃ£o do parÃ¢metro de entrada falhou. Corrija o formato dos parÃ¢metros de entradas.");
 		}
 	}
 
