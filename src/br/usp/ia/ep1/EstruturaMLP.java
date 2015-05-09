@@ -11,7 +11,7 @@ public class EstruturaMLP {
 	/*O construtor inicializará a estrutura da MLP com os valores de peso e a quantidade de neurônios tanto da camada
 	 * de entrada quanto a de saída, assim como os valores de bias de ambas as camadas, especificados pelo usuário.
 	 * A classe 'DadosProcessados' é onde estes valores serão armazenados para uma melhor visibiliade*/	
-	public EstruturaMLP(DadosProcessados camadaEscondida, DadosProcessados camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
+	public EstruturaMLP(InformacoesDaCamada camadaEscondida, InformacoesDaCamada camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
 	{
 		this.camadaEscondida = new Neuronio[camadaEscondida.getQuantidadeDeNeuronios()];
 		this.camadaDeSaida = new Neuronio[camadaSaida.getQuantidadeDeNeuronios()];
@@ -29,7 +29,7 @@ public class EstruturaMLP {
 		CriarNeuroniosCamadaSaidaTreinamento(qtdeNeuroniosCamadaSaida);
 	}
 	
-	private void CriarNeuroniosCamadaEscondida(DadosProcessados camadaEscondida, double[] biasDaCamadaEscondida)
+	private void CriarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
@@ -39,7 +39,7 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void CriarNeuroniosCamadaSaida(DadosProcessados camadaSaida, double[] biasDaCamadaDeSaida)
+	private void CriarNeuroniosCamadaSaida(InformacoesDaCamada camadaSaida, double[] biasDaCamadaDeSaida)
 	{
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
