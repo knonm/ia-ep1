@@ -54,7 +54,8 @@ public class EstruturaMLP {
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
 			this.camadaEscondida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
-			this.camadaEscondida[i].InicializarPesosAleatoriamente();
+			this.camadaEscondida[i].InicializarBiasComValorAleatoro();
+			this.camadaEscondida[i].InicializarPesosComValoresAleatorios();
 		}
 	}
 	
@@ -63,7 +64,8 @@ public class EstruturaMLP {
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
 			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaSaida);
-			this.camadaDeSaida[i].InicializarPesosAleatoriamente();
+			this.camadaDeSaida[i].InicializarBiasComValorAleatoro();
+			this.camadaDeSaida[i].InicializarPesosComValoresAleatorios();
 		}
 	}
 	

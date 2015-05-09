@@ -20,15 +20,25 @@ public class Neuronio {
 		this.pesos[index] = valor;
 	}
 	
-	public void InicializarPesosAleatoriamente()
+	public void InicializarPesosComValoresAleatorios()
 	{
 		for(int i = 0; i < pesos.length; i++)
-			pesos[i] = Math.random();
+			pesos[i] = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);
+	}
+	
+	public void InicializarBiasComValorAleatoro()
+	{
+		this.bias = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);
 	}
 	
 	public void InicializarComPesosEspecificos(double[] pesos)
 	{
 		for(int i = 0; i < pesos.length; i++)
 			this.pesos[i] = pesos[i];
+	}
+	
+	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
+	{
+		return Math.random() * ((valorMaximoDesejado - valorMinimoDesejado) + 1);
 	}
 }
