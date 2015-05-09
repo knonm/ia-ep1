@@ -2,7 +2,6 @@ package br.usp.ia.ep1;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import br.usp.ia.ep1.utils.*;
 
 public class Main {

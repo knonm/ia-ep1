@@ -47,6 +47,19 @@ public class TreinamentoMLP
 	
 	private void executarTreino(DadosProcessados dados)
 	{
+		double[] resultCamadaEscondida = new double[this.mlp.getTamanhoCamadaEscondida()];
+		double[] resultCamadaSaida = new double[this.mlp.getTamanhoCamadaSaida()];
 		
+		/*
+		for(int neuronioEscondido = 0; neuronioEscondido < this.mlp.getTamanhoCamadaEscondida(); neuronioEscondido++)
+			resultCamadaEscondida[neuronioEscondido] = this.mlp.getNeuronioDaCamadaEscondida(neuronioEscondido);
+		
+					
+					// chama feedFoward para cada neurônio da camada de saída
+					for(int neuronioSai = 0; neuronioSai < camadaSaida.length; neuronioSai++){
+						yK[neuronioSai] = camadaSaida[neuronioSai].feedForward(zJ);
+					}
+					
+		*/
 	}
 }

@@ -29,6 +29,21 @@ public class EstruturaMLP {
 		CriarNeuroniosCamadaSaidaTreinamento(qtdeNeuroniosCamadaSaida);
 	}
 	
+	public int getTamanhoCamadaEscondida()
+	{
+		return this.camadaEscondida.length;
+	}
+	
+	public int getTamanhoCamadaSaida()
+	{
+		return this.camadaDeSaida.length;
+	} 
+	
+	public Neuronio getNeuronioDaCamadaEscondida(int indexNeuronio)
+	{
+		return this.camadaEscondida[indexNeuronio];
+	}
+	
 	private void CriarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
@@ -69,7 +84,7 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void ExecutarFeedFoward()
+	public void ExecutarFeedFoward()
 	{
 		
 	}
