@@ -37,6 +37,22 @@ public class Neuronio {
 			this.pesos[i] = pesos[i];
 	}
 	
+	public double ExecutarFeedFoward(DadosProcessados entrada)
+	{
+		double somatorio = 0;
+		
+		for(int i = 0; i < this.pesos.length; i++)
+			somatorio =+ entrada.getValorEspecifico(i) * this.pesos[i];
+		
+		somatorio += this.bias;
+		
+		return this.aplicarFuncaoDeAtivacaoBinariaDeSigmoid(somatorio);		
+	}
+	
+	private double aplicarFuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
+		return 1/(1 + Math.exp(variavel * -1));
+	}
+	
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
 	{
 		return Math.random() * ((valorMaximoDesejado - valorMinimoDesejado) + 1);

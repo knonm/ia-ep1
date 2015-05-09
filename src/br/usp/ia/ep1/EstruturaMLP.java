@@ -84,11 +84,6 @@ public class EstruturaMLP {
 		}
 	}
 	
-	public void ExecutarFeedFoward()
-	{
-		
-	}
-	
 	private void ExecutarBackPropagation(){}
 	
 	private double CalcularFuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
