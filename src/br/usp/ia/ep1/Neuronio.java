@@ -24,5 +24,11 @@ public class Neuronio {
 	{
 		for(int i = 0; i < pesos.length; i++)
 			pesos[i] = Math.random();
-	}	
+	}
+	
+	public void InicializarComPesosEspecificos(double[] pesos)
+	{
+		for(int i = 0; i < pesos.length; i++)
+			this.pesos[i] = pesos[i];
+	}
 }
