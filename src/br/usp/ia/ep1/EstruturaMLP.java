@@ -69,12 +69,10 @@ public class EstruturaMLP {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	private void ExecutarFeedFoward(){}
+	private void ExecutarFeedFoward()
+	{
+		
+	}
 	
 	private void ExecutarBackPropagation(){}
 	
