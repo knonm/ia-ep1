@@ -1,17 +1,17 @@
 package br.usp.ia.ep1;
 import java.util.*;
 
-public class MLP {
+public class EstruturaMLP {
 	
 	private Neuronio[] camadaEscondida;
 	private Neuronio[] camadaDeSaida;
 
-	public MLP(){ }
+	public EstruturaMLP(){ }
 	
 	/*O construtor inicializará a estrutura da MLP com os valores de peso e a quantidade de neurônios tanto da camada
 	 * de entrada quanto a de saída, assim como os valores de bias de ambas as camadas, especificados pelo usuário.
 	 * A classe 'DadosProcessados' é onde estes valores serão armazenados para uma melhor visibiliade*/	
-	public MLP(DadosProcessados camadaEscondida, DadosProcessados camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
+	public EstruturaMLP(DadosProcessados camadaEscondida, DadosProcessados camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
 	{
 		this.camadaEscondida = new Neuronio[camadaEscondida.getQuantidadeDeNeuronios()];
 		this.camadaDeSaida = new Neuronio[camadaSaida.getQuantidadeDeNeuronios()];
@@ -20,7 +20,7 @@ public class MLP {
 		CriarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida);	
 	}
 	
-	public MLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida)
+	public EstruturaMLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida)
 	{
 		this.camadaEscondida = new Neuronio[qtdeNeuroniosCamadaEscondida];
 		this.camadaDeSaida = new Neuronio[qtdeNeuroniosCamadaSaida];
