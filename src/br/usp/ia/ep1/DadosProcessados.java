@@ -8,7 +8,7 @@ public class DadosProcessados
 	public DadosProcessados(double classe, double[] dadosDeEntrada)
 	{
 		this.classe = classe;
-		this.dadosDeEntrada = dadosDeEntrada;
+		this.dadosDeEntrada = dadosDeEntrada.clone();
 	}
 	
 	public double getClasse()
