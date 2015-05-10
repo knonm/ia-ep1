@@ -20,9 +20,4 @@ public class DadosProcessados
 	{
 		return this.dadosDeEntrada;
 	}
-	
-	public double getValorEspecifico(int index)
-	{
-		return this.dadosDeEntrada[index];
-	}
 }

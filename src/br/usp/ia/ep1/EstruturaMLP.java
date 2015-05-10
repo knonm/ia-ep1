@@ -16,8 +16,8 @@ public class EstruturaMLP {
 		this.camadaEscondida = new Neuronio[camadaEscondida.getQuantidadeDeNeuronios()];
 		this.camadaDeSaida = new Neuronio[camadaSaida.getQuantidadeDeNeuronios()];
 		
-		CriarNeuroniosCamadaEscondida(camadaEscondida, biasCamadaEscondida);
-		CriarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida);	
+		criarNeuroniosCamadaEscondida(camadaEscondida, biasCamadaEscondida);
+		criarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida);	
 	}
 	
 	public EstruturaMLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida)
@@ -25,8 +25,8 @@ public class EstruturaMLP {
 		this.camadaEscondida = new Neuronio[qtdeNeuroniosCamadaEscondida];
 		this.camadaDeSaida = new Neuronio[qtdeNeuroniosCamadaSaida];
 		
-		CriarNeuroniosCamadaEscondidaTreinamento(qtdeNeuroniosCamadaEscondida);
-		CriarNeuroniosCamadaSaidaTreinamento(qtdeNeuroniosCamadaSaida);
+		criarNeuroniosCamadaEscondidaTreinamento(qtdeNeuroniosCamadaEscondida);
+		criarNeuroniosCamadaSaidaTreinamento(qtdeNeuroniosCamadaSaida);
 	}
 	
 	public int getTamanhoCamadaEscondida()
@@ -44,7 +44,17 @@ public class EstruturaMLP {
 		return this.camadaEscondida[indexNeuronio];
 	}
 	
-	private void CriarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
+	public Neuronio getNeuronioDaCamadaDeSaida(int indexNeuronio)
+	{
+		return this.camadaDeSaida[indexNeuronio];
+	}
+	
+	public void ExecutarBackPropagation(double[] camadaEntrada, double[] result)
+	{
+				
+	}
+	
+	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
@@ -54,7 +64,7 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void CriarNeuroniosCamadaSaida(InformacoesDaCamada camadaSaida, double[] biasDaCamadaDeSaida)
+	private void criarNeuroniosCamadaSaida(InformacoesDaCamada camadaSaida, double[] biasDaCamadaDeSaida)
 	{
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
@@ -64,7 +74,7 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void CriarNeuroniosCamadaEscondidaTreinamento(int qtdeNeuroniosCamadaEscondida)
+	private void criarNeuroniosCamadaEscondidaTreinamento(int qtdeNeuroniosCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
@@ -74,7 +84,7 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void CriarNeuroniosCamadaSaidaTreinamento(int qtdeNeuroniosCamadaSaida)
+	private void criarNeuroniosCamadaSaidaTreinamento(int qtdeNeuroniosCamadaSaida)
 	{
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
@@ -83,11 +93,4 @@ public class EstruturaMLP {
 			this.camadaDeSaida[i].InicializarPesosComValoresAleatorios();
 		}
 	}
-	
-	private void ExecutarBackPropagation(){}
-	
-	private double CalcularFuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
-		return 1/(1 + Math.exp(variavel * -1));
-	}
-	
 }

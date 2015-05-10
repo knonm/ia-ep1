@@ -39,18 +39,34 @@ public class Neuronio {
 	
 	public double ExecutarFeedFoward(DadosProcessados entrada)
 	{
+		return this.feedFoward(entrada.getDadosDeEntrada());	
+	}
+	
+	public double ExecutarFeedFoward(double[] entrada)
+	{
+		return this.feedFoward(entrada);
+	}
+	
+	private double feedFoward(double[] entrada)
+	{
 		double somatorio = 0;
 		
 		for(int i = 0; i < this.pesos.length; i++)
-			somatorio =+ entrada.getValorEspecifico(i) * this.pesos[i];
+			somatorio =+ entrada[i] * this.pesos[i];
 		
 		somatorio += this.bias;
 		
-		return this.aplicarFuncaoDeAtivacaoBinariaDeSigmoid(somatorio);		
+		return this.FuncaoDeAtivacaoBinariaDeSigmoid(somatorio);	
 	}
 	
-	private double aplicarFuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
+	public double FuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
 		return 1/(1 + Math.exp(variavel * -1));
+	}
+	
+	/*Derivada apresentada por Laurene Fausett no livro "Fundamentals of Neural Networks"*/
+	public double derivadaFuncaoDeAtivacaoBinariaDeSigmoid(double variavel)
+	{
+		return (this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel) * (1 - this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel))); 
 	}
 	
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
