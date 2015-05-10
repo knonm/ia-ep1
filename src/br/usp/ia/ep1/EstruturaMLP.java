@@ -49,9 +49,24 @@ public class EstruturaMLP {
 		return this.camadaDeSaida[indexNeuronio];
 	}
 	
-	public void ExecutarBackPropagation(double[] camadaEntrada, double[] result)
+	public void ExecutarBackPropagation(double[] camadaEntrada, double[] camadaSaida, DadosProcessados dados)
 	{
-				
+		//Equivale ao target pattern, Tk, especificado no livro de Laurene Fausett, "Fundamentals of Neural Networks"
+		double resultadoEsperado;
+		
+		//double[] pesosCorrigidos = new double[this.camadaDeSaida]
+		
+		//double[] biasCorrigido
+		
+		for(int indexNeuronio = 0; indexNeuronio < camadaSaida.length; indexNeuronio++)
+		{
+			if(dados.getClasse() == indexNeuronio)
+				resultadoEsperado = 1;
+			else
+				resultadoEsperado = 0;
+			
+			
+		}
 	}
 	
 	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)

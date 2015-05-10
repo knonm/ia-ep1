@@ -4,6 +4,7 @@ public class Neuronio {
 
 	private double bias;
 	private double pesos[];
+	private double localGradiant;
 	
 	public Neuronio(int quantidadeNeuroniosCamadaAnterior)
 	{
@@ -64,9 +65,14 @@ public class Neuronio {
 	}
 	
 	/*Derivada apresentada por Laurene Fausett no livro "Fundamentals of Neural Networks"*/
-	public double derivadaFuncaoDeAtivacaoBinariaDeSigmoid(double variavel)
+	public double DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(double variavel)
 	{
 		return (this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel) * (1 - this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel))); 
+	}
+	
+	public void setLocalGradient(double valor)
+	{
+		this.localGradiant = valor;
 	}
 	
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)

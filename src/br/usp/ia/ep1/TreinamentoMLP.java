@@ -60,6 +60,6 @@ public class TreinamentoMLP
 			resultCamadaSaida[neuronioSaida] = this.mlp.getNeuronioDaCamadaDeSaida(neuronioSaida).ExecutarFeedFoward(resultCamadaEscondida);
 		
 		//Executa BackPropagation diretamente no objeto MLP
-		this.mlp.ExecutarBackPropagation(resultCamadaEscondida, resultCamadaSaida);	
+		this.mlp.ExecutarBackPropagation(resultCamadaEscondida, resultCamadaSaida, dados);	
 	}
 }
