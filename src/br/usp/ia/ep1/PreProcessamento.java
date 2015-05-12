@@ -32,6 +32,8 @@ public class PreProcessamento {
 	// Maior valor que um atributo classe pode assumir no conjunto de dados
 	public static final int valorMaximoClasse = 9;
 	
+	public float[][][] dados;
+	
 	/*
 	 * Esse eh um dos requisitos desejaveis do pre-processamento
 	 * Selecao de Atributos
@@ -259,9 +261,11 @@ public class PreProcessamento {
 			float[][][] dadosSet = processarDados(ES.lerArquivos(arqsDados), pctsDadosSaida);
 			//float[][][] dadosSet = splitDados(processarDados(ES.lerArquivos(arqsDados)), pctsDadosSaida);
 
-			for(int i = dadosSet.length-1; i > -1; i--) {
-				criarArquivo(dadosSet[i], arqsSaida[i]);
-			}
+			this.dados = dadosSet;
+			
+			//for(int i = dadosSet.length-1; i > -1; i--) {
+			//	criarArquivo(dadosSet[i], arqsSaida[i]);
+			//}
 			
 			
 		}

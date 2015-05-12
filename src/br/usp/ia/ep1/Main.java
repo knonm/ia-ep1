@@ -49,13 +49,37 @@ public class Main {
 			
 			pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
 									   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
-									   new float[] { 0.6F, 0.2F, 0.2F });
+									   new float[] { 0.1F, 0.7F, 0.2F });
 			
 			printDescDados("./res/optdigits.tra");
 			printDescDados("./res/optdigits.tes");
 			printDescDados(nmArqTreino);
 			printDescDados(nmArqValida);
 			printDescDados(nmArqTeste);
+			
+			float[][] treinamento = MN.transformaBidimensional(pre.dados, 0);
+			
+			float[][] and = new float[4][3];
+			and[0][0] = 1;
+			and[0][1] = 1;
+			and[0][2] = 1;
+			and[1][0] = 1;
+			and[1][1] = 0;
+			and[1][2] = 0;
+			and[2][0] = 0;
+			and[2][1] = 1;
+			and[2][2] = 0;
+			and[3][0] = 0;
+			and[3][1] = 0;
+			and[3][2] = 0;
+			
+			LVQ lvq = new LVQ(and, 0.8F, 10, true);
+			lvq.exec(and, true);
+			lvq.printStatus();
+			
+			//lvq.exec(treinamento, false);
+			lvq.exec(and, false);
+			
 			
 		} catch (NumberFormatException ex) {
 			Main.log(Main.LOG_ERRO, "ConversÃ£o do parÃ¢metro de entrada falhou. Corrija o formato dos parÃ¢metros de entradas.");

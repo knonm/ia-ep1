@@ -19,8 +19,24 @@ public class MN {
 		return dadosFloat;
 	}
 	
+	public static int valorMaximoClasse(float[][] dados){
+		int valorMaximo = 0;
+		for (int i = 0; i < dados.length; i++){
+			if(dados[i][dados[i].length-1] > valorMaximo) valorMaximo = (int) dados[i][dados[i].length-1];
+		}		
+		return valorMaximo;
+	}
+	
+	public static int valorMinimoClasse(float[][] dados){
+		int valorMinimo = 0;
+		for (int i = 0; i < dados.length; i++){
+			if(dados[i][dados[i].length-1] < valorMinimo) valorMinimo = (int) dados[i][dados[i].length-1];
+		}		
+		return valorMinimo;
+	}
+	
 	// transforma uma matriz tridimencional em bidimencional, em relacao a qual arquivo escolhido
-	private static float[][] transformaBidimensional(float[][][] tridimencional, int arquivo){
+	public static float[][] transformaBidimensional(float[][][] tridimencional, int arquivo){
 			float[][] aux = new float[tridimencional[arquivo].length][tridimencional[arquivo][0].length];
 		
             //System.out.println("Transformando Bidimencional");
@@ -36,7 +52,7 @@ public class MN {
 	}
 	
 	// transforma tres matrizes tridimencionais em uma tridimencional
-	private static float[][][] transformaTridimensional(float[][] primeira, float[][] segunda, float[][] terceira){
+	public static float[][][] transformaTridimensional(float[][] primeira, float[][] segunda, float[][] terceira){
 			float[][][] aux = new float[3][][]; // instancia a auxiliar (a terceira dimencao, que e a dos arquivos)
 		
 			aux[0] = new float[primeira.length][primeira[0].length]; // instancia a dimencao dos dados dos valores
