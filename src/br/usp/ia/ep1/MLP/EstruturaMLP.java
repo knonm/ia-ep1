@@ -1,4 +1,4 @@
-package br.usp.ia.ep1;
+package br.usp.ia.ep1.MLP;
 import java.util.*;
 
 public class EstruturaMLP {
