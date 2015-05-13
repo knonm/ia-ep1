@@ -68,8 +68,7 @@ public class TreinamentoMLP
 	{
 		int tamanhoCamEscondida = this.mlp.getTamanhoCamadaEscondida();
 		int tamanhoCamSaida = this.mlp.getTamanhoCamadaSaida();
-		
-		
+				
 		//Equivale ao target pattern, Tk, especificado no livro de Laurene Fausett, "Fundamentals of Neural Networks"
 		double resultadoEsperado;
 
@@ -88,7 +87,7 @@ public class TreinamentoMLP
 				resultadoEsperado = 0;
 
 			//Definindo o gradiente de erro das camadas de saída
-			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.camadaDeSaida[index].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(outputCamSaida[index].getSomatorioPeso());			
+			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.mlp.DerivadaFuncaoBinariaSigmoid(outputCamSaida[index].getSomatorioPeso());			
 			this.mlp.getNeuronioCamadaSaida(index).setTermoDeErro(erro);
 
 			//Calculando termo de correção de peso
@@ -109,7 +108,6 @@ public class TreinamentoMLP
 		for(int d = 0; d < dadosNeuronio.length; d++)
 			dadosNeuronio[d] = new PesosCalculados();
 
-
 		//Inicia correção de pesos para camada escondida
 		for(int j = 0; j < tamanhoCamEscondida ; j++)
 		{
@@ -119,20 +117,18 @@ public class TreinamentoMLP
 
 				//Calcular Termo de Erro da camada escondida
 				double somatorioInputsCamadaEscondida = outputCamEntrada[j].getSomatorioPeso();			
-				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.camadaDeSaida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(somatorioInputsCamadaEscondida);				
-				this.camadaEscondida[j].setTermoDeErro(erroEscondida);
+				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.mlp.DerivadaFuncaoBinariaSigmoid(somatorioInputsCamadaEscondida);				
+				this.mlp.getNeuronioCamadaEscondida(j).setTermoDeErro(erroEscondida);
 
 				// calcula a correção para cada peso do neurônio ativo
 				for(int i = 0; i < tupla.length(); i++)
 					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado *errorTerm[j]*tupla.valor(i);
 
 				correcaoBiasEscondida[j] = this.taxaDeAprendizado *errorTerm[j];
-
 		}
 
 		// atualiza pesos e viés na camada de saída
-
-		for(int k = 0; k < camadaSaida.length; k++)
+		for(int k = 0; k < tamanhoCamSaida; k++)
 		{
 			camadaSaida[k].setVies(camadaSaida[k].getVies()+delta_w0K[k]);
 			for(int j = 0; j < camadaEscondida.length; j++)
@@ -141,7 +137,7 @@ public class TreinamentoMLP
 
 
 		// atualiza pesos e viés na camada escondida
-		for(int j = 0; j < camadaEscondida.length; j++)
+		for(int j = 0; j < tamanhoCamEscondida; j++)
 		{
 
 			camadaEscondida[j].setVies(camadaEscondida[j].getVies()+correcaoBiasEscondida[j]);

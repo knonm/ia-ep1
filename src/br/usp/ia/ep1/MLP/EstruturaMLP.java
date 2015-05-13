@@ -59,6 +59,11 @@ public class EstruturaMLP {
 		return this.camadaEscondida[0].FeedFoward(this.PesosCalculadosToDouble(entrada));
 	}
 	
+	public double DerivadaFuncaoBinariaSigmoid(double valor)
+	{
+		return this.camadaEscondida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(valor);
+	}
+	
 	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
