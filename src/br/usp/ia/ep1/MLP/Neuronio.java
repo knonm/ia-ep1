@@ -21,6 +21,11 @@ public class Neuronio {
 		this.pesos[index] = valor;
 	}
 	
+	public double getPeso(int index)
+	{
+		return this.pesos[index];
+	}
+	
 	public void InicializarPesosComValoresAleatorios()
 	{
 		for(int i = 0; i < pesos.length; i++)

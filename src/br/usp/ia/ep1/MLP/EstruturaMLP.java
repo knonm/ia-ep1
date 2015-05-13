@@ -80,21 +80,29 @@ public class EstruturaMLP {
 			//Calculando termo de correção de bias
 			correcaoBiasSaida[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();			
 		}
+		
 			//double[][] correcaoPesoEscondida = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
 			
-			double[] correcaoBiasEscondida = new double[camadaEscondida.length];
+			double[] correcaoBiasEscondida = new double[this.getTamanhoCamadaEscondida()];
+		
+			PesosCalculados[] dadosNeuronio = new PesosCalculados[this.getTamanhoCamadaEscondida()];
+			
+			//Inicializando array
+			for(int d = 0; d < dadosNeuronio.length; d++)
+				dadosNeuronio[d] = new PesosCalculados();
+			
 			
 			//Inicia correção de pesos para camada escondida
 			for(int j = 0; j < this.getTamanhoCamadaEscondida(); j++)
 			{
 				// faz o somatório para cada input de delta
 				for(int k = 0; k < this.getTamanhoCamadaSaida(); k++)
-				{
-					somatorio[j] += deltaK[k]*camadaSaida[k].getPeso(j);
-				}
+					dadosNeuronio[j].setSomatorioPeso(this.camadaDeSaida[k].getLocalGradient() * this.camadaDeSaida[k].getPeso(j)); ;
 				
-				// calcula o termo de erro de informação
-				errorTerm[j] = somatorio[j]*camadaEscondida[j].derivada();
+				//Calcular Termo de Erro da camada escondida
+				double somatorioInputsCamadaEscondida = outputCamEntrada[j].getSomatorioPeso();			
+				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.camadaDeSaida[j].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(somatorioInputsCamadaEscondida);				
+				this.camadaEscondida[j].setLocalGradient(erroEscondida);
 				
 				// calcula a correção para cada peso do neurônio ativo
 				for(int i = 0; i < tupla.length(); i++)
