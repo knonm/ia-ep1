@@ -101,14 +101,13 @@ public class PreProcessamento {
 	private void minMaxNormal(float[][] dados, float novoMin, float novoMax) {
 		float difAnt = PreProcessamento.valorMaximoAtributo - PreProcessamento.valorMinimoAtributo;
 		float difNovo = novoMax - novoMin;
-		float difDif = difNovo / difAnt;
-		float difAux = (PreProcessamento.valorMinimoAtributo * difNovo + difAnt * novoMin) / difAnt;
 		
 		for(int i = dados.length-1; i > -1; i--) {
 			for(int j = dados[i].length-2; j > -1; j--) {
-				dados[i][j] = dados[i][j] * difDif - difAux;
+				dados[i][j] = (((dados[i][j] - PreProcessamento.valorMinimoAtributo) / difAnt) * difNovo) + novoMin;
 			}
 		}
+		
 	}
 	
 	private void zScoreNormal(float[][] dados){
