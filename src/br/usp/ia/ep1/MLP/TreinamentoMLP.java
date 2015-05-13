@@ -2,23 +2,23 @@ package br.usp.ia.ep1.MLP;
 
 public class TreinamentoMLP 
 {
-	private DadosProcessados[] entrada;
+	private DadosDeEntradaProcessados[] entrada;
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
 	
-	public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosProcessados[] dadosEntrada, double taxaAprendizado)
+	public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado)
 	{
 		this.mlp = new EstruturaMLP(qtdNeuroniosCamadaEscondida, qtdeNeuroniosCamadaSaida);		
-		this.entrada = new DadosProcessados[dadosEntrada.length];
+		this.entrada = new DadosDeEntradaProcessados[dadosEntrada.length];
 		this.taxaDeAprendizado = taxaAprendizado;
 		
 		this.PopularEstruturaDadosDeEntrada(dadosEntrada);			
 	}
 	
-	private void PopularEstruturaDadosDeEntrada(DadosProcessados[] dadosEntrada)
+	private void PopularEstruturaDadosDeEntrada(DadosDeEntradaProcessados[] dadosEntrada)
 	{
 		for(int i = 0; i < this.entrada.length; i++)
-			this.entrada[i] = new DadosProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
+			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
 	public void Treinar(int quantidadeTreinos)
@@ -30,7 +30,7 @@ public class TreinamentoMLP
 		{
 			for(int epoca = 0; epoca < intervalosParaExibicao; epoca++)
 			{
-				for(DadosProcessados dado: entrada)
+				for(DadosDeEntradaProcessados dado: entrada)
 				{
 					this.executarTreino(dado);
 				}				
@@ -45,21 +45,21 @@ public class TreinamentoMLP
 	}
 	
 	//Método que executa o treino da rede para cada epoca corrente no método Treinar()
-	private void executarTreino(DadosProcessados dados)
+	private void executarTreino(DadosDeEntradaProcessados dados)
 	{
-		double[] resultCamadaEscondida = new double[this.mlp.getTamanhoCamadaEscondida()];
-		double[] resultCamadaSaida = new double[this.mlp.getTamanhoCamadaSaida()];
+		PesosCalculados[] resultCamEscondida = new PesosCalculados[this.mlp.getTamanhoCamadaEscondida()];
+		PesosCalculados[] resultCamSaida = new PesosCalculados[this.mlp.getTamanhoCamadaSaida()];
 		
 		//Executa FeedFoward para cada neurônio da camada escondida (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioEscondido = 0; neuronioEscondido < this.mlp.getTamanhoCamadaEscondida(); neuronioEscondido++)
-			resultCamadaEscondida[neuronioEscondido] = this.mlp.getNeuronioDaCamadaEscondida(neuronioEscondido).ExecutarFeedFoward(dados);
+			resultCamEscondida[neuronioEscondido] = this.mlp.getNeuronioDaCamadaEscondida(neuronioEscondido).ExecutarFeedFoward(dados);
 		
 				
 		//Executa FeedFoward para cada neurônio da camada de saída (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioSaida = 0; neuronioSaida < this.mlp.getTamanhoCamadaSaida(); neuronioSaida++)
-			resultCamadaSaida[neuronioSaida] = this.mlp.getNeuronioDaCamadaDeSaida(neuronioSaida).ExecutarFeedFoward(resultCamadaEscondida);
+			resultCamSaida[neuronioSaida] = this.mlp.getNeuronioDaCamadaDeSaida(neuronioSaida).ExecutarFeedFoward(resultCamEscondida);
 		
 		//Executa BackPropagation diretamente no objeto MLP
-		this.mlp.ExecutarBackPropagation(resultCamadaEscondida, resultCamadaSaida, dados);	
+		this.mlp.ExecutarBackPropagation(resultCamEscondida, resultCamSaida, dados, this.taxaDeAprendizado);	
 	}
 }

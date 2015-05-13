@@ -49,23 +49,80 @@ public class EstruturaMLP {
 		return this.camadaDeSaida[indexNeuronio];
 	}
 	
-	public void ExecutarBackPropagation(double[] camadaEntrada, double[] camadaSaida, DadosProcessados dados)
+	public void ExecutarBackPropagation(PesosCalculados[] outputCamEntrada, PesosCalculados[] outputCamSaida, 
+										DadosDeEntradaProcessados dados, double aprendizado)
 	{
 		//Equivale ao target pattern, Tk, especificado no livro de Laurene Fausett, "Fundamentals of Neural Networks"
 		double resultadoEsperado;
 		
-		//double[] pesosCorrigidos = new double[this.camadaDeSaida]
+		//Equivalente ao DeltaWjk (que será usado para, mais tarde, atualizar os Wjk, ou seja, os pesos) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks" 
+		double[][] correcaoPeso = new double[this.camadaDeSaida.length][this.camadaEscondida.length];		
 		
-		//double[] biasCorrigido
+		//Equivalente ao DeltaW0k (que será usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
+		double[] correcaoBias = new double[this.camadaDeSaida.length];
 		
-		for(int indexNeuronio = 0; indexNeuronio < camadaSaida.length; indexNeuronio++)
+		for(int index = 0; index < this.camadaDeSaida.length; index++)
 		{
-			if(dados.getClasse() == indexNeuronio)
+			if(dados.getClasse() == index)
 				resultadoEsperado = 1;
 			else
 				resultadoEsperado = 0;
 			
+			//Definindo o gradiente de erro
+			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.camadaDeSaida[index].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(outputCamSaida[index].getSomatorioPeso());			
+			this.camadaDeSaida[index].setLocalGradient(erro);
 			
+			//Calculando termo de correção de peso
+			for(int j = 0; j < camadaEscondida.length; j++)
+				correcaoPeso[index][j] = aprendizado * this.camadaDeSaida[index].getLocalGradient() * outputCamEntrada[j].getOutput();
+			
+			//Calculando termo de correção de bias
+			correcaoBias[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();
+			
+			// prepara o cálculo para o termo de erro de informação
+			double[] delta_inJ = new double[camadaEscondida.length];
+			double[] deltaJ = new double[camadaEscondida.length];
+			
+			double[][] delta_vIJ = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
+			double[] delta_v0J = new double[camadaEscondida.length];
+						
+			for(int j = 0; j < camadaEscondida.length; j++)
+			{
+				// faz o somatório para cada input de delta
+				for(int k = 0; k < camadaSaida.length; k++)
+				{
+					delta_inJ[j] += deltaK[k]*camadaSaida[k].getPeso(j);
+				}
+				
+				// calcula o termo de erro de informação
+				deltaJ[j] = delta_inJ[j]*camadaEscondida[j].derivada();
+				
+				// calcula a correção para cada peso do neurônio ativo
+				for(int i = 0; i < tupla.length(); i++)
+					delta_vIJ[j][i] = aprendizado*deltaJ[j]*tupla.valor(i);
+				
+				delta_v0J[j] = aprendizado*deltaJ[j];
+				
+			}
+			
+			// atualiza pesos e viés na camada de saída
+			
+			for(int k = 0; k < camadaSaida.length; k++)
+			{
+				camadaSaida[k].setVies(camadaSaida[k].getVies()+delta_w0K[k]);
+				for(int j = 0; j < camadaEscondida.length; j++)
+					camadaSaida[k].setPeso(j, delta_wJK[k][j]);
+			}
+			
+			
+			// atualiza pesos e viés na camada escondida
+			for(int j = 0; j < camadaEscondida.length; j++)
+			{
+
+				camadaEscondida[j].setVies(camadaEscondida[j].getVies()+delta_v0J[j]);
+				for(int i = 0; i < tupla.length(); i++)
+					camadaEscondida[j].setPeso(i, delta_vIJ[j][i]);
+			}	
 		}
 	}
 	

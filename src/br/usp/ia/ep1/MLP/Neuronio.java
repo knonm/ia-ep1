@@ -38,26 +38,32 @@ public class Neuronio {
 			this.pesos[i] = pesos[i];
 	}
 	
-	public double ExecutarFeedFoward(DadosProcessados entrada)
+	public PesosCalculados ExecutarFeedFoward(DadosDeEntradaProcessados entrada)
 	{
 		return this.feedFoward(entrada.getDadosDeEntrada());	
 	}
 	
-	public double ExecutarFeedFoward(double[] entrada)
+	public PesosCalculados ExecutarFeedFoward(PesosCalculados[] entrada)
 	{
-		return this.feedFoward(entrada);
+		return this.feedFoward(this.PesosCalculadosToDouble(entrada));
 	}
 	
-	private double feedFoward(double[] entrada)
+	private PesosCalculados feedFoward(double[] entrada)
 	{
 		double somatorio = 0;
 		
 		for(int i = 0; i < this.pesos.length; i++)
+		{
 			somatorio =+ entrada[i] * this.pesos[i];
+		}
 		
 		somatorio += this.bias;
 		
-		return this.FuncaoDeAtivacaoBinariaDeSigmoid(somatorio);	
+		double output = this.FuncaoDeAtivacaoBinariaDeSigmoid(somatorio);
+		
+		PesosCalculados resposta = new PesosCalculados(somatorio, output);
+		
+		return resposta;	
 	}
 	
 	public double FuncaoDeAtivacaoBinariaDeSigmoid(double variavel){
@@ -75,8 +81,24 @@ public class Neuronio {
 		this.localGradiant = valor;
 	}
 	
+	public double getLocalGradient()
+	{
+		return this.localGradiant;
+	}
+	
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
 	{
 		return Math.random() * ((valorMaximoDesejado - valorMinimoDesejado) + 1);
+	}
+	
+	//Converte a classe de apoio PesosCalculados para um formato de array de doubles. Utilizado antes de enviar o array para o feedFoward.
+	private double[] PesosCalculadosToDouble(PesosCalculados[] entrada)
+	{
+		double[] resposta = new double[entrada.length];
+		
+		for(int i = 0; i < entrada.length; i++)
+			resposta[i] = entrada[i].getOutput();
+		
+		return resposta;
 	}
 }
