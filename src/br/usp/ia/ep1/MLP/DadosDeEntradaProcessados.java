@@ -1,6 +1,6 @@
 package br.usp.ia.ep1.MLP;
 
-public class DadosDeEntradaProcessados 
+public class DadosDeEntradaProcessados
 {
 	private double classe;
 	private double[] dadosEntrada;
@@ -14,7 +14,7 @@ public class DadosDeEntradaProcessados
 	public double getClasse()
 	{
 		return this.classe;
-	} 
+	}
 	
 	public double[] getDadosDeEntrada()
 	{
