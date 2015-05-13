@@ -56,10 +56,10 @@ public class EstruturaMLP {
 		double resultadoEsperado;
 		
 		//Equivalente ao DeltaWjk (que será usado para, mais tarde, atualizar os Wjk, ou seja, os pesos) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks" 
-		double[][] correcaoPeso = new double[this.camadaDeSaida.length][this.camadaEscondida.length];		
+		double[][] correcaoPesoSaida = new double[this.camadaDeSaida.length][this.camadaEscondida.length];		
 		
 		//Equivalente ao DeltaW0k (que será usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
-		double[] correcaoBias = new double[this.camadaDeSaida.length];
+		double[] correcaoBiasSaida = new double[this.camadaDeSaida.length];
 		
 		for(int index = 0; index < this.camadaDeSaida.length; index++)
 		{
@@ -74,10 +74,14 @@ public class EstruturaMLP {
 			
 			//Calculando termo de correção de peso
 			for(int j = 0; j < camadaEscondida.length; j++)
-				correcaoPeso[index][j] = aprendizado * this.camadaDeSaida[index].getLocalGradient() * outputCamEntrada[j].getOutput();
+				correcaoPesoSaida[index][j] = aprendizado * this.camadaDeSaida[index].getLocalGradient() * outputCamEntrada[j].getOutput();
 			
 			//Calculando termo de correção de bias
-			correcaoBias[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();
+			correcaoBiasSaida[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();
+			
+			
+			
+			
 			
 			// prepara o cálculo para o termo de erro de informação
 			double[] delta_inJ = new double[camadaEscondida.length];
