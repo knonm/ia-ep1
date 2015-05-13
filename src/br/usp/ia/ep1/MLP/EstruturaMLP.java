@@ -71,7 +71,7 @@ public class EstruturaMLP {
 			
 			//Definindo o gradiente de erro das camadas de saída
 			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.camadaDeSaida[index].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(outputCamSaida[index].getSomatorioPeso());			
-			this.camadaDeSaida[index].setLocalGradient(erro);
+			this.camadaDeSaida[index].setTermoDeErro(erro);
 			
 			//Calculando termo de correção de peso
 			for(int j = 0; j < this.getTamanhoCamadaEscondida(); j++)
@@ -101,8 +101,8 @@ public class EstruturaMLP {
 				
 				//Calcular Termo de Erro da camada escondida
 				double somatorioInputsCamadaEscondida = outputCamEntrada[j].getSomatorioPeso();			
-				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.camadaDeSaida[j].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(somatorioInputsCamadaEscondida);				
-				this.camadaEscondida[j].setLocalGradient(erroEscondida);
+				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.camadaDeSaida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(somatorioInputsCamadaEscondida);				
+				this.camadaEscondida[j].setTermoDeErro(erroEscondida);
 				
 				// calcula a correção para cada peso do neurônio ativo
 				for(int i = 0; i < tupla.length(); i++)
@@ -131,7 +131,6 @@ public class EstruturaMLP {
 					camadaEscondida[j].setPeso(i, correcaoPesoEscondida[j][i]);
 			}	
 		}
-	}
 	
 	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)
 	{

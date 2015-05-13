@@ -4,7 +4,7 @@ public class Neuronio {
 
 	private double bias;
 	private double pesos[];
-	private double localGradiant;
+	private double termoDeErro;
 	
 	public Neuronio(int quantidadeNeuroniosCamadaAnterior)
 	{
@@ -81,14 +81,14 @@ public class Neuronio {
 		return (this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel) * (1 - this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel))); 
 	}
 	
-	public void setLocalGradient(double valor)
+	public void setTermoDeErro(double valor)
 	{
-		this.localGradiant = valor;
+		this.termoDeErro = valor;
 	}
 	
 	public double getLocalGradient()
 	{
-		return this.localGradiant;
+		return this.termoDeErro;
 	}
 	
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
