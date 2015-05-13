@@ -81,31 +81,33 @@ public class EstruturaMLP {
 			
 			
 			
+			// Somatorio armazenará a multiplicação entre cada gradiente local e cada peso das camadas escondidas
+			double[] somatorio = new double[camadaEscondida.length];
+			
+			//Armazenará o resultado dos calculos dos termos de informação de erro
+			double[] errorTerm = new double[camadaEscondida.length];
 			
 			
-			// prepara o cálculo para o termo de erro de informação
-			double[] delta_inJ = new double[camadaEscondida.length];
-			double[] deltaJ = new double[camadaEscondida.length];
+			//double[][] correcaoPesoEscondida = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
 			
-			double[][] delta_vIJ = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
-			double[] delta_v0J = new double[camadaEscondida.length];
+			double[] correcaoBiasEscondida = new double[camadaEscondida.length];
 						
 			for(int j = 0; j < camadaEscondida.length; j++)
 			{
 				// faz o somatório para cada input de delta
 				for(int k = 0; k < camadaSaida.length; k++)
 				{
-					delta_inJ[j] += deltaK[k]*camadaSaida[k].getPeso(j);
+					somatorio[j] += deltaK[k]*camadaSaida[k].getPeso(j);
 				}
 				
 				// calcula o termo de erro de informação
-				deltaJ[j] = delta_inJ[j]*camadaEscondida[j].derivada();
+				errorTerm[j] = somatorio[j]*camadaEscondida[j].derivada();
 				
 				// calcula a correção para cada peso do neurônio ativo
 				for(int i = 0; i < tupla.length(); i++)
-					delta_vIJ[j][i] = aprendizado*deltaJ[j]*tupla.valor(i);
+					correcaoPesoEscondida[j][i] = aprendizado*errorTerm[j]*tupla.valor(i);
 				
-				delta_v0J[j] = aprendizado*deltaJ[j];
+				correcaoBiasEscondida[j] = aprendizado*errorTerm[j];
 				
 			}
 			
@@ -123,9 +125,9 @@ public class EstruturaMLP {
 			for(int j = 0; j < camadaEscondida.length; j++)
 			{
 
-				camadaEscondida[j].setVies(camadaEscondida[j].getVies()+delta_v0J[j]);
+				camadaEscondida[j].setVies(camadaEscondida[j].getVies()+correcaoBiasEscondida[j]);
 				for(int i = 0; i < tupla.length(); i++)
-					camadaEscondida[j].setPeso(i, delta_vIJ[j][i]);
+					camadaEscondida[j].setPeso(i, correcaoPesoEscondida[j][i]);
 			}	
 		}
 	}
