@@ -40,7 +40,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 1 1 4 true");
+		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 1 1 2 true");
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();

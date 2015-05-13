@@ -57,7 +57,7 @@ public class LVQ extends Classificador {
 		float dist = -1;
 		if(v1.length == v2.length) {
 			dist = 0;
-			for(int i = 0; i < v1.length-2; i++) { // -2 para desconciderar o valor da classe no calculo ( a classe eh o ultimo valor)
+			for(int i = 0; i < v1.length-1; i++) { // -2 para desconciderar o valor da classe no calculo ( a classe eh o ultimo valor)
 				dist += Math.pow(v1[i] - v2[i], 2);
 			}
 			dist = (float) Math.sqrt(dist);
