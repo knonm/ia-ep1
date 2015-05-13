@@ -61,41 +61,34 @@ public class EstruturaMLP {
 		//Equivalente ao DeltaW0k (que será usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
 		double[] correcaoBiasSaida = new double[this.camadaDeSaida.length];
 		
-		for(int index = 0; index < this.camadaDeSaida.length; index++)
+		//Inicia correção de pesos na camada de Saida
+		for(int index = 0; index < this.getTamanhoCamadaSaida(); index++)
 		{
 			if(dados.getClasse() == index)
 				resultadoEsperado = 1;
 			else
 				resultadoEsperado = 0;
 			
-			//Definindo o gradiente de erro
+			//Definindo o gradiente de erro das camadas de saída
 			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.camadaDeSaida[index].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(outputCamSaida[index].getSomatorioPeso());			
 			this.camadaDeSaida[index].setLocalGradient(erro);
 			
 			//Calculando termo de correção de peso
-			for(int j = 0; j < camadaEscondida.length; j++)
+			for(int j = 0; j < this.getTamanhoCamadaEscondida(); j++)
 				correcaoPesoSaida[index][j] = aprendizado * this.camadaDeSaida[index].getLocalGradient() * outputCamEntrada[j].getOutput();
 			
 			//Calculando termo de correção de bias
-			correcaoBiasSaida[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();
-			
-			
-			
-			// Somatorio armazenará a multiplicação entre cada gradiente local e cada peso das camadas escondidas
-			double[] somatorio = new double[camadaEscondida.length];
-			
-			//Armazenará o resultado dos calculos dos termos de informação de erro
-			double[] errorTerm = new double[camadaEscondida.length];
-			
-			
+			correcaoBiasSaida[index] = aprendizado * this.camadaDeSaida[index].getLocalGradient();			
+		}
 			//double[][] correcaoPesoEscondida = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
 			
 			double[] correcaoBiasEscondida = new double[camadaEscondida.length];
-						
-			for(int j = 0; j < camadaEscondida.length; j++)
+			
+			//Inicia correção de pesos para camada escondida
+			for(int j = 0; j < this.getTamanhoCamadaEscondida(); j++)
 			{
 				// faz o somatório para cada input de delta
-				for(int k = 0; k < camadaSaida.length; k++)
+				for(int k = 0; k < this.getTamanhoCamadaSaida(); k++)
 				{
 					somatorio[j] += deltaK[k]*camadaSaida[k].getPeso(j);
 				}
