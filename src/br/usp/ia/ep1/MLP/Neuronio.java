@@ -16,6 +16,11 @@ public class Neuronio {
 		this.bias = valor;
 	}
 	
+	public double getBias()
+	{
+		return this.bias;
+	}
+	
 	public void setPeso(int index, double valor)
 	{
 		this.pesos[index] = valor;
@@ -43,17 +48,7 @@ public class Neuronio {
 			this.pesos[i] = pesos[i];
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(DadosDeEntradaProcessados entrada)
-	{
-		return this.feedFoward(entrada.getDadosDeEntrada());	
-	}
-	
-	public PesosCalculados ExecutarFeedFoward(PesosCalculados[] entrada)
-	{
-		return this.feedFoward(this.PesosCalculadosToDouble(entrada));
-	}
-	
-	private PesosCalculados feedFoward(double[] entrada)
+	public PesosCalculados FeedFoward(double[] entrada)
 	{
 		double somatorio = 0;
 		
@@ -86,7 +81,7 @@ public class Neuronio {
 		this.termoDeErro = valor;
 	}
 	
-	public double getLocalGradient()
+	public double getTermoDeErro()
 	{
 		return this.termoDeErro;
 	}
@@ -94,16 +89,5 @@ public class Neuronio {
 	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
 	{
 		return Math.random() * ((valorMaximoDesejado - valorMinimoDesejado) + 1);
-	}
-	
-	//Converte a classe de apoio PesosCalculados para um formato de array de doubles. Utilizado antes de enviar o array para o feedFoward.
-	private double[] PesosCalculadosToDouble(PesosCalculados[] entrada)
-	{
-		double[] resposta = new double[entrada.length];
-		
-		for(int i = 0; i < entrada.length; i++)
-			resposta[i] = entrada[i].getOutput();
-		
-		return resposta;
 	}
 }
