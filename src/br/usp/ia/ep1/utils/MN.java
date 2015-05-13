@@ -1,5 +1,10 @@
 package br.usp.ia.ep1.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import br.usp.ia.ep1.DescDados;
+
 public class MN {
 	
 	public static float[][] transformarArrayStringParaFloat(String[] dados, String chrDelimit) {
@@ -78,20 +83,26 @@ public class MN {
 		return aux;
 	}
 	
-	public static float[] descDados(float[][] dados, int posClasse) {
-		float[] minMaxClasse = new float[] { Float.MAX_VALUE, Float.MIN_VALUE };
-		float[] minMaxAtrib = new float[] { Float.MAX_VALUE, Float.MIN_VALUE };
+	public static DescDados descDados(float[][] dados, int posClasse) {
+		DescDados desc = new DescDados();
+		
+		float[] minMaxVlrClasses = new float[] { Float.MAX_VALUE, Float.MIN_VALUE };
+		float[] minMaxVlrAtribs = new float[] { Float.MAX_VALUE, Float.MIN_VALUE };
 		float[] minMaxRef;
-		float qtdAtrib = 0F;
-		float qtdDados = 0F;
+		int qtdDados = 0;
+		int qtdAtribs = 0;
 		boolean qtdAtribOK = true;
+		
+		Set<Float> qtdVlrAtribs = new HashSet<Float>();
+		Set<Float> qtdVlrClasses = new HashSet<Float>();
 		
 		for(float[] dado : dados) {
 			for(int i = dado.length-1; i > -1; i--) {
 				if(i == posClasse) {
-					minMaxRef = minMaxClasse;
+					minMaxRef = minMaxVlrClasses;
+					qtdVlrClasses.add(dado[i]);
 				} else {
-					minMaxRef = minMaxAtrib;
+					minMaxRef = minMaxVlrAtribs;
 				}
 				if(dado[i] < minMaxRef[0]) {
 					minMaxRef[0] = dado[i];
@@ -101,20 +112,29 @@ public class MN {
 				}
 			}
 			if(qtdAtribOK) {
-				if(qtdAtrib == 0) {
-					qtdAtrib = dado.length;
+				if(qtdAtribs == 0) {
+					qtdAtribs = dado.length;
 				}
-				qtdAtribOK = dado.length == qtdAtrib;
-				qtdAtrib = dado.length;
+				qtdAtribOK = dado.length == qtdAtribs;
+				qtdAtribs = dado.length;
 			}
 			qtdDados++;
 		}
 		
 		if(!qtdAtribOK) {
-			qtdAtrib = -1F;
+			qtdAtribs = -1;
 		}
 		
-		return new float[] { minMaxAtrib[0], minMaxAtrib[1], minMaxClasse[0], minMaxClasse[1], qtdAtrib, qtdDados };
+		desc.setMinVlrAtrib(minMaxVlrAtribs[0]);
+		desc.setMaxVlrAtrib(minMaxVlrAtribs[1]);
+		desc.setMinVlrClasse(minMaxVlrClasses[0]);
+		desc.setMaxVlrClasse(minMaxVlrClasses[1]);
+		desc.setQtdVlrAtribs(qtdVlrAtribs.size());
+		desc.setQtdVlrClasses(qtdVlrClasses.size());
+		desc.setQtdAtribs(qtdAtribs);
+		desc.setQtdDados(qtdDados);
+		
+		return desc;
 	}
 
 }

@@ -2,6 +2,8 @@ package br.usp.ia.ep1;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
+
 import br.usp.ia.ep1.utils.*;
 
 public class Main {
@@ -21,68 +23,72 @@ public class Main {
 	
 	private static void printDescDados(String caminho) throws FileNotFoundException {
 		float[][] dados = MN.transformarArrayStringParaFloat(ES.lerArquivo(caminho), PreProcessamento.CHR_DELIMIT);
-		float[] desc = MN.descDados(dados, dados[0].length-1);
+		DescDados desc = MN.descDados(dados, dados[0].length-1);
 		
 		System.out.println(caminho);
 		System.out.println("Pos. Classe: " + (dados[0].length-1));
-		System.out.println("Min. Vlr. Atrib.: " + desc[0]);
-		System.out.println("Max. Vlr. Atrib.: " + desc[1]);
-		System.out.println("Min. Vlr. Classe: " + desc[2]);
-		System.out.println("Max. Vlr. Classe: " + desc[3]);
-		System.out.println("Qtd. Atrib.: " + (desc[4] - 1));
-		System.out.println("Qtd. Dados: " + desc[5]);
+		System.out.println("Min. Vlr. Atrib.: " + desc.getMinVlrAtrib());
+		System.out.println("Max. Vlr. Atrib.: " + desc.getMaxVlrAtrib());
+		System.out.println("Min. Vlr. Classe: " + desc.getMinVlrClasse());
+		System.out.println("Max. Vlr. Classe: " + desc.getMaxVlrClasse());
+		System.out.println("Qtd. Atrib.: " + (desc.getQtdAtribs() - 1));
+		System.out.println("Qtd. Dados: " + desc.getQtdDados());
+		System.out.println("Qtd. Vlr. Atrib.: " + desc.getQtdVlrAtribs());
+		System.out.println("Qtd. Vlr. Classe: " + desc.getQtdVlrClasses());
 		System.out.println();
 	}
 	
 	public static void main(String[] args) throws IOException {
-		PreProcessamento pre;
+		//Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 1 1 4 true");
+
+		String nmArqTreino = sc.next();
+		String nmArqValida = sc.next();
+		String nmArqTeste = sc.next();
+		float txAprend = sc.nextFloat();
+		int numNeuroMLP = sc.nextInt();
+		int numNeuroLVQ = sc.nextInt();
+		boolean iniPesos = sc.nextBoolean();
 		
-		try {
-			String nmArqTreino = args[0];
-			String nmArqValida = args[1];
-			String nmArqTeste = args[2];
-			//float txAprend = Float.valueOf(args[3]);
-			//int numNeuroMLP = Integer.valueOf(args[4]);
-			//int numNeuroLVQ = Integer.valueOf(args[5]);
-			//boolean iniPesos = Integer.valueOf(args[6]) == 0 ? false : true;
-			
-			pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
-									   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
-									   new float[] { 0.1F, 0.7F, 0.2F });
-			
-			printDescDados("./res/optdigits.tra");
-			printDescDados("./res/optdigits.tes");
-			printDescDados(nmArqTreino);
-			printDescDados(nmArqValida);
-			printDescDados(nmArqTeste);
-			
-			float[][] treinamento = MN.transformaBidimensional(pre.dados, 0);
-			
-			float[][] and = new float[4][3];
-			and[0][0] = 1;
-			and[0][1] = 1;
-			and[0][2] = 1;
-			and[1][0] = 1;
-			and[1][1] = 0;
-			and[1][2] = 0;
-			and[2][0] = 0;
-			and[2][1] = 1;
-			and[2][2] = 0;
-			and[3][0] = 0;
-			and[3][1] = 0;
-			and[3][2] = 0;
-			
-			LVQ lvq = new LVQ(and, 0.8F, 10, true);
-			lvq.exec(and, true);
-			lvq.printStatus();
-			
-			//lvq.exec(treinamento, false);
-			lvq.exec(and, false);
-			
-			
-		} catch (NumberFormatException ex) {
-			Main.log(Main.LOG_ERRO, "ConversÃ£o do parÃ¢metro de entrada falhou. Corrija o formato dos parÃ¢metros de entradas.");
+		PreProcessamento pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
+								   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
+								   new float[] { 0.6F, 0.2F, 0.2F });
+		
+		//float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
+		//float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
+		//float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
+		
+		float[][] and = new float[4][3];
+		and[0][0] = 1;
+		and[0][1] = 1;
+		and[0][2] = 1;
+		and[1][0] = 1;
+		and[1][1] = 0;
+		and[1][2] = 0;
+		and[2][0] = 0;
+		and[2][1] = 1;
+		and[2][2] = 0;
+		and[3][0] = 0;
+		and[3][1] = 0;
+		and[3][2] = 0;
+		
+		float[][][] dados = new float[3][][];
+		
+		for(int i = 0; i < dados.length; i++) {
+			dados[i] = and.clone();
 		}
+		
+		LVQ lvq = new LVQ(dados[0], dados[1], dados[2], txAprend, numNeuroLVQ, iniPesos);
+		lvq.init(1, 100, 5);
+		
+		RespostaClassificador rc = lvq.testar();
+		
+		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
+		System.out.println("Quantidade de erros: " + rc.getQtdErros());
+		System.out.println("Taxa de aprendizado: " + rc.getTxAprend());
+		System.out.println();
+		
+		//lvq.imprimePesos();
 	}
 
 }
