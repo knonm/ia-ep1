@@ -40,7 +40,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 1 1 2 true");
+		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,6 1 6 true");
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -54,32 +54,12 @@ public class Main {
 								   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
 								   new float[] { 0.6F, 0.2F, 0.2F });
 		
-		//float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
-		//float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
-		//float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
+		float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
+		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
+		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
 		
-		float[][] and = new float[4][3];
-		and[0][0] = 1;
-		and[0][1] = 1;
-		and[0][2] = 1;
-		and[1][0] = 1;
-		and[1][1] = 0;
-		and[1][2] = 0;
-		and[2][0] = 0;
-		and[2][1] = 1;
-		and[2][2] = 0;
-		and[3][0] = 0;
-		and[3][1] = 0;
-		and[3][2] = 0;
-		
-		float[][][] dados = new float[3][][];
-		
-		for(int i = 0; i < dados.length; i++) {
-			dados[i] = and.clone();
-		}
-		
-		LVQ lvq = new LVQ(dados[0], dados[1], dados[2], txAprend, numNeuroLVQ, iniPesos);
-		lvq.init(1, 100, 5);
+		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
+		lvq.init(1, 100, 100, 2F);
 		
 		RespostaClassificador rc = lvq.testar();
 		

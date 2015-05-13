@@ -12,7 +12,7 @@ public class LVQ extends Classificador {
 		int qtdAcertos = 0;
 		int qtdErros = 0;
 		
-		for(int dadoAtual = 0; dadoAtual < dados.length; dadoAtual++) {
+		for(int dadoAtual = dados.length-1; dadoAtual > -1; dadoAtual--) {
 			menorDistPeso = 0;
 			menorDist = Float.MAX_VALUE;
 			for(int i = super.pesos[0].length-1; i > -1; i--) {
@@ -24,7 +24,7 @@ public class LVQ extends Classificador {
 			}
 			
 			if(ehTreino) {
-				if(this.pesos[0][menorDistPeso][super.pesos[0][menorDistPeso].length-1] == dados[dadoAtual][dados[dadoAtual].length-1]) { // se o neuronio representa a classe do dado
+				if(super.pesos[0][menorDistPeso][super.pesos[0][menorDistPeso].length-1] == dados[dadoAtual][dados[dadoAtual].length-1]) { // se o neuronio representa a classe do dado
 					for(int i = super.pesos[0][menorDistPeso].length-2; i > -1; i--) {
 						super.pesos[0][menorDistPeso][i] += super.txAprend*(dados[dadoAtual][i] - this.pesos[0][menorDistPeso][i]);
 					}
@@ -57,8 +57,8 @@ public class LVQ extends Classificador {
 		float dist = -1;
 		if(v1.length == v2.length) {
 			dist = 0;
-			for(int i = 0; i < v1.length-1; i++) { // -2 para desconciderar o valor da classe no calculo ( a classe eh o ultimo valor)
-				dist += Math.pow(v1[i] - v2[i], 2);
+			for(int i = v1.length-1; i > -1; i--) { // -2 para desconciderar o valor da classe no calculo ( a classe eh o ultimo valor)
+				dist += (v1[i] - v2[i]) * (v1[i] - v2[i]);
 			}
 			dist = (float) Math.sqrt(dist);
 		}

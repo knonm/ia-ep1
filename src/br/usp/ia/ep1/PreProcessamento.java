@@ -262,9 +262,9 @@ public class PreProcessamento {
 
 			this.dados = dadosSet;
 			
-			//for(int i = dadosSet.length-1; i > -1; i--) {
-			//	criarArquivo(dadosSet[i], arqsSaida[i]);
-			//}
+			for(int i = dadosSet.length-1; i > -1; i--) {
+				criarArquivo(dadosSet[i], arqsSaida[i]);
+			}
 			
 			
 		}

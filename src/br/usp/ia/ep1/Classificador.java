@@ -33,13 +33,12 @@ public abstract class Classificador {
 		float[] swapAux;
 		int pos1, pos2;
 		boolean ehOk = false;
-		int maxRandom = Integer.MAX_VALUE - (array1.length < array2.length ? array1.length : array2.length);
 
 		Random r = new Random();
 		
 		while(!ehOk) {
-			pos1 = (r.nextInt(maxRandom) + array1.length)%array1.length;
-			pos2 = (r.nextInt(maxRandom) + array2.length)%array2.length;
+			pos1 = r.nextInt(array1.length);
+			pos2 = r.nextInt(array2.length);
 			ehOk = array1[pos1][array1[pos1].length-1] == array2[pos2][array2[pos2].length-1];
 			if(ehOk) {
 				swapAux = array1[pos1];
@@ -107,35 +106,43 @@ public abstract class Classificador {
 		}
 	}
 	
-	public void init(int qtdCamadas, int numEpocasTreino, int numEpocasValida) {
+	public void init(int qtdCamadas, int numEpocasTreino, int numEpocasValida, float variacaoErro) {
 		float[][][] pesos = null;
 		float erroQuadradoAnt = Float.MAX_VALUE;
 		int epocasTreina = 0;
 		int epocasValida = 0;
+		float variacaoErrosValida = 0;
 		RespostaClassificador respostaValida;
 		
 		this.initPesos(this.dadosTeste, qtdCamadas);
 		
 		while(epocasValida < numEpocasValida) {
 			while(epocasTreina++ < numEpocasTreino) {
+				System.out.println("Treinamento");
 				this.exec(this.dadosTreinamento, true);
 			}
 			epocasTreina = 0;
 			
 			respostaValida = this.exec(this.dadosValidacao, false);
 			
-			if(respostaValida.getErroQuadrado() < erroQuadradoAnt) {
+			variacaoErrosValida += erroQuadradoAnt - respostaValida.getErroQuadrado();
+			
+			if(respostaValida.getErroQuadrado() < erroQuadradoAnt &&
+					variacaoErrosValida > variacaoErro) {
 				pesos = this.pesos.clone();
 				epocasValida = 0;
+				variacaoErrosValida = 0F;
 			} else {
 				epocasValida++;
 			}
 			
-			this.txAprend *= 0.99999F;
+			this.txAprend *= 0.999999F;
 			
 			erroQuadradoAnt = respostaValida.getErroQuadrado();
 			
 			this.aleatorizaDados(10000);
+			
+			System.out.println("Epoca: " + epocasValida);
 		}
 		
 		this.pesos = pesos;
