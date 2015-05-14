@@ -21,7 +21,7 @@ public class Main {
 		//imprimirDados(dadosTreino);		
 		
 		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
-		//treino.Treinar();
+		//int epocaParada = treino.Treinar();
 		
 	}
 	

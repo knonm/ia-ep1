@@ -12,7 +12,7 @@ public class EscreverRespostaTeste {
 		String arquivoSaida = "./out/Teste da MLP " + getCurrentTimeStamp() + ".txt";
 		String linhaBranco = "";
 		String header1 = "Resultado do teste na Rede Neural MLP";
-		String epoca = "Epoca de parada do teste: " + String.valueOf(epocaParada);
+		String epoca = "Epoca de parada do treinamento: " + String.valueOf(epocaParada);
 		String[] matrizEscrever = matrizDeConfusaoParaStringArray(matrizConfusao);
 		String[] resultadoEscrever = dadosDeTesteParaStringArray(resultado);
 		
