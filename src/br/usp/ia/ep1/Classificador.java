@@ -17,6 +17,8 @@ public abstract class Classificador {
 	protected int qtdNeuronios;
 	protected boolean pesosAleatorios;
 	
+	protected int epocas;
+	
 	protected abstract RespostaClassificador exec(float[][] dados, boolean ehTreino);
 	
 	public void imprimePesos() {
@@ -148,6 +150,7 @@ public abstract class Classificador {
 			
 		}
 		
+		this.epocas = epocasTotais;
 		this.pesos = pesos;
 	}
 	
