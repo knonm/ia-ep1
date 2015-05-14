@@ -83,6 +83,30 @@ public class MN {
 		return aux;
 	}
 	
+	public static void criarArquivo(float[][] dados, String arq) throws IOException {
+		String dado = new String();
+		int limite = Math.round(dados.length * 0.1F);
+		String[] dadosArq = new String[((int)Math.floor(dados.length/limite)) + 1];
+		int cnt = 0;
+		
+		for(int i = dados.length-1; i > -1; i--) {
+			for(int j = 0; j < dados[i].length-1; j++) {
+				dado += String.valueOf(dados[i][j]) + PreProcessamento.CHR_DELIMIT;
+			}
+			dado += String.valueOf(dados[i][dados[i].length-1]) + "\n";
+			if((i+1)%limite == 0) {
+				dadosArq[cnt++] = dado;
+				dado = new String();
+			}
+		}
+		
+		if(!dado.isEmpty()) {
+			dadosArq[cnt] = dado;
+		}
+
+		ES.escreverDados(arq, dadosArq);
+	}
+	
 	public static DescDados descDados(float[][] dados, int posClasse) {
 		DescDados desc = new DescDados();
 		
