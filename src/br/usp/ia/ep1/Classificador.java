@@ -148,36 +148,6 @@ public abstract class Classificador {
 			
 		}
 		
-		
-//		while(epocasValida < numEpocasValida) {
-//			while(epocasTreina++ < numEpocasTreino) {
-//				System.out.println("Treinamento");
-//				this.exec(this.dadosTreinamento, true);
-//			}
-//			epocasTreina = 0;
-//			
-//			respostaValida = this.exec(this.dadosValidacao, false);
-//			
-//			variacaoErrosValida += erroQuadradoAnt - respostaValida.getErroQuadrado();
-//			
-//			if(respostaValida.getErroQuadrado() < erroQuadradoAnt &&
-//					variacaoErrosValida > variacaoErro) {
-//				pesos = this.pesos.clone();
-//				epocasValida = 0;
-//				variacaoErrosValida = 0F;
-//			} else {
-//				epocasValida++;
-//			}
-//			
-//			this.txAprend *= 0.999999F;
-//			
-//			erroQuadradoAnt = respostaValida.getErroQuadrado();
-//			
-//			this.aleatorizaDados(10000);
-//			
-//			System.out.println("Epoca: " + epocasValida);
-//		}
-		
 		this.pesos = pesos;
 	}
 	
