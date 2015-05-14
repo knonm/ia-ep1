@@ -47,20 +47,20 @@ public class TreinamentoMLP
 	//Método que executa o treino da rede para cada epoca corrente no método Treinar()
 	private void executarTreino(DadosDeEntradaProcessados dados)
 	{
-		PesosCalculados[] resultCamEscondida = new PesosCalculados[this.mlp.getTamanhoCamadaEscondida()];
-		PesosCalculados[] resultCamSaida = new PesosCalculados[this.mlp.getTamanhoCamadaSaida()];
+		PesosCalculados[] outputCamEscondida = new PesosCalculados[this.mlp.getTamanhoCamadaEscondida()];
+		PesosCalculados[] outputCamSaida = new PesosCalculados[this.mlp.getTamanhoCamadaSaida()];
 		
 		//Executa FeedFoward para cada neurônio da camada escondida (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioEscondido = 0; neuronioEscondido < this.mlp.getTamanhoCamadaEscondida(); neuronioEscondido++)
-			resultCamEscondida[neuronioEscondido] = this.mlp.ExecutarFeedFoward(dados);
+			outputCamEscondida[neuronioEscondido] = this.mlp.ExecutarFeedFoward(dados);
 		
-				
+		
 		//Executa FeedFoward para cada neurônio da camada de saída (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioSaida = 0; neuronioSaida < this.mlp.getTamanhoCamadaSaida(); neuronioSaida++)
-			resultCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFoward(resultCamEscondida);
+			outputCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFoward(outputCamEscondida);
 		
-		//Executa BackPropagation diretamente no objeto MLP
-		this.executarBackPropagation(resultCamEscondida, resultCamSaida, dados);	
+		
+		this.executarBackPropagation(outputCamEscondida, outputCamSaida, dados);	
 	}
 	
 	private void executarBackPropagation(PesosCalculados[] outputCamEntrada, PesosCalculados[] outputCamSaida, DadosDeEntradaProcessados dados)
