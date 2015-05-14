@@ -40,7 +40,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,6 50 500 true");
+		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,6 50 50 true");
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -58,17 +58,43 @@ public class Main {
 		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
 		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
 		
-		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
-		lvq.init(1, 10 ,10);
+		//LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
+		//lvq.init(1, 10 ,10);
 		
-		RespostaClassificador rc = lvq.testar();
+		//RespostaClassificador rc = lvq.testar();
 		
-		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
-		System.out.println("Quantidade de erros: " + rc.getQtdErros());
-		System.out.println("Taxa de aprendizado: " + rc.getTxAprend());
-		System.out.println();
+		//System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
+		//System.out.println("Quantidade de erros: " + rc.getQtdErros());
+		//System.out.println("Taxa de aprendizado: " + rc.getTxAprend());
+		//System.out.println();
 		
 		//lvq.imprimePesos();
+		
+		for(int i = 1; i <= 500; i++){
+			for (float j = 1; j >= 0.5; j -= 0.1){
+				for( int k = 0; k <= 1; k++){
+					for(int x = 10; x <= 100; x++){
+						for(int t = 1; t <= 10; t++){
+							LOG logauxlvq = new LOG(k, x, t, i, j, 0);
+							
+							LVQ auxlvq = new LVQ(dadosTreina, dadosValida, dadosTeste, j, i, iniPesos);
+							auxlvq.init(1, t ,x);
+							
+							RespostaClassificador auxrc = auxlvq.testar();
+							
+							logauxlvq.completaLog(auxlvq.pesos, auxrc.getQtdAcertos(), auxlvq.epocas, 0, auxrc.getTxAprend());
+						
+							System.out.println("Quantidade de acertos: " + auxrc.getQtdAcertos());
+							System.out.println("Quantidade de erros: " + auxrc.getQtdErros());
+							System.out.println("Taxa de aprendizado: " + auxrc.getTxAprend());
+							System.out.println();
+						
+							logauxlvq.escreveLOG();
+						}
+					}
+				}
+			}
+		}
 	}
 
 }
