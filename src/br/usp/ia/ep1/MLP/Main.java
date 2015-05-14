@@ -18,6 +18,7 @@ public class Main {
 		String[] linhasArquivoTreino = ES.lerArquivo(arqTreino);
 		DadosDeEntradaProcessados[] dadosTreino = transformarDados(linhasArquivoTreino);
 		
+		
 		//imprimirDados(dadosTreino);		
 		
 		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);

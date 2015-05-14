@@ -2,10 +2,10 @@ package br.usp.ia.ep1.MLP;
 
 public class MatrizDeConfusao {
 	private int[][] matrizDeConfusao;
-	private double[] classes;
+	private Double[] classes;
 	private double quantidadeTestes;
 
-	public MatrizDeConfusao(double[] classes) {
+	public MatrizDeConfusao(Double[] classes) {
 		matrizDeConfusao = new int[classes.length][classes.length];
 		this.classes = classes.clone();			
 		}
@@ -14,7 +14,7 @@ public class MatrizDeConfusao {
 		return matrizDeConfusao;
 	}
 
-	public double[] getClasses() {
+	public Double[] getClasses() {
 		return classes;
 	}
 	
