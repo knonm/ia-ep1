@@ -107,7 +107,6 @@ public class PreProcessamento {
 				dados[i][j] = (((dados[i][j] - PreProcessamento.valorMinimoAtributo) / difAnt) * difNovo) + novoMin;
 			}
 		}
-		
 	}
 	
 	private void zScoreNormal(float[][] dados){
@@ -120,7 +119,7 @@ public class PreProcessamento {
 			double variancia = 0;
 			if(media != 0){
 				for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
-					variancia = variancia + (Math.pow((dados[j][i]-media), 2));
+					variancia = variancia + ((dados[j][i]-media) * (dados[j][i]-media));
 				} variancia = Math.sqrt(variancia / (dados.length-1)); // acha a variancia ( Somatoria[valor-media^2] / (total de dados - 1))
 			}
 			

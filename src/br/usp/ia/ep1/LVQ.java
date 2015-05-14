@@ -11,6 +11,13 @@ public class LVQ extends Classificador {
 		int menorDistPeso;
 		int qtdAcertos = 0;
 		int qtdErros = 0;
+		int[][] matrizConfusao = new int[PreProcessamento.valorMaximoClasse + 1][PreProcessamento.valorMaximoClasse + 1];
+		
+		for(int i = matrizConfusao.length-1; i > -1; i--) {
+			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+				matrizConfusao[i][j] = 0;
+			}
+		}
 		
 		for(int dadoAtual = dados.length-1; dadoAtual > -1; dadoAtual--) {
 			menorDistPeso = 0;
@@ -42,6 +49,7 @@ public class LVQ extends Classificador {
 					qtdErros++;
 				}
 			}
+			matrizConfusao[(int) dados[dadoAtual][dados[dadoAtual].length - 1]][(int) super.pesos[0][menorDistPeso][super.pesos[0][menorDistPeso].length - 1]]++;
 		}
 		
 		resposta.setDados(dados);
@@ -49,6 +57,7 @@ public class LVQ extends Classificador {
 		resposta.setQtdAcertos(qtdAcertos);
 		resposta.setQtdErros(qtdErros);
 		resposta.setTxAprend(super.txAprend);
+		resposta.setMatrizConfusao(matrizConfusao);
 		
 		return resposta;
 	}

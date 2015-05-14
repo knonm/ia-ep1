@@ -58,19 +58,28 @@ public class Main {
 		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
 		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
 		
-		//LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
-		//lvq.init(1, 10 ,10);
+		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
+		lvq.init(1, 10 ,10);
 		
-		//RespostaClassificador rc = lvq.testar();
+		RespostaClassificador rc = lvq.testar();
 		
-		//System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
-		//System.out.println("Quantidade de erros: " + rc.getQtdErros());
-		//System.out.println("Taxa de aprendizado: " + rc.getTxAprend());
-		//System.out.println();
+		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
+		System.out.println("Quantidade de erros: " + rc.getQtdErros());
+		System.out.println("Taxa de aprendizado: " + rc.getTxAprend());
+		System.out.println();
 		
-		//lvq.imprimePesos();
+		lvq.imprimePesos();
 		
-		for(int i = 1; i <= 500; i++){
+		System.out.println();
+		System.out.println("Matriz confusao: ");
+		
+		for(int i = rc.getMatrizConfusao().length-1; i > -1; i--) {
+			for(int j = rc.getMatrizConfusao()[i].length-1; j > -1; j--) {
+				System.out.println("[" + i + "]" + "[" + j + "]: " + rc.getMatrizConfusao()[i][j]);
+			}
+		}
+		
+		/*for(int i = 1; i <= 500; i++){
 			for (float j = 1; j >= 0.5; j -= 0.1){
 				for( int k = 0; k <= 1; k++){
 					for(int x = 10; x <= 100; x++){
@@ -94,7 +103,7 @@ public class Main {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 }

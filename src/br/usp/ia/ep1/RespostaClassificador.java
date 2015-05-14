@@ -7,6 +7,7 @@ public class RespostaClassificador {
 	private int qtdErros;
 	private float erroQuadrado;
 	private float txAprend;
+	private int[][] matrizConfusao;
 	
 	public float[][] getDados() {
 		return dados;
@@ -46,5 +47,13 @@ public class RespostaClassificador {
 	
 	public void setTxAprend(float txAprend) {
 		this.txAprend = txAprend;
+	}
+
+	public int[][] getMatrizConfusao() {
+		return matrizConfusao;
+	}
+
+	public void setMatrizConfusao(int[][] matrizConfusao) {
+		this.matrizConfusao = matrizConfusao;
 	}
 }
