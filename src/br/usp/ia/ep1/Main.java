@@ -40,7 +40,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,6 1 6 true");
+		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,6 50 500 true");
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -59,7 +59,7 @@ public class Main {
 		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
 		
 		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
-		lvq.init(1, 100, 100, 2F);
+		lvq.init(1, 10 ,10);
 		
 		RespostaClassificador rc = lvq.testar();
 		

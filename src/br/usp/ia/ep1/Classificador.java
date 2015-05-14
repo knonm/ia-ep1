@@ -78,8 +78,10 @@ public abstract class Classificador {
 		Random rand = new Random(System.currentTimeMillis());
 		
 		desc = MN.descDados(dados, dados[0].length-1);
-		vlrMinDados = desc.getMinVlrAtrib();
-		vlrMaxDados = desc.getMaxVlrAtrib();
+		//vlrMinDados = desc.getMinVlrAtrib();
+		//vlrMaxDados = desc.getMaxVlrAtrib();
+		vlrMinDados = 0;
+		vlrMaxDados = 1;
 		
 		this.pesos = new float[qtdCamadas][this.qtdNeuronios*desc.getQtdVlrClasses()][desc.getQtdAtribs()];
 		
@@ -106,44 +108,75 @@ public abstract class Classificador {
 		}
 	}
 	
-	public void init(int qtdCamadas, int numEpocasTreino, int numEpocasValida, float variacaoErro) {
+	public void init(int qtdCamadas, int numEpocasValida, int numEpocasTreina) {
 		float[][][] pesos = null;
-		float erroQuadradoAnt = Float.MAX_VALUE;
+		int acertosAnterior = 0;
 		int epocasTreina = 0;
 		int epocasValida = 0;
-		float variacaoErrosValida = 0;
+		int epocasTotais = 0;
 		RespostaClassificador respostaValida;
 		
 		this.initPesos(this.dadosTeste, qtdCamadas);
 		
-		while(epocasValida < numEpocasValida) {
-			while(epocasTreina++ < numEpocasTreino) {
-				System.out.println("Treinamento");
-				this.exec(this.dadosTreinamento, true);
-			}
-			epocasTreina = 0;
-			
-			respostaValida = this.exec(this.dadosValidacao, false);
-			
-			variacaoErrosValida += erroQuadradoAnt - respostaValida.getErroQuadrado();
-			
-			if(respostaValida.getErroQuadrado() < erroQuadradoAnt &&
-					variacaoErrosValida > variacaoErro) {
-				pesos = this.pesos.clone();
-				epocasValida = 0;
-				variacaoErrosValida = 0F;
-			} else {
-				epocasValida++;
-			}
-			
-			this.txAprend *= 0.999999F;
-			
-			erroQuadradoAnt = respostaValida.getErroQuadrado();
-			
-			this.aleatorizaDados(10000);
-			
-			System.out.println("Epoca: " + epocasValida);
+		if(numEpocasValida > numEpocasTreina){
+			System.out.println("Numero de Epocas de checagem maior que epocas de Validacao");
+			return;
 		}
+		
+		while(epocasTreina <= numEpocasTreina){
+			System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
+			this.exec(this.dadosTreinamento, true);
+			
+			if(epocasValida == numEpocasValida){
+				respostaValida = this.exec(this.dadosValidacao, false);
+				if(respostaValida.getQtdAcertos() > acertosAnterior){
+					pesos = this.pesos.clone();
+					epocasTreina = 0;
+					acertosAnterior = respostaValida.getQtdAcertos();
+				}else{
+					epocasTreina++;
+				}
+				System.out.println(" | Quantidade Acertos (ultima): " + acertosAnterior);
+				epocasValida = 0;
+				
+				this.txAprend *= 0.99999F;
+				//this.txAprend -= 0.00000000001F;
+				this.aleatorizaDados(10000);
+			}else epocasValida++;
+			
+			epocasTotais++;
+			
+		}
+		
+		
+//		while(epocasValida < numEpocasValida) {
+//			while(epocasTreina++ < numEpocasTreino) {
+//				System.out.println("Treinamento");
+//				this.exec(this.dadosTreinamento, true);
+//			}
+//			epocasTreina = 0;
+//			
+//			respostaValida = this.exec(this.dadosValidacao, false);
+//			
+//			variacaoErrosValida += erroQuadradoAnt - respostaValida.getErroQuadrado();
+//			
+//			if(respostaValida.getErroQuadrado() < erroQuadradoAnt &&
+//					variacaoErrosValida > variacaoErro) {
+//				pesos = this.pesos.clone();
+//				epocasValida = 0;
+//				variacaoErrosValida = 0F;
+//			} else {
+//				epocasValida++;
+//			}
+//			
+//			this.txAprend *= 0.999999F;
+//			
+//			erroQuadradoAnt = respostaValida.getErroQuadrado();
+//			
+//			this.aleatorizaDados(10000);
+//			
+//			System.out.println("Epoca: " + epocasValida);
+//		}
 		
 		this.pesos = pesos;
 	}

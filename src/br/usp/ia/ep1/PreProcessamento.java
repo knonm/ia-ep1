@@ -135,8 +135,8 @@ public class PreProcessamento {
 		float[][] dadosCrus = MN.transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
 		dadosCrus = excluirAtrib(dadosCrus);
 		
-		zScoreNormal(dadosCrus);
-		//minMaxNormal(dadosCrus, 0, 1);
+		//zScoreNormal(dadosCrus);
+		minMaxNormal(dadosCrus, -1, 1);
 		
 		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem);
 		        
@@ -262,9 +262,9 @@ public class PreProcessamento {
 
 			this.dados = dadosSet;
 			
-			for(int i = dadosSet.length-1; i > -1; i--) {
-				criarArquivo(dadosSet[i], arqsSaida[i]);
-			}
+			//for(int i = dadosSet.length-1; i > -1; i--) {
+			//	criarArquivo(dadosSet[i], arqsSaida[i]);
+			//}
 			
 			
 		}
