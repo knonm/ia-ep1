@@ -213,42 +213,6 @@ public class PreProcessamento {
 		return dadosSplit;
 	}
 	
-	/*
-	 * Ta demorando pra criar o arquivo. Tentei colocar tudo em uma 
-	 * String soh e fazer io apenas uma vez mas tava demorando demais.
-	 * Dai fiz um meio termo (soh faz io depois de iterar 10% das linhas da matriz).
-	 * Se pensarem em uma maneira mais eficiente implementem ai!
-	 * 
-	 * Lembrete: o atributo classe esta sendo gravado no arquivo como float
-	 */
-	private void criarArquivo(float[][] dados, String arq) throws IOException {
-		String dado = new String();
-		int limite = Math.round(dados.length * 0.1F);
-		String[] dadosArq = new String[((int)Math.floor(dados.length/limite)) + 1];
-		int cnt = 0;
-		
-		for(int i = dados.length-1; i > -1; i--) {
-			for(int j = 0; j < dados[i].length-1; j++) {
-				dado += String.valueOf(dados[i][j]) + PreProcessamento.CHR_DELIMIT;
-			}
-			dado += String.valueOf(dados[i][dados[i].length-1]) + "\n";
-			if((i+1)%limite == 0) {
-				dadosArq[cnt++] = dado;
-				dado = new String();
-			}
-		}
-		
-		if(!dado.isEmpty()) {
-			dadosArq[cnt] = dado;
-		}
-
-		//System.out.println(dadosArq[0]);
-		//System.out.println(dadosArq[dadosArq.length-1]);
-		
-		
-		ES.escreverDados(arq, dadosArq);
-	}
-	
 	public PreProcessamento(String[] arqsDados, String[] arqsSaida, float[] pctsDadosSaida) throws IOException {
 		if(arqsSaida.length == pctsDadosSaida.length) {
 			
@@ -263,7 +227,7 @@ public class PreProcessamento {
 			this.dados = dadosSet;
 			
 			//for(int i = dadosSet.length-1; i > -1; i--) {
-			//	criarArquivo(dadosSet[i], arqsSaida[i]);
+			//	MN.criarArquivo(dadosSet[i], arqsSaida[i]);
 			//}
 			
 			
