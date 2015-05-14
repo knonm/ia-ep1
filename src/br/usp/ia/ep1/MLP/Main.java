@@ -16,8 +16,7 @@ public class Main {
 		boolean inicializacaoAleatoria = Boolean.valueOf(args[6]); //true or false
 		
 		String[] linhasArquivoTreino = ES.lerArquivo(arqTreino);
-		DadosDeEntradaProcessados[] dadosTreino = transformarDados(linhasArquivoTreino);
-		
+		DadosDeEntradaProcessados[] dadosTreino = transformarDadosTreino(linhasArquivoTreino);
 		
 		//imprimirDados(dadosTreino);		
 		
@@ -27,7 +26,7 @@ public class Main {
 	}
 	
 	/* Metodo que transforma a saida de ES.lerArquivo em um objeto DadosDeEntradaProcessados[] para ser passado para a MLP */
-	public static DadosDeEntradaProcessados[] transformarDados(String[] linhasArquivo) {
+	public static DadosDeEntradaProcessados[] transformarDadosTreino(String[] linhasArquivo) {
 		DadosDeEntradaProcessados[] dados = new DadosDeEntradaProcessados[linhasArquivo.length];
 		for (int i = 0; i < linhasArquivo.length; i++) {
 			String[] aux = linhasArquivo[i].split(",");
