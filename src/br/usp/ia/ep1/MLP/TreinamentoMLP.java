@@ -5,7 +5,7 @@ public class TreinamentoMLP
 	private DadosDeEntradaProcessados[] entrada;
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
-	
+		
 	public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado)
 	{
 		this.mlp = new EstruturaMLP(qtdNeuroniosCamadaEscondida, qtdeNeuroniosCamadaSaida);		
@@ -60,11 +60,10 @@ public class TreinamentoMLP
 			resultCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFoward(resultCamEscondida);
 		
 		//Executa BackPropagation diretamente no objeto MLP
-		this.ExecutarBackPropagation(resultCamEscondida, resultCamSaida, dados);	
+		this.executarBackPropagation(resultCamEscondida, resultCamSaida, dados);	
 	}
 	
-	private void ExecutarBackPropagation(PesosCalculados[] outputCamEntrada, PesosCalculados[] outputCamSaida, 
-			DadosDeEntradaProcessados dados)
+	private void executarBackPropagation(PesosCalculados[] outputCamEntrada, PesosCalculados[] outputCamSaida, DadosDeEntradaProcessados dados)
 	{
 		int tamanhoCamEscondida = this.mlp.getTamanhoCamadaEscondida();
 		int tamanhoCamSaida = this.mlp.getTamanhoCamadaSaida();
@@ -97,9 +96,10 @@ public class TreinamentoMLP
 			//Calculando termo de correção de bias
 			correcaoBiasSaida[index] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaSaida(index).getTermoDeErro();			
 		}
+		
+		//INICIA BACKPROPAGATION PARA CAMADA ESCONDIDA
 
-		//double[][] correcaoPesoEscondida = new double[camadaEscondida.length][camadaEscondida[0].peso.length];
-
+		double[][] correcaoPesoEscondida = new double[this.mlp.getTamanhoCamadaEscondida()][this.mlp.getTamanhoCamadaEntrada()];
 		double[] correcaoBiasEscondida = new double[tamanhoCamEscondida ];
 
 		PesosCalculados[] dadosNeuronio = new PesosCalculados[tamanhoCamEscondida];
@@ -121,28 +121,29 @@ public class TreinamentoMLP
 				this.mlp.getNeuronioCamadaEscondida(j).setTermoDeErro(erroEscondida);
 
 				// calcula a correção para cada peso do neurônio ativo
-				for(int i = 0; i < tupla.length(); i++)
-					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado *errorTerm[j]*tupla.valor(i);
+				for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
+					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro() * dados.getDadoEntrada(i);
 
-				correcaoBiasEscondida[j] = this.taxaDeAprendizado *errorTerm[j];
+				correcaoBiasEscondida[j] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro();
 		}
 
 		// atualiza pesos e viés na camada de saída
 		for(int k = 0; k < tamanhoCamSaida; k++)
 		{
-			camadaSaida[k].setVies(camadaSaida[k].getVies()+delta_w0K[k]);
-			for(int j = 0; j < camadaEscondida.length; j++)
-				camadaSaida[k].setPeso(j, delta_wJK[k][j]);
+			this.mlp.getNeuronioCamadaSaida(k).setBias(this.mlp.getNeuronioCamadaSaida(k).getBias() + correcaoBiasSaida[k]);
+			
+			for(int j = 0; j < tamanhoCamEscondida; j++)
+				this.mlp.getNeuronioCamadaSaida(k).setPeso(j, correcaoPesoSaida[k][j]);
 		}
 
 
 		// atualiza pesos e viés na camada escondida
 		for(int j = 0; j < tamanhoCamEscondida; j++)
 		{
-
-			camadaEscondida[j].setVies(camadaEscondida[j].getVies()+correcaoBiasEscondida[j]);
-			for(int i = 0; i < tupla.length(); i++)
-				camadaEscondida[j].setPeso(i, correcaoPesoEscondida[j][i]);
+			this.mlp.getNeuronioCamadaEscondida(j).setBias(this.mlp.getNeuronioCamadaEscondida(j).getBias() + correcaoBiasEscondida[j]);
+			
+			for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
+				this.mlp.getNeuronioCamadaEscondida(j).setPeso(i, correcaoPesoEscondida[j][i]);
 		}	
 	}
 }

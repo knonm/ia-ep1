@@ -31,6 +31,11 @@ public class Neuronio {
 		return this.pesos[index];
 	}
 	
+	public int QuantidadePesos()
+	{
+		return this.pesos.length;
+	}
+	
 	public void InicializarPesosComValoresAleatorios()
 	{
 		for(int i = 0; i < pesos.length; i++)

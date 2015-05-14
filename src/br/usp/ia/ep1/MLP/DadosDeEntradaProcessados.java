@@ -21,7 +21,12 @@ public class DadosDeEntradaProcessados
 		return this.dadosEntrada;
 	}
 	
-	public int getQuantidadeDadosEntrada()
+	public double getDadoEntrada(int index)
+	{
+		return this.dadosEntrada[index];
+	}
+	
+	public int QuantidadeDadosEntrada()
 	{
 		return this.dadosEntrada.length;
 	}

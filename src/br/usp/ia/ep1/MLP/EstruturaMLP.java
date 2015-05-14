@@ -37,7 +37,12 @@ public class EstruturaMLP {
 	public int getTamanhoCamadaSaida()
 	{
 		return this.camadaDeSaida.length;
-	} 
+	}
+	
+	public int getTamanhoCamadaEntrada()
+	{
+		return this.camadaEscondida[0].QuantidadePesos();
+	}
 	
 	public Neuronio getNeuronioCamadaEscondida(int indexNeuronio)
 	{
