@@ -1,9 +1,11 @@
 package br.usp.ia.ep1.utils;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import br.usp.ia.ep1.DescDados;
+import br.usp.ia.ep1.PreProcessamento;
 
 public class MN {
 	
@@ -102,6 +104,8 @@ public class MN {
 		
 		if(!dado.isEmpty()) {
 			dadosArq[cnt] = dado;
+		} else {
+			dadosArq[cnt] = "";
 		}
 
 		ES.escreverDados(arq, dadosArq);
