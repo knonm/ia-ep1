@@ -47,4 +47,14 @@ public class ES {
 		}
 		bw.close();
 	}
+	
+	public static void escreverDadosPulandoLinha(String caminho, String[] dados) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(caminho)));
+		for(String dado : dados) {
+			bw.write(dado);
+			bw.write(System.getProperty("line.separator"));
+		}
+		bw.close();
+	}
+	
 }

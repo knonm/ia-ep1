@@ -1,10 +1,12 @@
 package br.usp.ia.ep1.MLP;
 
 import br.usp.ia.ep1.utils.*;
+
 import java.io.*;
 
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException {
+
+	public static void main(String[] args) throws IOException {
 		String arqTreino = "./res/" + args[0];
 		String arqValida = "./res/" + args[1];
 		String arqTeste = "./res/" + args[2];
@@ -12,14 +14,14 @@ public class Main {
 		int nCamadaEscondida = Integer.valueOf(args[4]);
 		int nCamadaSaida = Integer.valueOf(args[5]);
 		boolean inicializacaoAleatoria = Boolean.valueOf(args[6]); //true or false
-
+		
 		String[] linhasArquivoTreino = ES.lerArquivo(arqTreino);
 		DadosDeEntradaProcessados[] dadosTreino = transformarDados(linhasArquivoTreino);
 		
 		//imprimirDados(dadosTreino);		
 		
-		TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
-		treino.Treinar();
+		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
+		//treino.Treinar();
 		
 	}
 	
