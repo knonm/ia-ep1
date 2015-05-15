@@ -12,9 +12,9 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException 
 	{
-		String arqTreino = "./res/" + args[0];
-		String arqValida = "./res/" + args[1];
-		String arqTeste = "./res/" + args[2];
+		String arqTreino = "./out/" + args[0];
+		String arqValida = "./out/" + args[1];
+		String arqTeste = "./out/" + args[2];
 		double taxaAprendizado = Double.valueOf(args[3]);
 		int nCamadaEscondida = Integer.valueOf(args[4]);
 		int nCamadaSaida = Integer.valueOf(args[5]);
@@ -39,10 +39,10 @@ public class Main {
 
 
 
-		this.MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
+		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
 		
 		TreinamentoMLP treino = new TreinamentoMLP(MLP ,dadosTreino,taxaAprendizado, inicializacaoAleatoria);
-		treino.Treinar();
+		//treino.Treinar();
 
 		
 	}
