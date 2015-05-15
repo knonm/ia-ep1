@@ -19,9 +19,7 @@ public class Main {
 		int nCamadaEscondida = Integer.valueOf(args[4]);
 		int nCamadaSaida = Integer.valueOf(args[5]);
 		boolean inicializacaoAleatoria = Boolean.valueOf(args[6]); //true or false
-		
-		//testarAndOrXor(taxaAprendizado,nCamadaEscondida,nCamadaSaida,inicializacaoAleatoria);
-		
+		/*
 		PreProcessamento pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
 				   new String[] { arqTreino, arqValida, arqTeste },
 				   new float[] { 0.6F, 0.2F, 0.2F });
@@ -29,17 +27,15 @@ public class Main {
 		DadosDeEntradaProcessados[] dadosTreino = transformarDadosTreino(ES.lerArquivo(arqTreino));
 		DadosDeEntradaProcessados[] dadosValidacao = transformarDadosTreino(ES.lerArquivo(arqValida));
 		DadosDeTeste[] dadosTeste = transformarDadosTeste(ES.lerArquivo(arqTeste));
-		
-		
+		*/
 		int quantidadeDeTreinos = 1000;
-		
-		//imprimirDados(dadosTreino);		
-		
-		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuário
+
+		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
 		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria);
 
-		
-		//Treina os pesos da rede para prepará-la para ser utilizada
+		testarAndOrXor(taxaAprendizado,nCamadaEscondida,nCamadaSaida,inicializacaoAleatoria);
+		/*
+		//Treina os pesos da rede para prepara-la para ser utilizada
 		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreino, taxaAprendizado, inicializacaoAleatoria);
 		treino.Treinar(quantidadeDeTreinos);
 
@@ -47,6 +43,7 @@ public class Main {
 		
 		//Treina a rede com os dados de entrada
 		MLP.ExecutarRede(dadosTeste);
+		*/
 	}
 	
 	/* Metodo que transforma a saida de ES.lerArquivo em um objeto DadosDeEntradaProcessados[] para ser passado para a MLP */
@@ -87,6 +84,10 @@ public class Main {
 		DadosDeTeste[] dadosTesteAnd = transformarDadosTeste(ES.lerArquivo("./res/AND.txt"));
 		DadosDeTeste[] dadosTesteOr = transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
 		DadosDeTeste[] dadosTesteXor = transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
+		
+		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreinoXor, taxaAprendizado, inicializacaoAleatoria);
+		treino.Treinar(100);
+		MLP.ExecutarRede(dadosTesteXor);
 		
 		//chamada da rede neural de treino e de teste aqui para os arquivos criados acima.
 	}

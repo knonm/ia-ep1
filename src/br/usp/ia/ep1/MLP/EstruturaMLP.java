@@ -8,9 +8,9 @@ public class EstruturaMLP {
 
 	public EstruturaMLP(){ }
 	
-	/*O construtor inicializará a estrutura da MLP com os valores de peso e a quantidade de neurônios tanto da camada
-	 * de entrada quanto a de saída, assim como os valores de bias de ambas as camadas, especificados pelo usuário.
-	 * A classe 'DadosProcessados' é onde estes valores serão armazenados para uma melhor visibiliade*/	
+	/*O construtor inicializara a estrutura da MLP com os valores de peso e a quantidade de neuronios tanto da camada
+	 * de entrada quanto a de saida, assim como os valores de bias de ambas as camadas, especificados pelo usuario.
+	 * A classe 'DadosProcessados' eh onde estes valores serao armazenados para uma melhor visibiliade*/	
 	public EstruturaMLP(InformacoesDaCamada camadaEscondida, InformacoesDaCamada camadaSaida, double[] biasCamadaEscondida, double[] biasCamadaSaida)
 	{
 		this.camadaEscondida = new Neuronio[camadaEscondida.getQuantidadeDeNeuronios()];
@@ -96,15 +96,29 @@ public class EstruturaMLP {
 	public int ExecutarRede(DadosDeTeste[] dados)
 	{
 		double[] saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
-		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
+		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];		
 		
+		for (int i = 0; i < dados.length; i++) {
+			saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
+			saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
+			for (int j = 0; j < this.getTamanhoCamadaEscondida(); j++) {
+				saidasCamEscondida[j] += this.ExecutarFeedFowardCamadaEscondida(dados[i], j).getOutput();
+			}
+			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) {
+				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
+			}	
+		}
+		/*
+		 * ANTIGO MÃ‰TODO AQUI QUE REESCREVI
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
 			for(int j = 0; j < dados.length; j++)
-				saidasCamEscondida[i] += this.ExecutarFeedFowardCamadaEscondida(dados[j], j).getOutput();
+				saidasCamEscondida[i] += this.ExecutarFeedFowardCamadaEscondida(dados[j], i).getOutput();
 				
-		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
+		for(int i = 0; i < this.getTamanhoCamadaSaida(); i++) {
 			saidasCamSaida[i] = this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, i).getOutput();
-			
+			System.out.println(saidasCamSaida[i]);
+		}
+		*/
 		return extrairMaiorValorDoArray(saidasCamSaida);
 	}
 	
