@@ -38,15 +38,6 @@ public class Main {
 		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
 		//int epocaParada = treino.Treinar();
 
-<<<<<<< HEAD
-
-
-
-		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
-		
-		TreinamentoMLP treino = new TreinamentoMLP(MLP ,dadosTreino,taxaAprendizado, inicializacaoAleatoria);
-		//treino.Treinar();
-=======
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usu·rio
 		if(inicializacaoAleatoria)
 			MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
@@ -54,10 +45,9 @@ public class Main {
 		//Treina os pesos da rede para prepar·-la para ser utilizada
 		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreino, taxaAprendizado, inicializacaoAleatoria);
 		treino.Treinar(quantidadeDeTreinos);
->>>>>>> Alterados m√©todos da estrutura e alterado main
 
 		//Treina a rede com os dados de entrada
-		MLP.ExecutarRede(dadosTreino);
+		MLP.ExecutarRede(dadosTeste);
 	}
 	
 	/* Metodo que transforma a saida de ES.lerArquivo em um objeto DadosDeEntradaProcessados[] para ser passado para a MLP */

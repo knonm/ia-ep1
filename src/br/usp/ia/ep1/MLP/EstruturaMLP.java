@@ -54,9 +54,9 @@ public class EstruturaMLP {
 		return this.camadaDeSaida[indexNeuronio];
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(DadosDeEntradaProcessados entrada)
+	public PesosCalculados ExecutarFeedFoward(DadosDeTeste entrada)
 	{
-		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeEntrada());	
+		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeTeste());	
 	}
 	
 	public PesosCalculados ExecutarFeedFoward(PesosCalculados[] entrada)
@@ -74,7 +74,7 @@ public class EstruturaMLP {
 		return this.camadaEscondida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(valor);
 	}
 	
-	public int ExecutarRede(DadosDeEntradaProcessados[] dados)
+	public int ExecutarRede(DadosDeTeste[] dados)
 	{
 		double[] saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
 		double[] saidasDaRede = new double[this.getTamanhoCamadaSaida()];
