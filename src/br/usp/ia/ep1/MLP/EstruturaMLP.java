@@ -62,6 +62,11 @@ public class EstruturaMLP {
 		return this.camadaDeSaida[indexNeuronio];
 	}
 	
+	public PesosCalculados ExecutarFeedFoward(DadosDeEntradaProcessados entrada)
+	{
+		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeEntrada());	
+	}
+	
 	public PesosCalculados ExecutarFeedFoward(DadosDeTeste entrada)
 	{
 		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeTeste());	

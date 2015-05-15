@@ -35,9 +35,6 @@ public class Main {
 		
 		//imprimirDados(dadosTreino);		
 		
-		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
-		//int epocaParada = treino.Treinar();
-
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuário
 		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria);
 
@@ -46,6 +43,8 @@ public class Main {
 		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreino, taxaAprendizado, inicializacaoAleatoria);
 		treino.Treinar(quantidadeDeTreinos);
 
+		//int epocaParada = treino.Treinar();
+		
 		//Treina a rede com os dados de entrada
 		MLP.ExecutarRede(dadosTeste);
 	}

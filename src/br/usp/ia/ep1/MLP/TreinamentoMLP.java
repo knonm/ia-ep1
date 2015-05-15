@@ -6,14 +6,14 @@ public class TreinamentoMLP
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
 		
-	public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado)
+	/*public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado, boolean pesosAleatorios)
 	{
-		this.mlp = new EstruturaMLP(qtdNeuroniosCamadaEscondida, qtdeNeuroniosCamadaSaida);		
+		this.mlp = new EstruturaMLP(qtdNeuroniosCamadaEscondida, qtdeNeuroniosCamadaSaida, pesosAleatorios);		
 		this.entrada = new DadosDeEntradaProcessados[dadosEntrada.length];
 		this.taxaDeAprendizado = taxaAprendizado;
 		
 		this.PopularDadosDeEntrada(dadosEntrada);			
-	}
+	}*/
 	
 	public TreinamentoMLP(EstruturaMLP mlp, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado, boolean inicializacaoAleatorio)
 	{
