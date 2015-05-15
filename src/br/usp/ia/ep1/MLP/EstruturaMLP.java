@@ -80,9 +80,9 @@ public class EstruturaMLP {
 		double[] saidasDaRede = new double[this.getTamanhoCamadaSaida()];
 		
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
-			saidasCamEscondida[i] = this.ExecutarFeedFoward(dados).getOutput();
-			
-		
+			for(int j = 0; j < dados.length; j++)
+				saidasCamEscondida[i] += this.ExecutarFeedFoward(dados[j]).getOutput();
+				
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
 			saidasDaRede[i] = this.ExecutarFeedFoward(saidasCamEscondida).getOutput();
 		
