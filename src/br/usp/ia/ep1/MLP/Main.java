@@ -4,6 +4,7 @@ import br.usp.ia.ep1.PreProcessamento;
 import br.usp.ia.ep1.utils.*;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Main {
 
@@ -12,13 +13,16 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException 
 	{
-		String arqTreino = "./out/" + args[0];
-		String arqValida = "./out/" + args[1];
-		String arqTeste = "./out/" + args[2];
-		double taxaAprendizado = Double.valueOf(args[3]);
-		int nCamadaEscondida = Integer.valueOf(args[4]);
-		int nCamadaSaida = Integer.valueOf(args[5]);
-		boolean inicializacaoAleatoria = Boolean.valueOf(args[6]); //true or false
+		//Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner("./out/treino.out ./out/valida.out teste.out 0,02 20 4 true");
+		
+		String arqTreino = sc.next();
+		String arqValida = sc.next();
+		String arqTeste = sc.next();
+		double taxaAprendizado = sc.nextDouble();
+		int nCamadaEscondida = sc.nextInt();
+		int nCamadaSaida = sc.nextInt();
+		boolean inicializacaoAleatoria = sc.nextBoolean(); //true or false
 		/*
 		PreProcessamento pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
 				   new String[] { arqTreino, arqValida, arqTeste },
@@ -31,7 +35,7 @@ public class Main {
 		int quantidadeDeTreinos = 1000;
 
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
-		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria);
+		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, 2);
 
 		testarAndOrXor(taxaAprendizado,nCamadaEscondida,nCamadaSaida,inicializacaoAleatoria);
 		/*
