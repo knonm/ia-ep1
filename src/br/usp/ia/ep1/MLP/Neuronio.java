@@ -42,6 +42,12 @@ public class Neuronio {
 			pesos[i] = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);
 	}
 	
+	public void InicializarPesosComZeros()
+	{
+		for(int i = 0; i < this.pesos.length; i++)
+			this.pesos[i] = 0;
+	}
+	
 	public void InicializarBiasComValorAleatoro()
 	{
 		this.bias = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);

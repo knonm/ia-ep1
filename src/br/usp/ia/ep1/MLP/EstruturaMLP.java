@@ -20,13 +20,21 @@ public class EstruturaMLP {
 		criarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida);	
 	}
 	
-	public EstruturaMLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida)
+	public EstruturaMLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, boolean inicializarAleatorio)
 	{
 		this.camadaEscondida = new Neuronio[qtdeNeuroniosCamadaEscondida];
 		this.camadaDeSaida = new Neuronio[qtdeNeuroniosCamadaSaida];
 		
-		criarNeuroniosCamadaEscondidaPesosComValoresAleatorios(qtdeNeuroniosCamadaEscondida);
-		criarNeuroniosCamadaSaidaPesosComValoresAleatorios(qtdeNeuroniosCamadaSaida);
+		if(inicializarAleatorio)
+		{
+			criarNeuroniosCamadaEscondidaPesosComValoresAleatorios(qtdeNeuroniosCamadaEscondida);
+			criarNeuroniosCamadaSaidaPesosComValoresAleatorios(qtdeNeuroniosCamadaSaida);	
+		}
+		else
+		{
+			criarNeuroniosCamadaEscondidaPesosEBiasComZeros(qtdeNeuroniosCamadaEscondida);
+			criarNeuroniosCamadaSaidaPesosEBiasComZeros(qtdeNeuroniosCamadaSaida);
+		}		
 	}
 	
 	public int getTamanhoCamadaEscondida()
@@ -146,6 +154,26 @@ public class EstruturaMLP {
 			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaSaida);
 			this.camadaDeSaida[i].InicializarBiasComValorAleatoro();
 			this.camadaDeSaida[i].InicializarPesosComValoresAleatorios();
+		}
+	}
+	
+	private void criarNeuroniosCamadaEscondidaPesosEBiasComZeros(int qtdeNeuroniosCamadaEscondida)
+	{
+		for(int i = 0; i < this.camadaEscondida.length; i++)
+		{
+			this.camadaEscondida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
+			this.camadaEscondida[i].setBias(0);
+			this.camadaEscondida[i].InicializarPesosComZeros();;
+		}
+	}	
+	
+	private void criarNeuroniosCamadaSaidaPesosEBiasComZeros(int qtdeNeuroniosCamadaSaida)
+	{
+		for(int i = 0; i < this.camadaDeSaida.length; i++)
+		{
+			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaSaida);
+			this.camadaDeSaida[i].setBias(0);;
+			this.camadaDeSaida[i].InicializarPesosComZeros();
 		}
 	}
 	

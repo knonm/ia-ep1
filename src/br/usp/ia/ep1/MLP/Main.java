@@ -39,8 +39,8 @@ public class Main {
 		//int epocaParada = treino.Treinar();
 
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuário
-		if(inicializacaoAleatoria)
-			MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
+		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria);
+
 		
 		//Treina os pesos da rede para prepará-la para ser utilizada
 		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreino, taxaAprendizado, inicializacaoAleatoria);
