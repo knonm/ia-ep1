@@ -16,7 +16,7 @@ public class EstruturaMLP {
 		this.camadaDeSaida = new Neuronio[camadaSaida.getQuantidadeDeNeuronios()];
 		
 		criarNeuroniosCamadaEscondida(camadaEscondida, biasCamadaEscondida, quantidadeValoresNeuronios);
-		criarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida, quantidadeValoresNeuronios);	
+		criarNeuroniosCamadaSaida(camadaSaida, biasCamadaSaida, camadaEscondida.getQuantidadeDeNeuronios());	
 	}
 	
 	public EstruturaMLP(int qtdeNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, boolean inicializarAleatorio, int quantidadeValoresNeuronios)
@@ -27,12 +27,12 @@ public class EstruturaMLP {
 		if(inicializarAleatorio)
 		{
 			criarNeuroniosCamadaEscondidaPesosComValoresAleatorios(quantidadeValoresNeuronios);
-			criarNeuroniosCamadaSaidaPesosComValoresAleatorios(quantidadeValoresNeuronios);	
+			criarNeuroniosCamadaSaidaPesosComValoresAleatorios(qtdeNeuroniosCamadaEscondida);	
 		}
 		else
 		{
 			criarNeuroniosCamadaEscondidaPesosEBiasComZeros(quantidadeValoresNeuronios);
-			criarNeuroniosCamadaSaidaPesosEBiasComZeros(quantidadeValoresNeuronios);
+			criarNeuroniosCamadaSaidaPesosEBiasComZeros(qtdeNeuroniosCamadaEscondida);
 		}		
 	}
 	
