@@ -62,25 +62,31 @@ public class EstruturaMLP {
 		return this.camadaDeSaida[indexNeuronio];
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(DadosDeEntradaProcessados entrada)
+	
+	
+	public PesosCalculados ExecutarFeedFowardCamadaEscondida(DadosDeEntradaProcessados entrada, int index)
 	{
-		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeEntrada());	
+		return this.camadaEscondida[index].FeedFoward(entrada.getDadosDeEntrada());	
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(DadosDeTeste entrada)
+	public PesosCalculados ExecutarFeedFowardCamadaEscondida(DadosDeTeste entrada, int index)
 	{
-		return this.camadaEscondida[0].FeedFoward(entrada.getDadosDeTeste());	
+		return this.camadaEscondida[index].FeedFoward(entrada.getDadosDeTeste());	
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(PesosCalculados[] entrada)
+	public PesosCalculados ExecutarFeedFowarCamadaSaida(PesosCalculados[] entrada, int index)
 	{
-		return this.camadaEscondida[0].FeedFoward(this.PesosCalculadosToDouble(entrada));
+		return this.camadaDeSaida[index].FeedFoward(this.PesosCalculadosToDouble(entrada));
 	}
 	
-	public PesosCalculados ExecutarFeedFoward(double[] entrada)
+	public PesosCalculados ExecutarFeedFowardCamadaSaida(double[] entrada, int index)
 	{
-		return this.camadaEscondida[0].FeedFoward(entrada);
+		return this.camadaDeSaida[index].FeedFoward(entrada);
 	}
+	
+	
+	
+	
 	
 	public double DerivadaFuncaoBinariaSigmoid(double valor)
 	{
@@ -90,17 +96,16 @@ public class EstruturaMLP {
 	public int ExecutarRede(DadosDeTeste[] dados)
 	{
 		double[] saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
-		double[] saidasDaRede = new double[this.getTamanhoCamadaSaida()];
+		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
 		
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
 			for(int j = 0; j < dados.length; j++)
-				saidasCamEscondida[i] += this.ExecutarFeedFoward(dados[j]).getOutput();
+				saidasCamEscondida[i] += this.ExecutarFeedFowardCamadaEscondida(dados[j], j).getOutput();
 				
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
-			saidasDaRede[i] = this.ExecutarFeedFoward(saidasCamEscondida).getOutput();
-		
-		
-		return extrairMaiorValorDoArray(saidasDaRede);
+			saidasCamSaida[i] = this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, i).getOutput();
+			
+		return extrairMaiorValorDoArray(saidasCamSaida);
 	}
 	
 	public int extrairMaiorValorDoArray(double[] saidas)

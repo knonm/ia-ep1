@@ -61,12 +61,12 @@ public class TreinamentoMLP
 		
 		//Executa FeedFoward para cada neurônio da camada escondida (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioEscondido = 0; neuronioEscondido < this.mlp.getTamanhoCamadaEscondida(); neuronioEscondido++)
-			outputCamEscondida[neuronioEscondido] = this.mlp.ExecutarFeedFoward(dados);
+			outputCamEscondida[neuronioEscondido] = this.mlp.ExecutarFeedFowardCamadaEscondida(dados, neuronioEscondido);
 		
 		
 		//Executa FeedFoward para cada neurônio da camada de saída (por isso, metodo foi guardado dentro do neurônio)
 		for(int neuronioSaida = 0; neuronioSaida < this.mlp.getTamanhoCamadaSaida(); neuronioSaida++)
-			outputCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFoward(outputCamEscondida);
+			outputCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFowarCamadaSaida(outputCamEscondida, neuronioSaida);
 		
 		
 		this.executarBackPropagation(outputCamEscondida, outputCamSaida, dados);	
