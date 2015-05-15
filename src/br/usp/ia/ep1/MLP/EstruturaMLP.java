@@ -64,26 +64,49 @@ public class EstruturaMLP {
 		return this.camadaEscondida[0].FeedFoward(this.PesosCalculadosToDouble(entrada));
 	}
 	
+	public PesosCalculados ExecutarFeedFoward(double[] entrada)
+	{
+		return this.camadaEscondida[0].FeedFoward(entrada);
+	}
+	
 	public double DerivadaFuncaoBinariaSigmoid(double valor)
 	{
 		return this.camadaEscondida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(valor);
 	}
 	
-	public boolean ExecutarRede(DadosDeEntradaProcessados dados)
+	public int ExecutarRede(DadosDeEntradaProcessados dados)
 	{
-		double[] saidasDaRede = new double[this.getTamanhoCamadaEscondida()];
+		double[] saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
+		double[] saidasDaRede = new double[this.getTamanhoCamadaSaida()];
 		
 		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
-			saidasDaRede[i] = this.ExecutarFeedFoward(dados).getOutput();
+			saidasCamEscondida[i] = this.ExecutarFeedFoward(dados).getOutput();
 			
-		return verificarSeSaidaFoiADesejada(saidasDaRede);
+		
+		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
+			saidasDaRede[i] = this.ExecutarFeedFoward(saidasCamEscondida).getOutput();
+		
+		
+		return extrairMaiorValorDoArray(saidasDaRede);
 	}
 	
-	public boolean verificarSeSaidaFoiADesejada(double[] saidas)
+	public int extrairMaiorValorDoArray(double[] saidas)
 	{
+		int index = 0;
+		double maiorValor = -100;
+		int classe = 0;
 		
+		for(double saida: saidas)
+		{
+			if(saida > maiorValor)
+			{
+				maiorValor = saida;
+				classe = index;
+			}
+			index++;
+		}	
 		
-		return true;
+		return classe;
 	}
 	
 	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida)

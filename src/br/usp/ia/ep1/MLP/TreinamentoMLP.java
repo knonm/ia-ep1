@@ -12,10 +12,19 @@ public class TreinamentoMLP
 		this.entrada = new DadosDeEntradaProcessados[dadosEntrada.length];
 		this.taxaDeAprendizado = taxaAprendizado;
 		
-		this.PopularEstruturaDadosDeEntrada(dadosEntrada);			
+		this.PopularDadosDeEntrada(dadosEntrada);			
 	}
 	
-	private void PopularEstruturaDadosDeEntrada(DadosDeEntradaProcessados[] dadosEntrada)
+	public TreinamentoMLP(EstruturaMLP mlp, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado, boolean inicializacaoAleatorio)
+	{
+		this.mlp = mlp;		
+		this.entrada = new DadosDeEntradaProcessados[dadosEntrada.length];
+		this.taxaDeAprendizado = taxaAprendizado;
+		
+		this.PopularDadosDeEntrada(dadosEntrada);			
+	}
+	
+	private void PopularDadosDeEntrada(DadosDeEntradaProcessados[] dadosEntrada)
 	{
 		for(int i = 0; i < this.entrada.length; i++)
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());

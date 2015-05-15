@@ -6,7 +6,11 @@ import java.io.*;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static EstruturaMLP MLP;
+
+	
+	public static void main(String[] args) throws IOException 
+	{
 		String arqTreino = "./res/" + args[0];
 		String arqValida = "./res/" + args[1];
 		String arqTeste = "./res/" + args[2];
@@ -22,6 +26,12 @@ public class Main {
 		
 		//TreinamentoMLP treino = new TreinamentoMLP(nCamadaEscondida,nCamadaSaida,dadosTreino,taxaAprendizado,inicializacaoAleatoria);
 		//int epocaParada = treino.Treinar();
+
+		this.MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida);
+		
+		TreinamentoMLP treino = new TreinamentoMLP(MLP ,dadosTreino,taxaAprendizado, inicializacaoAleatoria);
+		treino.Treinar();
+
 		
 	}
 	
