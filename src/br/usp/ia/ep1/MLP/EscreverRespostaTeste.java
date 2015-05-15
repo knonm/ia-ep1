@@ -9,7 +9,7 @@ import br.usp.ia.ep1.utils.ES;
 public class EscreverRespostaTeste {
 
 	public static void escrever(DadosDeTeste[] resultado, MatrizDeConfusao matrizConfusao, int epocaParada) throws IOException {
-		String arquivoSaida = "./out/Teste da MLP " + getCurrentTimeStamp() + ".txt";
+		String arquivoSaida = "./out/ResultadoRede/Teste da MLP " + getCurrentTimeStamp() + ".txt";
 		String linhaBranco = "";
 		String header1 = "Resultado do teste na Rede Neural MLP";
 		String epoca = "Epoca de parada do treinamento: " + String.valueOf(epocaParada);
@@ -80,7 +80,7 @@ public class EscreverRespostaTeste {
 		for (int i = 0; i < resultado.length; i++) {
 			aux = new String[resultado[i].getQuantidadeAtributos() + 3];
 			aux[0] = "Classe predita: ";
-			aux[1] = String.valueOf((int)resultado[i].getClasse()) + " ";
+			aux[1] = String.valueOf((int)resultado[i].getClassePredita()) + " ";
 			aux[2] = "Dados Testados: ";
 			double[] dadosTestados = resultado[i].getDadosDeTeste();
 			for (int y = 0; y < dadosTestados.length; y++) {

@@ -2,21 +2,30 @@ package br.usp.ia.ep1.MLP;
 
 public class DadosDeTeste
 {
-	private double classe;
+	private double classeReal;
+	private double classePredita;
 	private double[] dadosDeTeste;
 	
-	public DadosDeTeste(double[] dadosDeTeste)
+	public DadosDeTeste(double classeReal, double[] dadosDeTeste)
 	{
 		this.dadosDeTeste = dadosDeTeste.clone();
+		this.classeReal = classeReal;
 	}
-	
-	public double getClasse()
-	{
-		return this.classe;
+
+	public double getClasseReal() {
+		return classeReal;
 	}
-	
-	public void setClasse(double classe) {
-		this.classe = classe;
+
+	public void setClasseReal(double classeReal) {
+		this.classeReal = classeReal;
+	}
+
+	public double getClassePredita() {
+		return classePredita;
+	}
+
+	public void setClassePredita(double classePredita) {
+		this.classePredita = classePredita;
 	}
 
 	public double[] getDadosDeTeste()
