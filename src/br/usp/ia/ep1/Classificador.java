@@ -68,7 +68,43 @@ public abstract class Classificador {
 	}
 	
 	public RespostaClassificador testar() {
-		return this.exec(this.dadosTeste, false);
+		RespostaClassificador rc;
+		
+		int qtdAcertos = 0;
+		int qtdErros = 0;
+		int[][] matrizConfusao = new int[PreProcessamento.valorMaximoClasse+1][PreProcessamento.valorMaximoClasse+1];
+		
+		for(int i = matrizConfusao.length-1; i > -1; i--) {
+			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+				matrizConfusao[i][j] = 0;
+			}
+		}
+		
+		for(int ind = 0; ind < 1000; ind++) {
+			rc = this.exec(this.dadosTeste, false);
+			qtdAcertos += rc.getQtdAcertos();
+			qtdErros += rc.getQtdErros();
+			for(int i = matrizConfusao.length-1; i > -1; i--) {
+				for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+					matrizConfusao[i][j] += rc.getMatrizConfusao()[i][j];
+				}
+			}
+			this.aleatorizaDados(10000);
+		}
+		
+		rc = new RespostaClassificador();
+		rc.setQtdAcertos(qtdAcertos);
+		rc.setQtdErros(qtdErros);
+		
+//		for(int i = matrizConfusao.length-1; i > -1; i--) {
+//			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+//				matrizConfusao[i][j] /= 1000;
+//			}
+//		}
+		
+		rc.setMatrizConfusao(matrizConfusao);
+		
+		return rc;
 	}
 	
 	public void initPesos(float[][] dados, int qtdCamadas) {
@@ -126,7 +162,7 @@ public abstract class Classificador {
 		}
 		
 		while(epocasTreina <= numEpocasTreina){
-			System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
+			//System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
 			this.exec(this.dadosTreinamento, true);
 			
 			if(epocasValida == numEpocasValida){
@@ -138,10 +174,10 @@ public abstract class Classificador {
 				}else{
 					epocasTreina++;
 				}
-				System.out.println(" | Quantidade Acertos (ultima): " + acertosAnterior);
+				//System.out.println(" | Quantidade Acertos (ultima): " + acertosAnterior);
 				epocasValida = 0;
 				
-				this.txAprend *= 0.99999F;
+				this.txAprend *= 0.99F;
 				//this.txAprend -= 0.00000000001F;
 				this.aleatorizaDados(10000);
 			}else epocasValida++;

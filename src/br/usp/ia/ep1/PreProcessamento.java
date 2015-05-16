@@ -132,10 +132,10 @@ public class PreProcessamento {
 	// Preprocessamento dos dados obtidos apos a leitura do arquivo
 	private float[][][] processarDados(String[] dados, float[] porcentagem) throws FileNotFoundException {
 		float[][] dadosCrus = MN.transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
-		dadosCrus = excluirAtrib(dadosCrus);
+		//dadosCrus = excluirAtrib(dadosCrus);
 		
 		//zScoreNormal(dadosCrus);
-		minMaxNormal(dadosCrus, -1, 1);
+		//minMaxNormal(dadosCrus, -1, 1);
 		
 		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem);
 		        
@@ -214,21 +214,26 @@ public class PreProcessamento {
 	
 	public PreProcessamento(String[] arqsDados, String[] arqsSaida, float[] pctsDadosSaida) throws IOException {
 		if(arqsSaida.length == pctsDadosSaida.length) {
-			
+			System.out.println("Comecando Pre Processamento...");
 			//System.out.println(pctsDadosSaida[0]);
 			//System.out.println(pctsDadosSaida[1]);
 			//System.out.println(pctsDadosSaida[2]);
 			//System.out.println(pctsDadosSaida.length);
 			
+			System.out.println("Normalizando dados...");
+			
 			float[][][] dadosSet = processarDados(ES.lerArquivos(arqsDados), pctsDadosSaida);
 			//float[][][] dadosSet = splitDados(processarDados(ES.lerArquivos(arqsDados)), pctsDadosSaida);
-
+			System.out.println("Dados normalizados.");
+			
 			this.dados = dadosSet;
 			
+			System.out.println("Escrevendo arquivos...");
 			for(int i = dadosSet.length-1; i > -1; i--) {
 				MN.criarArquivo(dadosSet[i], arqsSaida[i]);
+				System.out.println("Aquivo " + i + " concluido.");
 			}
-			
+			System.out.println("Arquivos escritos.");
 			
 		}
 	}
