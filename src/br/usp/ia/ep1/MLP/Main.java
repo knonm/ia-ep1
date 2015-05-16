@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) throws IOException 
 	{
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("./out/treino.out ./out/valida.out teste.out 0,02 20 4 true");
+		Scanner sc = new Scanner("./out/treino.out ./out/valida.out teste.out 0,8 2 2 true");
 		
 		String arqTreino = sc.next();
 		String arqValida = sc.next();
@@ -36,6 +36,7 @@ public class Main {
 
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
 		MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, 2);
+		//MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, dadosTreino[0].QuantidadeDadosEntrada());
 
 		testarAndOrXor(taxaAprendizado,nCamadaEscondida,nCamadaSaida,inicializacaoAleatoria);
 		/*
@@ -89,21 +90,10 @@ public class Main {
 		DadosDeTeste[] dadosTesteOr = transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
 		DadosDeTeste[] dadosTesteXor = transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
 		
-		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreinoXor, taxaAprendizado, inicializacaoAleatoria);
-		treino.Treinar(100);
-		MLP.ExecutarRede(dadosTesteXor);
+		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreinoAnd, taxaAprendizado, inicializacaoAleatoria);
+		treino.Treinar(1000);
+		MLP.ExecutarRede(dadosTesteAnd);
 		
 		//chamada da rede neural de treino e de teste aqui para os arquivos criados acima.
-	}
-	
-	/* Criei esse metodo so para testar a informacao passada nos dados lidos */
-	public static void imprimirDados(DadosDeEntradaProcessados[] dados) {
-		for (int i = 0; i < dados.length; i++) {
-			double[] aux = dados[i].getDadosDeEntrada();
-			for (int x = 0; x < aux.length; x++) {
-				System.out.print(aux[x] + " ");
-			}
-			System.out.println(dados[i].getClasse());
-		}
 	}
 }

@@ -43,7 +43,7 @@ public class TreinamentoMLP
 				{
 					this.executarTreino(dado);
 				}				
-				epocasExecutadas += epoca;
+				epocasExecutadas++;
 			}
 			
 			System.out.println("Epocas executadas: " + epocasExecutadas);
@@ -53,18 +53,18 @@ public class TreinamentoMLP
 		}
 	}
 	
-	//Método que executa o treino da rede para cada epoca corrente no método Treinar()
+	//MÃ©todo que executa o treino da rede para cada epoca corrente no mÃ©todo Treinar()
 	private void executarTreino(DadosDeEntradaProcessados dados)
 	{
 		PesosCalculados[] outputCamEscondida = new PesosCalculados[this.mlp.getTamanhoCamadaEscondida()];
 		PesosCalculados[] outputCamSaida = new PesosCalculados[this.mlp.getTamanhoCamadaSaida()];
 		
-		//Executa FeedFoward para cada neurônio da camada escondida (por isso, metodo foi guardado dentro do neurônio)
+		//Executa FeedFoward para cada neurÃ´nio da camada escondida (por isso, metodo foi guardado dentro do neurÃ´nio)
 		for(int neuronioEscondido = 0; neuronioEscondido < this.mlp.getTamanhoCamadaEscondida(); neuronioEscondido++)
 			outputCamEscondida[neuronioEscondido] = this.mlp.ExecutarFeedFowardCamadaEscondida(dados, neuronioEscondido);
 		
 		
-		//Executa FeedFoward para cada neurônio da camada de saída (por isso, metodo foi guardado dentro do neurônio)
+		//Executa FeedFoward para cada neurÃ´nio da camada de saÃ­da (por isso, metodo foi guardado dentro do neurÃ´nio)
 		for(int neuronioSaida = 0; neuronioSaida < this.mlp.getTamanhoCamadaSaida(); neuronioSaida++)
 			outputCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFowarCamadaSaida(outputCamEscondida, neuronioSaida);
 		
@@ -80,13 +80,13 @@ public class TreinamentoMLP
 		//Equivale ao target pattern, Tk, especificado no livro de Laurene Fausett, "Fundamentals of Neural Networks"
 		double resultadoEsperado;
 
-		//Equivalente ao DeltaWjk (que será usado para, mais tarde, atualizar os Wjk, ou seja, os pesos) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks" 
+		//Equivalente ao DeltaWjk (que serÃ¡ usado para, mais tarde, atualizar os Wjk, ou seja, os pesos) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks" 
 		double[][] correcaoPesoSaida = new double[tamanhoCamSaida][tamanhoCamEscondida];		
 
-		//Equivalente ao DeltaW0k (que será usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
+		//Equivalente ao DeltaW0k (que serÃ¡ usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
 		double[] correcaoBiasSaida = new double[tamanhoCamSaida];
 
-		//Inicia correção de pesos na camada de Saida
+		//Inicia correÃ§Ã£o de pesos na camada de Saida
 		for(int index = 0; index < tamanhoCamSaida; index++)
 		{
 			if(dados.getClasse() == index)
@@ -94,15 +94,15 @@ public class TreinamentoMLP
 			else
 				resultadoEsperado = 0;
 
-			//Definindo o gradiente de erro das camadas de saída
+			//Definindo o gradiente de erro das camadas de saÃ­da
 			double erro = (resultadoEsperado - outputCamSaida[index].getOutput()) * this.mlp.DerivadaFuncaoBinariaSigmoid(outputCamSaida[index].getSomatorioPeso());			
 			this.mlp.getNeuronioCamadaSaida(index).setTermoDeErro(erro);
 
-			//Calculando termo de correção de peso
+			//Calculando termo de correÃ§Ã£o de peso
 			for(int j = 0; j < tamanhoCamEscondida ; j++)
 				correcaoPesoSaida[index][j] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaSaida(index).getTermoDeErro() * outputCamEntrada[j].getOutput();
 
-			//Calculando termo de correção de bias
+			//Calculando termo de correÃ§Ã£o de bias
 			correcaoBiasSaida[index] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaSaida(index).getTermoDeErro();			
 		}
 		
@@ -117,10 +117,10 @@ public class TreinamentoMLP
 		for(int d = 0; d < dadosNeuronio.length; d++)
 			dadosNeuronio[d] = new PesosCalculados();
 
-		//Inicia correção de pesos para camada escondida
+		//Inicia correÃ§Ã£o de pesos para camada escondida
 		for(int j = 0; j < tamanhoCamEscondida ; j++)
 		{
-			// faz o somatório para cada input de delta
+			// faz o somatÃ³rio para cada input de delta
 			for(int k = 0; k < tamanhoCamSaida; k++)
 				dadosNeuronio[j].setSomatorioPeso(this.mlp.getNeuronioCamadaSaida(k).getTermoDeErro() * this.mlp.getNeuronioCamadaSaida(k).getPeso(j)); ;
 
@@ -129,30 +129,30 @@ public class TreinamentoMLP
 				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.mlp.DerivadaFuncaoBinariaSigmoid(somatorioInputsCamadaEscondida);				
 				this.mlp.getNeuronioCamadaEscondida(j).setTermoDeErro(erroEscondida);
 
-				// calcula a correção para cada peso do neurônio ativo
+				// calcula a correÃ§Ã£o para cada peso do neurÃ´nio ativo
 				for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
 					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro() * dados.getDadoEntrada(i);
 
 				correcaoBiasEscondida[j] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro();
 		}
 
-		// atualiza pesos e viés na camada de saída
+		// atualiza pesos e bias na camada de saÃ­da
 		for(int k = 0; k < tamanhoCamSaida; k++)
 		{
 			this.mlp.getNeuronioCamadaSaida(k).setBias(this.mlp.getNeuronioCamadaSaida(k).getBias() + correcaoBiasSaida[k]);
 			
 			for(int j = 0; j < tamanhoCamEscondida; j++)
-				this.mlp.getNeuronioCamadaSaida(k).setPeso(j, correcaoPesoSaida[k][j]);
+				this.mlp.getNeuronioCamadaSaida(k).setPeso(j, this.mlp.getNeuronioCamadaSaida(k).getPeso(j) + correcaoPesoSaida[k][j]);
 		}
 
 
-		// atualiza pesos e viés na camada escondida
+		// atualiza pesos e bias na camada escondida
 		for(int j = 0; j < tamanhoCamEscondida; j++)
 		{
 			this.mlp.getNeuronioCamadaEscondida(j).setBias(this.mlp.getNeuronioCamadaEscondida(j).getBias() + correcaoBiasEscondida[j]);
 			
 			for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
-				this.mlp.getNeuronioCamadaEscondida(j).setPeso(i, correcaoPesoEscondida[j][i]);
+				this.mlp.getNeuronioCamadaEscondida(j).setPeso(i, this.mlp.getNeuronioCamadaEscondida(j).getPeso(i) + correcaoPesoEscondida[j][i]);
 		}	
 	}
 }

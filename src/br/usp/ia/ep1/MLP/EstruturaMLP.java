@@ -33,7 +33,7 @@ public class EstruturaMLP {
 		{
 			criarNeuroniosCamadaEscondidaPesosEBiasComZeros(quantidadeValoresNeuronios);
 			criarNeuroniosCamadaSaidaPesosEBiasComZeros(qtdeNeuroniosCamadaEscondida);
-		}		
+		}
 	}
 	
 	public int getTamanhoCamadaEscondida()
@@ -98,6 +98,7 @@ public class EstruturaMLP {
 		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];		
 		
 		for (int i = 0; i < dados.length; i++) {
+			System.out.print("Classe Real: " + dados[i].getClasseReal() + " Classe Predita: ");
 			saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
 			saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
 			for (int j = 0; j < this.getTamanhoCamadaEscondida(); j++) {
@@ -105,7 +106,10 @@ public class EstruturaMLP {
 			}
 			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) {
 				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
-			}	
+				//System.out.println(saidasCamSaida[j]);
+			}
+			System.out.println(extrairMaiorValorDoArray(saidasCamSaida));
+			//System.out.println();
 		}
 		/*
 		 * ANTIGO MÉTODO AQUI QUE REESCREVI
@@ -160,41 +164,41 @@ public class EstruturaMLP {
 		}
 	}
 	
-	private void criarNeuroniosCamadaEscondidaPesosComValoresAleatorios(int qtdeNeuroniosCamadaEscondida)
+	private void criarNeuroniosCamadaEscondidaPesosComValoresAleatorios(int quantidadeValoresNeuronios)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
-			this.camadaEscondida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
+			this.camadaEscondida[i] = new Neuronio(quantidadeValoresNeuronios);
 			this.camadaEscondida[i].InicializarBiasComValorAleatoro();
 			this.camadaEscondida[i].InicializarPesosComValoresAleatorios();
 		}
 	}
 	
-	private void criarNeuroniosCamadaSaidaPesosComValoresAleatorios(int qtdeNeuroniosCamadaSaida)
+	private void criarNeuroniosCamadaSaidaPesosComValoresAleatorios(int qtdeNeuroniosCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
-			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaSaida);
+			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
 			this.camadaDeSaida[i].InicializarBiasComValorAleatoro();
 			this.camadaDeSaida[i].InicializarPesosComValoresAleatorios();
 		}
 	}
 	
-	private void criarNeuroniosCamadaEscondidaPesosEBiasComZeros(int qtdeNeuroniosCamadaEscondida)
+	private void criarNeuroniosCamadaEscondidaPesosEBiasComZeros(int quantidadeValoresNeuronios)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
 		{
-			this.camadaEscondida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
+			this.camadaEscondida[i] = new Neuronio(quantidadeValoresNeuronios);
 			this.camadaEscondida[i].setBias(0);
 			this.camadaEscondida[i].InicializarPesosComZeros();;
 		}
 	}	
 	
-	private void criarNeuroniosCamadaSaidaPesosEBiasComZeros(int qtdeNeuroniosCamadaSaida)
+	private void criarNeuroniosCamadaSaidaPesosEBiasComZeros(int qtdeNeuroniosCamadaEscondida)
 	{
 		for(int i = 0; i < this.camadaDeSaida.length; i++)
 		{
-			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaSaida);
+			this.camadaDeSaida[i] = new Neuronio(qtdeNeuroniosCamadaEscondida);
 			this.camadaDeSaida[i].setBias(0);;
 			this.camadaDeSaida[i].InicializarPesosComZeros();
 		}
