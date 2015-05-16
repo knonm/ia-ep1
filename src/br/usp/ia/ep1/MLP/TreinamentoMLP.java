@@ -5,6 +5,7 @@ public class TreinamentoMLP
 	private DadosDeEntradaProcessados[] entrada;
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
+	private EstruturaMLP backupMLP;
 	
 	private boolean redeEstaMelhorando = true;
 		
@@ -32,11 +33,17 @@ public class TreinamentoMLP
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
-	public void Treinar(int quantidadeTreinos, DadosDeTeste[] validacao)
+	public void Treinar(int quantidadeTreinos, int maximoFracassos, DadosDeTeste[] teste)
 	{
 		int epocasExecutadas = 0;
-		
+		int fracassosAteAqui = 0;
 		double errosAtuais = 0;
+		double melhorResultado = Double.MAX_VALUE;
+		
+		int paradaObrigatorio = 0;
+		
+		System.out.println("INICIANDO TREINAMENTO DA REDE");
+		System.out.println();
 		
 		while(redeEstaMelhorando)
 		{
@@ -48,18 +55,39 @@ public class TreinamentoMLP
 				epocasExecutadas++;
 			}
 			
-			errosAtuais = errosTreinamento(validacao);
+/*			errosAtuais = errosTreinamentoDaRedeAtual(validacao);
 			
+			if(errosAtuais < melhorResultado)
+			{
+				melhorResultado = errosAtuais;
+				backupMLP = this.mlp.ClonarRede();
+				fracassosAteAqui = 0;
+			}
+			else
+				fracassosAteAqui++;
 			
+			if(fracassosAteAqui >= maximoFracassos)
+				redeEstaMelhorando = false;
+			
+			*/
+			
+			paradaObrigatorio++;
 			
 			System.out.println("Epocas executadas: " + epocasExecutadas);
 			System.out.println("Taxa de aprendizado: " + this.taxaDeAprendizado);
-			//System.out.println("Taxa de erro: "+errosTreinamento());
+			System.out.println("Taxa de erro: " + errosTreinamentoDaRedeAtual(teste));
+			System.out.println("Taxa de erro quadrado: ");
 			System.out.println();
+			
+			if(paradaObrigatorio >= 20)
+				redeEstaMelhorando = false;
 		}
+		
+		
+		
 	}
 	
-	private double errosTreinamento(DadosDeTeste[] entradas)
+	private double errosTreinamentoDaRedeAtual(DadosDeTeste[] entradas)
 	{
 		double erros = 0;		
 		double tentativas = entradas.length;
@@ -70,8 +98,7 @@ public class TreinamentoMLP
 		{
 			if(!entrada.ClassePreditaEhIgualAClasseEncontrada())
 				erros++;
-		}
-		
+		}		
 		return erros/tentativas;
 	}
 	
@@ -90,7 +117,6 @@ public class TreinamentoMLP
 		for(int neuronioSaida = 0; neuronioSaida < this.mlp.getTamanhoCamadaSaida(); neuronioSaida++)
 			outputCamSaida[neuronioSaida] = this.mlp.ExecutarFeedFowarCamadaSaida(outputCamEscondida, neuronioSaida);
 		
-		
 		this.executarBackPropagation(outputCamEscondida, outputCamSaida, dados);	
 	}
 	
@@ -108,7 +134,7 @@ public class TreinamentoMLP
 		//Equivalente ao DeltaW0k (que será usado para, mais tarde, atualizar os W0k, ou seja, os bias) definido no livro de Laurene Fauset, "Fundamentals of Neural Networks"
 		double[] correcaoBiasSaida = new double[tamanhoCamSaida];
 
-		//Inicia correção de pesos na camada de Saida
+		//Inicia correcao de pesos na camada de Saida
 		for(int index = 0; index < tamanhoCamSaida; index++)
 		{
 			if(dados.getClasse() == index)
@@ -139,7 +165,7 @@ public class TreinamentoMLP
 		for(int d = 0; d < dadosNeuronio.length; d++)
 			dadosNeuronio[d] = new PesosCalculados();
 
-		//Inicia correção de pesos para camada escondida
+		//Inicia correcao de pesos para camada escondida
 		for(int j = 0; j < tamanhoCamEscondida ; j++)
 		{
 			// faz o somatório para cada input de delta
@@ -151,14 +177,14 @@ public class TreinamentoMLP
 				double erroEscondida = dadosNeuronio[j].getSomatorioPeso() * this.mlp.DerivadaFuncaoBinariaSigmoid(somatorioInputsCamadaEscondida);				
 				this.mlp.getNeuronioCamadaEscondida(j).setTermoDeErro(erroEscondida);
 
-				// calcula a correção para cada peso do neurônio ativo
+				// calcula a correcao para cada peso do neuronio ativo
 				for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
 					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro() * dados.getDadoEntrada(i);
 
 				correcaoBiasEscondida[j] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro();
 		}
 
-		// atualiza pesos e bias na camada de saída
+		// atualiza pesos e bias na camada de saida
 		for(int k = 0; k < tamanhoCamSaida; k++)
 		{
 			this.mlp.getNeuronioCamadaSaida(k).setBias(this.mlp.getNeuronioCamadaSaida(k).getBias() + correcaoBiasSaida[k]);

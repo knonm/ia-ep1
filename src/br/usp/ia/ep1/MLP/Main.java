@@ -91,7 +91,8 @@ public class Main {
 		DadosDeTeste[] dadosTesteXor = transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
 		
 		TreinamentoMLP treino = new TreinamentoMLP(MLP, dadosTreinoAnd, taxaAprendizado, inicializacaoAleatoria);
-		treino.Treinar(1000);
+		treino.Treinar(1000, 10000, dadosTesteAnd);
+		
 		MLP.ExecutarRede(dadosTesteAnd);
 		
 		//chamada da rede neural de treino e de teste aqui para os arquivos criados acima.

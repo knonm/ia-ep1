@@ -11,6 +11,13 @@ public class Neuronio {
 		this.pesos = new double[quantidadeNeuroniosCamadaAnterior];
 	}
 	
+	public Neuronio(double bias, double[] pesos, double termoDeErro)
+	{
+		this.bias = bias;
+		this.pesos = pesos.clone();
+		this.termoDeErro = termoDeErro;
+	}
+	
 	public void setBias(double valor)
 	{
 		this.bias = valor;
@@ -29,6 +36,11 @@ public class Neuronio {
 	public double getPeso(int index)
 	{
 		return this.pesos[index];
+	}
+	
+	public double[] getTodosOsPesos()
+	{
+		return this.pesos;
 	}
 	
 	public int QuantidadePesos()

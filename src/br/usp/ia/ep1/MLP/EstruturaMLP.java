@@ -36,6 +36,18 @@ public class EstruturaMLP {
 		}
 	}
 	
+	public EstruturaMLP(Neuronio[] camadaEscondida, Neuronio[] camadaSaida)
+	{
+		this.camadaEscondida = new Neuronio[camadaEscondida.length];
+		this.camadaDeSaida = new Neuronio[camadaSaida.length];
+		
+		for(int i = 0; i < camadaEscondida.length; i++)
+			this.camadaEscondida[i] = new Neuronio(camadaEscondida[i].getBias(), camadaEscondida[i].getTodosOsPesos() ,camadaEscondida[i].getTermoDeErro());
+		
+		for(int i = 0; i < camadaSaida.length; i++)
+			this.camadaDeSaida[i] = new Neuronio(camadaSaida[i].getBias(), camadaSaida[i].getTodosOsPesos(), camadaSaida[i].getTermoDeErro());
+	}
+	
 	public int getTamanhoCamadaEscondida()
 	{
 		return this.camadaEscondida.length;
@@ -114,8 +126,9 @@ public class EstruturaMLP {
 			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) 
 			{
 				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
-				dados[j].setClassePredita(saidasCamSaida[j]);
 			}	
+
+			dados[i].setClassePredita(extrairMaiorValorDoArray(saidasCamSaida));
 			
 			System.out.println(extrairMaiorValorDoArray(saidasCamSaida));
 			//System.out.println();
@@ -153,6 +166,28 @@ public class EstruturaMLP {
 		return classe;
 	}
 	
+	
+	
+	
+	
+	
+	public EstruturaMLP ClonarRede(EstruturaMLP redeAntiga)
+	{
+		EstruturaMLP novaRede = new EstruturaMLP(redeAntiga.getCamadaEscondida(), redeAntiga.getCamadaSaida());
+		
+		return novaRede;
+	}
+	
+	public Neuronio[] getCamadaEscondida()
+	{
+		return this.camadaEscondida;
+	}
+	
+	public Neuronio[] getCamadaSaida()
+	{
+		return this.camadaDeSaida;
+	}
+		
 	private void criarNeuroniosCamadaEscondida(InformacoesDaCamada camadaEscondida, double[] biasDaCamadaEscondida, int quantidadeValoresNeuronios)
 	{
 		for(int i = 0; i < this.camadaEscondida.length; i++)
