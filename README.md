@@ -1,4 +1,4 @@
-# IA - EP1
+# IA - EP1 - [Relatório](https://docs.google.com/document/d/1u3clS6gwhAoOlckKPMiYbM_Yhb6YjLSnz3EXNvsDZZk/edit?usp=sharing)
 **Descrição dos diretórios do projeto:**
 ```
 /bin/: Executáveis gerados
