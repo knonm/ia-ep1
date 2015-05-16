@@ -98,16 +98,25 @@ public class EstruturaMLP {
 		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];		
 		
 		for (int i = 0; i < dados.length; i++) {
+			
 			System.out.print("Classe Real: " + dados[i].getClasseReal() + " Classe Predita: ");
+			
 			saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
 			saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
-			for (int j = 0; j < this.getTamanhoCamadaEscondida(); j++) {
+			
+			//Realiza feedFoward na camada de entrada
+			for (int j = 0; j < this.getTamanhoCamadaEscondida(); j++) 
+			{
 				saidasCamEscondida[j] += this.ExecutarFeedFowardCamadaEscondida(dados[i], j).getOutput();
 			}
-			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) {
+			
+			//Realiza feedFoward na camada de saída
+			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) 
+			{
 				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
-				//System.out.println(saidasCamSaida[j]);
-			}
+				dados[j].setClassePredita(saidasCamSaida[j]);
+			}	
+			
 			System.out.println(extrairMaiorValorDoArray(saidasCamSaida));
 			//System.out.println();
 		}

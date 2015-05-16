@@ -37,4 +37,9 @@ public class DadosDeTeste
 	{
 		return this.dadosDeTeste.length;
 	}
+	
+	public boolean ClassePreditaEhIgualAClasseEncontrada()
+	{
+		return this.getClassePredita() == this.getClasseReal();
+	}
 }

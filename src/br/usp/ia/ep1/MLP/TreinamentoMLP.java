@@ -5,6 +5,8 @@ public class TreinamentoMLP
 	private DadosDeEntradaProcessados[] entrada;
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
+	
+	private boolean redeEstaMelhorando = true;
 		
 	/*public TreinamentoMLP(int qtdNeuroniosCamadaEscondida, int qtdeNeuroniosCamadaSaida, DadosDeEntradaProcessados[] dadosEntrada, double taxaAprendizado, boolean pesosAleatorios)
 	{
@@ -30,27 +32,47 @@ public class TreinamentoMLP
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
-	public void Treinar(int quantidadeTreinos)
+	public void Treinar(int quantidadeTreinos, DadosDeTeste[] validacao)
 	{
-		int intervalosParaExibicao = 100;
 		int epocasExecutadas = 0;
 		
-		for(int treino = 0; treino < quantidadeTreinos/intervalosParaExibicao; treino++)
+		double errosAtuais = 0;
+		
+		while(redeEstaMelhorando)
 		{
-			for(int epoca = 0; epoca < intervalosParaExibicao; epoca++)
+			for(int epoca = 0; epoca < quantidadeTreinos; epoca++)
 			{
 				for(DadosDeEntradaProcessados dado: entrada)
-				{
 					this.executarTreino(dado);
-				}				
+								
 				epocasExecutadas++;
 			}
+			
+			errosAtuais = errosTreinamento(validacao);
+			
+			
 			
 			System.out.println("Epocas executadas: " + epocasExecutadas);
 			System.out.println("Taxa de aprendizado: " + this.taxaDeAprendizado);
 			//System.out.println("Taxa de erro: "+errosTreinamento());
 			System.out.println();
 		}
+	}
+	
+	private double errosTreinamento(DadosDeTeste[] entradas)
+	{
+		double erros = 0;		
+		double tentativas = entradas.length;
+		
+		this.mlp.ExecutarRede(entradas);
+		
+		for(DadosDeTeste entrada : entradas)
+		{
+			if(!entrada.ClassePreditaEhIgualAClasseEncontrada())
+				erros++;
+		}
+		
+		return erros/tentativas;
 	}
 	
 	//Método que executa o treino da rede para cada epoca corrente no método Treinar()
