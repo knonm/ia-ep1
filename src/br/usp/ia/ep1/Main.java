@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import br.usp.ia.ep1.utils.*;
+import br.usp.ia.ep1.utils.LOG;
 
 public class Main {
 	
