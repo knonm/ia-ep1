@@ -2,6 +2,8 @@ package br.usp.ia.ep1.utils;
 
 import java.io.IOException;
 
+import br.usp.ia.ep1.MatrizConfusao;
+
 public class LOG {
 	private int versao;
 	private String tipo;
@@ -14,7 +16,7 @@ public class LOG {
 	private int qtdNeuroniosCamadaOculta;
 	private float txAprendInicial;
 	private float txAprendFinal;
-	private int[][] matrizC;
+	private MatrizConfusao matrizC;
 	
 	private static final int LVQ = 0;
 	private static final int MLP = 1;
@@ -31,7 +33,7 @@ public class LOG {
 		}
 	}
 	
-	public void completaLog(float[][][] pesos, int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, float txAprendFinal, int[][] matrizC){
+	public void completaLog(float[][][] pesos, int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, float txAprendFinal, MatrizConfusao matrizC){
 		this.pesos = pesos;
 		this.qtdAcertos = qtdAcertos;
 		this.qtdEpocas = qtdEpocas;
@@ -78,25 +80,25 @@ public class LOG {
 		aux[8] = "	9	8	7	6	5	4	3	2	1	0\n";
 		aux[9] = "";
 
-		for(int j = this.matrizC.length-1; j > -1; j--) {
+		for(int j = this.matrizC.getMatrizConfusao().length-1; j > -1; j--) {
 			aux[9] += j + "	";
-			for(int i = this.matrizC[0].length-1; i > -1; i--) {
-				aux[9] += String.valueOf((this.matrizC[j][i]))+ "	";
+			for(int i = this.matrizC.getMatrizConfusao()[0].length-1; i > -1; i--) {
+				aux[9] += String.valueOf((this.matrizC.getMatrizConfusao()[j][i]))+ "	";
 			}
 			aux[9] += "\n";
 			
 		}
-		float[][] matrizAux = new float[this.matrizC.length][this.matrizC[0].length];
-		for(int j = this.matrizC.length-1; j > -1; j--) {
-			for(int i = this.matrizC[0].length-1; i > -1; i--) {
-				matrizAux[j][i] = (float) this.matrizC[j][i];
+		float[][] matrizAux = new float[this.matrizC.getMatrizConfusao().length][this.matrizC.getMatrizConfusao()[0].length];
+		for(int j = this.matrizC.getMatrizConfusao().length-1; j > -1; j--) {
+			for(int i = this.matrizC.getMatrizConfusao()[0].length-1; i > -1; i--) {
+				matrizAux[j][i] = (float) this.matrizC.getMatrizConfusao()[j][i];
 			}
 		}
 		
 		
 		ES.escreverDados(caminho, aux);
 		
-		MN.criarArquivo(matrizAux, "./out/MC "+this.qtdAcertos+".out");
+		MN.criarArquivo(matrizAux.clone(), "./out/MC "+this.qtdAcertos+".out");
 		
 		if(this.tipo == "LVQ"){
 			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosFinal);

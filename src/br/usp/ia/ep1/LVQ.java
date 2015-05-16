@@ -57,7 +57,7 @@ public class LVQ extends Classificador {
 		resposta.setQtdAcertos(qtdAcertos);
 		resposta.setQtdErros(qtdErros);
 		resposta.setTxAprend(super.txAprend);
-		resposta.setMatrizConfusao(matrizConfusao);
+		resposta.setMatrizConfusao(new MatrizConfusao(matrizConfusao));
 		
 		return resposta;
 	}

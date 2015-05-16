@@ -86,7 +86,7 @@ public abstract class Classificador {
 			qtdErros += rc.getQtdErros();
 			for(int i = matrizConfusao.length-1; i > -1; i--) {
 				for(int j = matrizConfusao[i].length-1; j > -1; j--) {
-					matrizConfusao[i][j] += rc.getMatrizConfusao()[i][j];
+					matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
 				}
 			}
 			this.aleatorizaDados(10000);
@@ -102,7 +102,7 @@ public abstract class Classificador {
 //			}
 //		}
 		
-		rc.setMatrizConfusao(matrizConfusao);
+		rc.setMatrizConfusao(new MatrizConfusao(matrizConfusao));
 		
 		return rc;
 	}
@@ -111,7 +111,6 @@ public abstract class Classificador {
 		DescDados desc;
 		float vlrMinDados, vlrMaxDados;
 		float vlrClasse;
-		int qtdClasses;
 		
 		Random rand = new Random(System.currentTimeMillis());
 		
@@ -123,23 +122,21 @@ public abstract class Classificador {
 		
 		this.pesos = new float[qtdCamadas][this.qtdNeuronios*desc.getQtdVlrClasses()][desc.getQtdAtribs()];
 		
-		vlrClasse = desc.getMinVlrClasse();
-		qtdClasses = 0;
+		vlrClasse = desc.getMaxVlrClasse()+1;
 		
 		for(int i = this.pesos.length-1; i > -1; i--) {
 			for(int j = this.pesos[i].length-1; j > -1; j--) {
 				for(int k = this.pesos[i][j].length-2; k > -1; k--) {
 					if(pesosAleatorios) {
-						this.pesos[i][j][k] = vlrMinDados + (Math.abs(vlrMaxDados - vlrMinDados) * rand.nextFloat());
+						this.pesos[i][j][k] = (vlrMinDados) + ((vlrMaxDados - vlrMinDados) * rand.nextFloat());
 					} else {
 						this.pesos[i][j][k] = 0;
 					}
 				}
 				
-				if(++qtdClasses%(this.qtdNeuronios+1) == 0) {
-					vlrClasse++;
-					qtdClasses = 0;
-				}
+				if((j+1)%this.qtdNeuronios == 0) {
+        			vlrClasse--;
+        		}
 				
 				this.pesos[i][j][this.pesos[i][j].length-1] = vlrClasse;
 			}
@@ -156,12 +153,7 @@ public abstract class Classificador {
 		
 		this.initPesos(this.dadosTeste, qtdCamadas);
 		
-		if(numEpocasValida > numEpocasTreina){
-			System.out.println("Numero de Epocas de checagem maior que epocas de Validacao");
-			return;
-		}
-		
-		while(epocasTreina <= numEpocasTreina){
+		while(epocasTreina < numEpocasTreina){
 			//System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
 			this.exec(this.dadosTreinamento, true);
 			
@@ -174,14 +166,15 @@ public abstract class Classificador {
 				}else{
 					epocasTreina++;
 				}
-				//System.out.println(" | Quantidade Acertos (ultima): " + acertosAnterior);
+				System.out.println("Epocas passadas: " + epocasTotais + " | Epocas de treinamento apos validacao: " + epocasTreina);
+				System.out.println("Quantidade de acertos na validacao: " + acertosAnterior + " | Taxa de aprendizado: " + this.txAprend);
 				epocasValida = 0;
 				
 				this.txAprend *= 0.99F;
-				//this.txAprend -= 0.00000000001F;
-				this.aleatorizaDados(10000);
+				//this.txAprend -= 0.0005F;
 			}else epocasValida++;
 			
+			this.aleatorizaDados(100);
 			epocasTotais++;
 			
 		}

@@ -153,10 +153,10 @@ public class PreProcessamento {
 	// Preprocessamento dos dados obtidos apos a leitura do arquivo
 	private float[][][] processarDados(String[] dados, float[] porcentagem) throws FileNotFoundException {
 		float[][] dadosCrus = MN.transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
-		//dadosCrus = excluirAtrib(dadosCrus);
+		dadosCrus = excluirAtrib(dadosCrus);
 		
 		//zScoreNormal(dadosCrus);
-		//minMaxNormal(dadosCrus, -1, 1);
+		minMaxNormal(dadosCrus, -1, 1);
 		
 		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem);
 		        

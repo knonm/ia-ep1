@@ -41,7 +41,8 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		System.out.println("Iniciando procedimentos...");
 		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.out out/valida.out out/teste.out 0,01 50 2 true");
+		Scanner sc = new Scanner("out/treino.csv out/valida.csv out/teste.csv"
+				+ " 0,0000001 50 1 false");
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -60,15 +61,18 @@ public class Main {
 		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
 		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
 		
+		int qntEpocasTotais = 10;
+		int qntEpocasValidacao = 50;
+		
 		System.out.println("Instanciando LVQ...");
 		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos);
 		System.out.println("Comecando treinamento LVQ...");
-		lvq.init(1, 5 ,10);
+		lvq.init(1, qntEpocasValidacao ,qntEpocasTotais);
 		System.out.println("Treinamento concluido.");
 		System.out.println();
 		System.out.println("Testando resultado...");
 		
-		LOG log = new LOG(0, 3, 15, numNeuroLVQ, txAprend, 0);
+		LOG log = new LOG(0, qntEpocasValidacao, qntEpocasTotais, numNeuroLVQ, txAprend, 0);
 		
 		RespostaClassificador rc = lvq.testar();
 		System.out.println("Teste completo.");
@@ -84,6 +88,7 @@ public class Main {
 		System.out.println("Valore resultantes:");
 		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
 		System.out.println("Quantidade de erros: " + rc.getQtdErros());
+		System.out.println("Epocas passadas: " + lvq.epocas);
 				
 		//lvq.imprimePesos();
 		
@@ -92,32 +97,12 @@ public class Main {
 		
 		System.out.println("	9	8	7	6	5	4	3	2	1	0");
 		
-		for(int i = rc.getMatrizConfusao().length-1; i > -1; i--) {
+		for(int i = rc.getMatrizConfusao().getMatrizConfusao().length-1; i > -1; i--) {
 			System.out.print(i);
-			for(int j = rc.getMatrizConfusao()[i].length-1; j > -1; j--) {
-				System.out.print("	"+rc.getMatrizConfusao()[i][j]);
+			for(int j = rc.getMatrizConfusao().getMatrizConfusao()[i].length-1; j > -1; j--) {
+				System.out.print("	"+rc.getMatrizConfusao().getMatrizConfusao()[i][j]);
 			}
 			System.out.println();
 		}
-	
-	/*	
-		for(int i = 1; i <= 5; i++){ // neuronios
-			for (float j = 0.03F; j >= 0.01; j -= 0.01){ // txAprend
-				for( int k = 5; k <= 15; k++){ // qnt de parada
-					for(int x = 1; x <= 5; x++){ // qnt de validacao
-						for(int t = 0; t <= 1; t++){ // pra rodar ela 2 vezes (gerar dados diferentes, ela pode errar as vezes. so por precausao)
-							LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, j, i, iniPesos);
-							lvq.init(1, x ,k);
-							LOG log = new LOG(0, x, k, i, j, 0);
-							RespostaClassificador rc = lvq.testar();
-							log.completaLog(lvq.pesos, rc.getQtdAcertos(), lvq.epocas, 0, lvq.txAprend, rc.getMatrizConfusao());
-							log.escreveLOG();
-							System.out.println("Feito log de: " + i + " " + j + " " + k + " " + x + " " + t);
-						}
-					}
-				}
-			}
-		}
-	*/
 	}
 }
