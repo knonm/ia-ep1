@@ -16,6 +16,8 @@ public abstract class Classificador {
 	
 	protected int qtdNeuronios;
 	protected boolean pesosAleatorios;
+	protected int qtdEpocasTreinamento;
+	protected int qtdEpocasValidacao;
 	
 	protected int epocas;
 	
@@ -143,7 +145,7 @@ public abstract class Classificador {
 		}
 	}
 	
-	public void init(int qtdCamadas, int numEpocasValida, int numEpocasTreina) {
+	public void init(int qtdCamadas) {
 		float[][][] pesos = null;
 		int acertosAnterior = 0;
 		int epocasTreina = 0;
@@ -153,11 +155,11 @@ public abstract class Classificador {
 		
 		this.initPesos(this.dadosTeste, qtdCamadas);
 		
-		while(epocasTreina < numEpocasTreina){
+		while(epocasTreina < this.qtdEpocasTreinamento){
 			//System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
 			this.exec(this.dadosTreinamento, true);
 			
-			if(epocasValida == numEpocasValida){
+			if(epocasValida == this.qtdEpocasValidacao){
 				respostaValida = this.exec(this.dadosValidacao, false);
 				if(respostaValida.getQtdAcertos() > acertosAnterior){
 					pesos = this.pesos.clone();
@@ -171,7 +173,6 @@ public abstract class Classificador {
 				epocasValida = 0;
 				
 				this.txAprend *= 0.99F;
-				//this.txAprend -= 0.0005F;
 			}else epocasValida++;
 			
 			this.aleatorizaDados(100);
@@ -184,12 +185,15 @@ public abstract class Classificador {
 	}
 	
 	public Classificador(float[][] dadosTreinamento, float[][] dadosValidacao, float[][] dadosTeste,
-			float txAprend, int qtdNeuronios, boolean pesosAleatorios) {
+			float txAprend, int qtdNeuronios, boolean pesosAleatorios, int qtdEpocasTreinamento,
+			int qtdEpocasValidacao) {
 		this.dadosTreinamento = dadosTreinamento.clone();
 		this.dadosValidacao = dadosValidacao.clone();
 		this.dadosTeste = dadosTeste.clone();
 		this.txAprend = txAprend;
 		this.qtdNeuronios = qtdNeuronios;
 		this.pesosAleatorios = pesosAleatorios;
+		this.qtdEpocasTreinamento = qtdEpocasTreinamento;
+		this.qtdEpocasValidacao = qtdEpocasValidacao;
 	}
 }

@@ -1,7 +1,7 @@
 package br.usp.ia.ep1;
 
 public class LVQ extends Classificador {
-
+	
 	@Override
 	protected RespostaClassificador exec(float[][] dados, boolean ehTreino) {
 		RespostaClassificador resposta = new RespostaClassificador();
@@ -76,8 +76,9 @@ public class LVQ extends Classificador {
 	
 	public LVQ(float[][] dadosTreinamento, float[][] dadosValidacao,
 			float[][] dadosTeste, float txAprend, int qtdNeuronios,
-			boolean pesosAleatorios) {
+			boolean pesosAleatorios, int qtdEpocasTreinamento,
+			int qtdEpocasValidacao) {
 		super(dadosTreinamento, dadosValidacao, dadosTeste, txAprend, qtdNeuronios,
-				pesosAleatorios);
+				pesosAleatorios, qtdEpocasTreinamento, qtdEpocasValidacao);
 	}
 }

@@ -106,8 +106,5 @@ public class LOG {
 			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosEscondidaFinal);
 			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 1)), caminhoPesosFinal);
 		}
-		
-		
-		
 	}
 }
