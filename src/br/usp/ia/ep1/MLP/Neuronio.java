@@ -84,7 +84,19 @@ public class Neuronio {
 	/*Derivada apresentada por Laurene Fausett no livro "Fundamentals of Neural Networks"*/
 	public double DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(double variavel)
 	{
-		return (this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel) * (1 - this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel))); 
+		double valorDeAtivacao = this.FuncaoDeAtivacaoBinariaDeSigmoid(variavel);
+		return (valorDeAtivacao * (1 - valorDeAtivacao)); 
+	}
+	
+	public double FuncaoDeAtivacaoBipolarDeSigmoid(double variavel){
+		return (2 / (1 + Math.exp(variavel * -1))) -1;
+	}
+	
+	/*Derivada apresentada por Laurene Fausett no livro "Fundamentals of Neural Networks"*/
+	public double DerivadaFuncaoDeAtivacaoBipolarDeSigmoid(double variavel)
+	{
+		double valorDeAtivacao = this.FuncaoDeAtivacaoBipolarDeSigmoid(variavel);
+		return  0.5 * (1 + valorDeAtivacao) * (1 - valorDeAtivacao);
 	}
 	
 	public void setTermoDeErro(double valor)
