@@ -1,5 +1,7 @@
 package br.usp.ia.ep1.MLP;
 
+import java.util.Random;
+
 public class Neuronio {
 
 	private double bias;
@@ -51,7 +53,7 @@ public class Neuronio {
 	public void InicializarPesosComValoresAleatorios()
 	{
 		for(int i = 0; i < pesos.length; i++)
-			pesos[i] = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);
+			pesos[i] = this.gerarNumeroAleatorioEmDadoIntervalo(0.5, -0.5);
 	}
 	
 	public void InicializarPesosComZeros()
@@ -62,7 +64,7 @@ public class Neuronio {
 	
 	public void InicializarBiasComValorAleatoro()
 	{
-		this.bias = this.gerarNumeroAleatorioEmDadoIntervalo(1, 0);
+		this.bias = this.gerarNumeroAleatorioEmDadoIntervalo(0.5, -0.5);
 	}
 	
 	public void InicializarComPesosEspecificos(double[] pesos)
@@ -77,7 +79,7 @@ public class Neuronio {
 		
 		for(int i = 0; i < this.pesos.length; i++)
 		{
-			somatorio =+ entrada[i] * this.pesos[i];
+			somatorio += entrada[i] * this.pesos[i];
 		}
 		
 		somatorio += this.bias;
@@ -121,8 +123,10 @@ public class Neuronio {
 		return this.termoDeErro;
 	}
 	
-	private double gerarNumeroAleatorioEmDadoIntervalo(int valorMaximoDesejado, int valorMinimoDesejado)
+	private double gerarNumeroAleatorioEmDadoIntervalo(double valorMaximoDesejado, double valorMinimoDesejado)
 	{
-		return Math.random() * ((valorMaximoDesejado - valorMinimoDesejado) + 1);
+		Random r = new Random();
+		
+		return valorMinimoDesejado + (valorMaximoDesejado - valorMinimoDesejado) * r.nextDouble();
 	}
 }

@@ -11,13 +11,15 @@ import java.util.Scanner;
 
 public class ES {
 
-	public static String[] lerArquivo(String caminho) throws FileNotFoundException {
+	public static String[] lerArquivo(String caminho) throws FileNotFoundException 
+	{
 		List<String> dados = new ArrayList<String>();
 		Scanner s = new Scanner(new File(caminho));
 		while(s.hasNext()) {
 			dados.add(s.nextLine());
 		}
 		s.close();
+		
 		return dados.toArray(new String[0]);
 	}
 	

@@ -179,7 +179,7 @@ public class TreinamentoMLP
 
 				// calcula a correcao para cada peso do neuronio ativo
 				for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
-					correcaoPesoEscondida[j][i] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro() * dados.getDadoEntrada(i);
+					correcaoPesoEscondida[j][i] += this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro() * dados.getDadoEntrada(i);
 
 				correcaoBiasEscondida[j] = this.taxaDeAprendizado * this.mlp.getNeuronioCamadaEscondida(j).getTermoDeErro();
 		}
