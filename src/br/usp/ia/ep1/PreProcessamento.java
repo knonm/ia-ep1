@@ -99,6 +99,26 @@ public class PreProcessamento {
 	
 	// Normalizacao dos dados
 	private void minMaxNormal(float[][] dados, float novoMin, float novoMax) {
+		float difNovo = novoMax - novoMin;
+		float maxColuna = 0;
+		float minColuna = PreProcessamento.valorMaximoAtributo;
+		
+		for(int i = 0; i < dados[0].length-1; i++){
+			for(int j = 0; j < dados.length; j++){ // encontra o maximo e minimo
+				if(dados[j][i] > maxColuna) maxColuna = dados[j][i];
+				if(dados[j][i] < minColuna) minColuna = dados[j][i];
+			}
+			
+			for(int j = 0; j < dados.length; j++){
+				dados[j][i] = (((dados[j][i] - minColuna) / (maxColuna - minColuna)) * difNovo) + novoMin; // formula do minmax
+			}
+			
+			// reseta os valores de minimo e maximo das colunas antes de ir para a proxima coluna
+			maxColuna = 0;
+			minColuna = PreProcessamento.valorMaximoAtributo;
+			
+		}
+		/*
 		float difAnt = PreProcessamento.valorMaximoAtributo - PreProcessamento.valorMinimoAtributo;
 		float difNovo = novoMax - novoMin;
 		
@@ -107,6 +127,7 @@ public class PreProcessamento {
 				dados[i][j] = (((dados[i][j] - PreProcessamento.valorMinimoAtributo) / difAnt) * difNovo) + novoMin;
 			}
 		}
+		*/
 	}
 	
 	private void zScoreNormal(float[][] dados){
