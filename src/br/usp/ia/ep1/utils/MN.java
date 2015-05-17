@@ -196,4 +196,41 @@ public class MN {
 		}
 		return dados;
 	}
+	
+	public static void EscreverRespostaTesteMLP(DadosDeTeste[] resultado, String arquivo) throws IOException {
+		String[] resultadoEscrever = dadosDeTesteParaStringArray(resultado);
+		ES.escreverDadosPulandoLinha(arquivo, resultadoEscrever);
+	}
+	
+	public static String[] dadosDeTesteParaStringArray(DadosDeTeste[] resultado) {
+		String[] resultadoEmString = new String[resultado.length + 3]; // +3 para rotulos
+		String header0 = "Respostas da rede MLP para o conjunto de testes:";
+		String header1 = "CR = Classe Real, CP = Classe Predita, DT = Dados Testados";
+		String header2 = "CR,CP,DT";
+		resultadoEmString[0] = header0;
+		resultadoEmString[1] = header1;
+		resultadoEmString[2] = header2;
+		String[] aux;
+		for (int i = 0; i < resultado.length; i++) {
+			aux = new String[resultado[i].getQuantidadeAtributos() + 2];
+			aux[0] = String.valueOf((int)resultado[i].getClasseReal());
+			aux[1] = "," + String.valueOf((int)resultado[i].getClassePredita());
+			double[] dadosTestados = resultado[i].getDadosDeTeste();
+			for (int y = 0; y < dadosTestados.length; y++) {
+				aux[y+2] = "," + String.valueOf(dadosTestados[y]);
+			}
+			resultadoEmString[i+3] = StringArrayParaSring(aux);
+		}
+		
+		return resultadoEmString;
+	}
+	
+	public static String StringArrayParaSring(String[] array) {
+		StringBuffer resultado = new StringBuffer();
+		for (int i = 0; i < array.length; i++) {
+		   resultado.append( array[i] );
+		}
+		String stringResultante = resultado.toString();
+		return stringResultante;
+	}
 }

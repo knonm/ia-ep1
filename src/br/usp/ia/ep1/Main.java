@@ -57,7 +57,7 @@ public class Main {
 		System.out.println("LOG completo.");
 		
 		System.out.println();
-		System.out.println("Valore resultantes:");
+		System.out.println("Valores resultantes:");
 		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
 		System.out.println("Quantidade de erros: " + rc.getQtdErros());
 		System.out.println("Epocas passadas: " + lvq.epocas);
@@ -106,11 +106,11 @@ public class Main {
 		logMLP.completaLogMLP(respostaMLP.getQtdAcertos(), respostaMLP.getEpocasTreinoRede(), mlp.getCamadaEscondida().length, respostaMLP.getMatrizConfusao(), respostaMLP.getDadosDeTesteMLP());
 		
 		System.out.println("Escrevendo LOG...");
-		//logMLP.escreveLOG();
+		logMLP.escreveLOG();
 		System.out.println("LOG completo.");
 		
 		System.out.println();
-		System.out.println("Valore resultantes:");
+		System.out.println("Valores resultantes:");
 		System.out.println("Quantidade de acertos: " + respostaMLP.getQtdAcertos());
 		System.out.println("Quantidade de erros: " + respostaMLP.getQtdErros());
 		System.out.println("Epocas passadas: " + respostaMLP.getEpocasTreinoRede());

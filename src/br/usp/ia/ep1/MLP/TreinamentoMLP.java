@@ -42,7 +42,7 @@ public class TreinamentoMLP
 		
 		int paradaObrigatorio = 0;
 		
-		System.out.println("INICIANDO TREINAMENTO DA REDE");
+		System.out.println("Iniciando Treinamento da MLP...");
 		System.out.println();
 		
 		while(redeEstaMelhorando)
