@@ -6,6 +6,8 @@ import java.util.Set;
 
 import br.usp.ia.ep1.DescDados;
 import br.usp.ia.ep1.PreProcessamento;
+import br.usp.ia.ep1.MLP.DadosDeEntradaProcessados;
+import br.usp.ia.ep1.MLP.DadosDeTeste;
 
 public class MN {
 	
@@ -165,4 +167,33 @@ public class MN {
 		return desc;
 	}
 
+	/* Metodo que transforma a saida de ES.lerArquivo em um objeto DadosDeEntradaProcessados[] para ser passado para a MLP */
+	public static DadosDeEntradaProcessados[] transformarDadosTreino(String[] linhasArquivo) {
+		DadosDeEntradaProcessados[] dados = new DadosDeEntradaProcessados[linhasArquivo.length];
+		for (int i = 0; i < linhasArquivo.length; i++) {
+			String[] aux = linhasArquivo[i].split(",");
+			double[] dado = new double[aux.length - 1];
+			for (int x = 0; x < aux.length - 1; x++) {
+				dado[x] = Double.valueOf(aux[x]);
+			}
+			double classe = Double.valueOf(aux[aux.length-1]);
+			dados[i] = new DadosDeEntradaProcessados(classe, dado);
+		}
+		return dados;
+	}
+	
+	/* Metodo que transforma a saida de ES.lerArquivo em um objeto DadosDeTeste[] para ser passado para a MLP */
+	public static DadosDeTeste[] transformarDadosTeste(String[] linhasArquivo) {
+		DadosDeTeste[] dados = new DadosDeTeste[linhasArquivo.length];
+		for (int i = 0; i < linhasArquivo.length; i++) {
+			String[] aux = linhasArquivo[i].split(",");
+			double[] dado = new double[aux.length - 1];
+			for (int x = 0; x < aux.length - 1; x++) {
+				dado[x] = Double.valueOf(aux[x]);
+			}
+			double classeReal = Double.valueOf(aux[aux.length-1]);
+			dados[i] = new DadosDeTeste(classeReal, dado);
+		}
+		return dados;
+	}
 }

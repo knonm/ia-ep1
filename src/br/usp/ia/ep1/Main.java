@@ -3,8 +3,11 @@ package br.usp.ia.ep1;
 import java.io.IOException;
 import java.util.Scanner;
 
+import br.usp.ia.ep1.MLP.DadosDeEntradaProcessados;
+import br.usp.ia.ep1.MLP.DadosDeTeste;
+import br.usp.ia.ep1.MLP.EstruturaMLP;
+import br.usp.ia.ep1.MLP.TreinamentoMLP;
 import br.usp.ia.ep1.utils.*;
-import br.usp.ia.ep1.utils.LOG;
 
 public class Main {
 	
@@ -73,5 +76,27 @@ public class Main {
 			}
 			System.out.println();
 		}
+		
+		// MLP
+		txAprend = 0.8F;
+		numNeuroMLP = 2;
+		iniPesos = true;
+		
+		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
+		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 2, iniPesos, 2);
+		//MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, dadosTreino[0].QuantidadeDadosEntrada());
+		
+		DadosDeEntradaProcessados[] dadosTreinoAnd = MN.transformarDadosTreino(ES.lerArquivo("./res/AND.txt"));
+		DadosDeEntradaProcessados[] dadosTreinoOr = MN.transformarDadosTreino(ES.lerArquivo("./res/OR.txt"));
+		DadosDeEntradaProcessados[] dadosTreinoXor = MN.transformarDadosTreino(ES.lerArquivo("./res/XOR.txt"));
+		
+		DadosDeTeste[] dadosTesteAnd = MN.transformarDadosTeste(ES.lerArquivo("./res/AND.txt"));
+		DadosDeTeste[] dadosTesteOr = MN.transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
+		DadosDeTeste[] dadosTesteXor = MN.transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
+		
+		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinoOr, txAprend, iniPesos);
+		treino.Treinar(1000, 10000, dadosTesteOr);
+		
+		mlp.ExecutarRede(dadosTesteAnd);
 	}
 }
