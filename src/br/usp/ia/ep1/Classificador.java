@@ -76,6 +76,7 @@ public abstract class Classificador {
 			}
 		}
 		
+		/* não precisa rodar 1000 vezes com o msm conjunto, o resultado e sempre o msm
 		for(int ind = 0; ind < 1000; ind++) {
 			rc = this.exec(this.dadosTeste, false);
 			qtdAcertos += rc.getQtdAcertos();
@@ -84,6 +85,16 @@ public abstract class Classificador {
 				for(int j = matrizConfusao[i].length-1; j > -1; j--) {
 					matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
 				}
+			}
+		}
+		*/
+		
+		rc = this.exec(this.dadosTeste, false);
+		qtdAcertos += rc.getQtdAcertos();
+		qtdErros += rc.getQtdErros();
+		for(int i = matrizConfusao.length-1; i > -1; i--) {
+			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+				matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
 			}
 		}
 		

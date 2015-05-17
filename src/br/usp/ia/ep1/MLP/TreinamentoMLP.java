@@ -56,6 +56,12 @@ public class TreinamentoMLP
 					this.executarTreino(dado);
 								
 				epocasExecutadas++;
+				
+				System.out.println("Epocas executadas: " + epocasExecutadas);
+				System.out.println("Taxa de aprendizado: " + this.taxaDeAprendizado);
+				System.out.println("Taxa de erro: " + errosTreinamentoDaRedeAtual(teste).getQtdErros());
+				System.out.println("Taxa de erro quadrado: ");
+				System.out.println();
 			}
 			
 			rc = errosTreinamentoDaRedeAtual(validacao);
@@ -76,11 +82,7 @@ public class TreinamentoMLP
 
 			paradaObrigatorio++;
 			
-			System.out.println("Epocas executadas: " + epocasExecutadas);
-			System.out.println("Taxa de aprendizado: " + this.taxaDeAprendizado);
-			System.out.println("Taxa de erro: " + errosTreinamentoDaRedeAtual(teste));
-			System.out.println("Taxa de erro quadrado: ");
-			System.out.println();
+
 			
 			if(paradaObrigatorio >= 20)
 				redeEstaMelhorando = false;
