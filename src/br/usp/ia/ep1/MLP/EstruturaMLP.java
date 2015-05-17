@@ -1,9 +1,11 @@
 package br.usp.ia.ep1.MLP;
+import br.usp.ia.ep1.*;
 
 public class EstruturaMLP {
 	
 	private Neuronio[] camadaEscondida;
 	private Neuronio[] camadaDeSaida;
+	private int qtdEpocaTreino = 0;
 
 	public EstruturaMLP(){ }
 	
@@ -104,14 +106,23 @@ public class EstruturaMLP {
 		return this.camadaEscondida[0].DerivadaFuncaoDeAtivacaoBinariaDeSigmoid(valor);
 	}
 	
-	public int ExecutarRede(DadosDeTeste[] dados)
+	public RespostaClassificador ExecutarRede(DadosDeTeste[] dados)
 	{
 		double[] saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
-		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];		
+		double[] saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
+		RespostaClassificador resposta = new RespostaClassificador();
+		int qtdAcertos = 0;
+		int qtdErros = 0;
+		
+		int[][] matrizConfusao = new int[PreProcessamento.valorMaximoClasse + 1][PreProcessamento.valorMaximoClasse + 1];
+		
+		for(int i = matrizConfusao.length-1; i > -1; i--) {
+			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
+				matrizConfusao[i][j] = 0;
+			}
+		}
 		
 		for (int i = 0; i < dados.length; i++) {
-			
-			System.out.print("Classe Real: " + dados[i].getClasseReal() + " Classe Predita: ");
 			
 			saidasCamEscondida = new double[this.getTamanhoCamadaEscondida()];
 			saidasCamSaida = new double[this.getTamanhoCamadaSaida()];
@@ -122,29 +133,30 @@ public class EstruturaMLP {
 				saidasCamEscondida[j] += this.ExecutarFeedFowardCamadaEscondida(dados[i], j).getOutput();
 			}
 			
-			//Realiza feedFoward na camada de sa�da
+			//Realiza feedFoward na camada de saída
 			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) 
 			{
 				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
 			}	
 
 			dados[i].setClassePredita(extrairMaiorValorDoArray(saidasCamSaida));
+			matrizConfusao[(int)dados[i].getClasseReal()][(int)dados[i].getClassePredita()]++;
 			
-			System.out.println(extrairMaiorValorDoArray(saidasCamSaida));
-			//System.out.println();
+			if (dados[i].getClasseReal() == dados[i].getClassePredita()) {
+				qtdAcertos++;				
+			} else {
+				qtdErros++;
+			}
+			
 		}
-		/*
-		 * ANTIGO MÉTODO AQUI QUE REESCREVI
-		for(int i = 0; i < this.getTamanhoCamadaEscondida(); i++)
-			for(int j = 0; j < dados.length; j++)
-				saidasCamEscondida[i] += this.ExecutarFeedFowardCamadaEscondida(dados[j], i).getOutput();
-				
-		for(int i = 0; i < this.getTamanhoCamadaSaida(); i++) {
-			saidasCamSaida[i] = this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, i).getOutput();
-			System.out.println(saidasCamSaida[i]);
-		}
-		*/
-		return extrairMaiorValorDoArray(saidasCamSaida);
+		resposta.setDadosDeTesteMLP(dados);
+		resposta.setMatrizConfusao(new MatrizConfusao(matrizConfusao));
+		resposta.setQtdAcertos(qtdAcertos);
+		resposta.setQtdErros(qtdErros);
+		resposta.setErroQuadrado(qtdAcertos - qtdErros);
+		resposta.setEpocasTreinoRede(qtdEpocaTreino);
+		
+		return resposta;
 	}
 	
 	public int extrairMaiorValorDoArray(double[] saidas)
@@ -257,5 +269,13 @@ public class EstruturaMLP {
 			resposta[i] = entrada[i].getOutput();
 		
 		return resposta;
+	}
+
+	public int getQtdEpocaTreino() {
+		return qtdEpocaTreino;
+	}
+
+	public void setQtdEpocaTreino(int qtdEpocaTreino) {
+		this.qtdEpocaTreino = qtdEpocaTreino;
 	}
 }

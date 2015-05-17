@@ -80,6 +80,7 @@ public class TreinamentoMLP
 			if(paradaObrigatorio >= 20)
 				redeEstaMelhorando = false;
 		}
+		mlp.setQtdEpocaTreino(epocasExecutadas);
 	}
 	
 	private double errosTreinamentoDaRedeAtual(DadosDeTeste[] entradas)

@@ -3,6 +3,7 @@ package br.usp.ia.ep1.utils;
 import java.io.IOException;
 
 import br.usp.ia.ep1.MatrizConfusao;
+import br.usp.ia.ep1.MLP.DadosDeTeste;
 
 public class LOG {
 	private int versao;
@@ -17,6 +18,7 @@ public class LOG {
 	private float txAprendInicial;
 	private float txAprendFinal;
 	private MatrizConfusao matrizC;
+	private DadosDeTeste[] dadosDeTesteMLP;
 	
 	private static final int LVQ = 0;
 	private static final int MLP = 1;
@@ -42,6 +44,14 @@ public class LOG {
 		if(this.tipo == "MLP"){
 			this.qtdNeuroniosCamadaOculta = qtdNeuroniosCamadaOculta;
 		}
+	}
+	
+	public void completaLogMLP(int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, MatrizConfusao matrizC, DadosDeTeste[] dados){
+		this.qtdAcertos = qtdAcertos;
+		this.qtdEpocas = qtdEpocas;
+		this.matrizC = matrizC;
+		this.dadosDeTesteMLP = dados;
+		this.qtdNeuroniosCamadaOculta = qtdNeuroniosCamadaOculta;
 	}
 	
 	public void escreveLOG() throws IOException{

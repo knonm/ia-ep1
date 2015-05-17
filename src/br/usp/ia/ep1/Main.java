@@ -81,27 +81,52 @@ public class Main {
 		txAprend = 0.5F;
 		numNeuroMLP = 20;
 		iniPesos = true;
-
-		//MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, dadosTreino[0].QuantidadeDadosEntrada());
 		
 		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
 		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
 		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
 		
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
+		System.out.println("Instanciando MLP...");
 		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 10, iniPesos, dadosTreinamentoProcessados[0].QuantidadeDadosEntrada());
 		
-		//DadosDeEntradaProcessados[] dadosTreinoAnd = MN.transformarDadosTreino(ES.lerArquivo("./res/AND.txt"));
-		//DadosDeEntradaProcessados[] dadosTreinoOr = MN.transformarDadosTreino(ES.lerArquivo("./res/OR.txt"));
-		//DadosDeEntradaProcessados[] dadosTreinoXor = MN.transformarDadosTreino(ES.lerArquivo("./res/XOR.txt"));
-		
-		//DadosDeTeste[] dadosTesteAnd = MN.transformarDadosTeste(ES.lerArquivo("./res/AND.txt"));
-		//DadosDeTeste[] dadosTesteOr = MN.transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
-		//DadosDeTeste[] dadosTesteXor = MN.transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
-		
+		System.out.println("Comecando treinamento MLP...");
 		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
 		treino.Treinar(10, 100, dadosTesteProcessados, dadosValidacaoProcessados);
 		
-		mlp.ExecutarRede(dadosTesteProcessados);
+		System.out.println("Treinamento concluido.");
+		System.out.println();
+		System.out.println("Testando resultado...");
+		LOG logMLP = new LOG(0, qntEpocasValidacao, qntEpocasTotais, numNeuroMLP, txAprend, 1);
+		RespostaClassificador respostaMLP = mlp.ExecutarRede(dadosTesteProcessados);
+		
+		System.out.println("Teste completo.");
+		System.out.println();
+		System.out.println("Iniciando LOG...");
+		logMLP.completaLogMLP(respostaMLP.getQtdAcertos(), respostaMLP.getEpocasTreinoRede(), mlp.getCamadaEscondida().length, respostaMLP.getMatrizConfusao(), respostaMLP.getDadosDeTesteMLP());
+		
+		System.out.println("Escrevendo LOG...");
+		//logMLP.escreveLOG();
+		System.out.println("LOG completo.");
+		
+		System.out.println();
+		System.out.println("Valore resultantes:");
+		System.out.println("Quantidade de acertos: " + respostaMLP.getQtdAcertos());
+		System.out.println("Quantidade de erros: " + respostaMLP.getQtdErros());
+		System.out.println("Epocas passadas: " + respostaMLP.getEpocasTreinoRede());
+		
+		System.out.println();
+		System.out.println("Matriz confusao: ");
+		
+		System.out.println("	9	8	7	6	5	4	3	2	1	0");
+		
+		for(int i = respostaMLP.getMatrizConfusao().getMatrizConfusao().length-1; i > -1; i--) {
+			System.out.print(i);
+			for(int j = respostaMLP.getMatrizConfusao().getMatrizConfusao()[i].length-1; j > -1; j--) {
+				System.out.print("	"+respostaMLP.getMatrizConfusao().getMatrizConfusao()[i][j]);
+			}
+			System.out.println();
+		}
+		
 	}
 }

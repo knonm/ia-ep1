@@ -1,5 +1,7 @@
 package br.usp.ia.ep1;
 
+import br.usp.ia.ep1.MLP.DadosDeTeste;
+
 public class RespostaClassificador {
 
 	private float[][] dados;
@@ -8,6 +10,8 @@ public class RespostaClassificador {
 	private float erroQuadrado;
 	private float txAprend;
 	private MatrizConfusao matrizConfusao;
+	private DadosDeTeste[] dadosDeTesteMLP;
+	private int epocasTreinoRede;
 	
 	public float[][] getDados() {
 		return dados;
@@ -55,5 +59,21 @@ public class RespostaClassificador {
 
 	public void setMatrizConfusao(MatrizConfusao matrizConfusao) {
 		this.matrizConfusao = matrizConfusao;
+	}
+
+	public DadosDeTeste[] getDadosDeTesteMLP() {
+		return dadosDeTesteMLP;
+	}
+
+	public void setDadosDeTesteMLP(DadosDeTeste[] dadosDeTesteMLP) {
+		this.dadosDeTesteMLP = dadosDeTesteMLP;
+	}
+
+	public int getEpocasTreinoRede() {
+		return epocasTreinoRede;
+	}
+
+	public void setEpocasTreinoRede(int epocasTreinoRede) {
+		this.epocasTreinoRede = epocasTreinoRede;
 	}
 }
