@@ -78,25 +78,30 @@ public class Main {
 		}
 		
 		// MLP
-		txAprend = 0.8F;
-		numNeuroMLP = 2;
+		txAprend = 0.5F;
+		numNeuroMLP = 20;
 		iniPesos = true;
-		
-		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
-		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 2, iniPesos, 2);
+
 		//MLP = new EstruturaMLP(nCamadaEscondida, nCamadaSaida, inicializacaoAleatoria, dadosTreino[0].QuantidadeDadosEntrada());
 		
-		DadosDeEntradaProcessados[] dadosTreinoAnd = MN.transformarDadosTreino(ES.lerArquivo("./res/AND.txt"));
-		DadosDeEntradaProcessados[] dadosTreinoOr = MN.transformarDadosTreino(ES.lerArquivo("./res/OR.txt"));
-		DadosDeEntradaProcessados[] dadosTreinoXor = MN.transformarDadosTreino(ES.lerArquivo("./res/XOR.txt"));
+		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
+		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
+		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
 		
-		DadosDeTeste[] dadosTesteAnd = MN.transformarDadosTeste(ES.lerArquivo("./res/AND.txt"));
-		DadosDeTeste[] dadosTesteOr = MN.transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
-		DadosDeTeste[] dadosTesteXor = MN.transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
+		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
+		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 10, iniPesos, dadosTreinamentoProcessados[0].QuantidadeDadosEntrada());
 		
-		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinoOr, txAprend, iniPesos);
-		treino.Treinar(1000, 10000, dadosTesteOr);
+		//DadosDeEntradaProcessados[] dadosTreinoAnd = MN.transformarDadosTreino(ES.lerArquivo("./res/AND.txt"));
+		//DadosDeEntradaProcessados[] dadosTreinoOr = MN.transformarDadosTreino(ES.lerArquivo("./res/OR.txt"));
+		//DadosDeEntradaProcessados[] dadosTreinoXor = MN.transformarDadosTreino(ES.lerArquivo("./res/XOR.txt"));
 		
-		mlp.ExecutarRede(dadosTesteAnd);
+		//DadosDeTeste[] dadosTesteAnd = MN.transformarDadosTeste(ES.lerArquivo("./res/AND.txt"));
+		//DadosDeTeste[] dadosTesteOr = MN.transformarDadosTeste(ES.lerArquivo("./res/OR.txt"));
+		//DadosDeTeste[] dadosTesteXor = MN.transformarDadosTeste(ES.lerArquivo("./res/XOR.txt"));
+		
+		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
+		treino.Treinar(10, 100, dadosTesteProcessados, dadosValidacaoProcessados);
+		
+		mlp.ExecutarRede(dadosTesteProcessados);
 	}
 }

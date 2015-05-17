@@ -33,7 +33,7 @@ public class TreinamentoMLP
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
-	public void Treinar(int quantidadeTreinos, int maximoFracassos, DadosDeTeste[] teste)
+	public void Treinar(int quantidadeTreinos, int maximoFracassos, DadosDeTeste[] teste, DadosDeTeste[] validacao)
 	{
 		int epocasExecutadas = 0;
 		int fracassosAteAqui = 0;
@@ -55,12 +55,12 @@ public class TreinamentoMLP
 				epocasExecutadas++;
 			}
 			
-/*			errosAtuais = errosTreinamentoDaRedeAtual(validacao);
+			errosAtuais = errosTreinamentoDaRedeAtual(validacao);
 			
 			if(errosAtuais < melhorResultado)
 			{
 				melhorResultado = errosAtuais;
-				backupMLP = this.mlp.ClonarRede();
+				backupMLP = this.mlp.ClonarRede(mlp);
 				fracassosAteAqui = 0;
 			}
 			else
@@ -68,9 +68,7 @@ public class TreinamentoMLP
 			
 			if(fracassosAteAqui >= maximoFracassos)
 				redeEstaMelhorando = false;
-			
-			*/
-			
+
 			paradaObrigatorio++;
 			
 			System.out.println("Epocas executadas: " + epocasExecutadas);
@@ -82,9 +80,6 @@ public class TreinamentoMLP
 			if(paradaObrigatorio >= 20)
 				redeEstaMelhorando = false;
 		}
-		
-		
-		
 	}
 	
 	private double errosTreinamentoDaRedeAtual(DadosDeTeste[] entradas)
