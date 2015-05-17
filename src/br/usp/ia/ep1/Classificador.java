@@ -59,12 +59,6 @@ public abstract class Classificador {
 			if(((int)Math.random())%2 == 0) {
 				swapAleatorio(dadosTreinamento, dadosValidacao);
 			}
-			if(((int)Math.random())%2 == 0) {
-				swapAleatorio(dadosTreinamento, dadosTeste);
-			}
-			if(((int)Math.random())%2 == 0) {
-				swapAleatorio(dadosValidacao, dadosTeste);
-			}
 			qtdItera++;
 		}
 	}
@@ -91,20 +85,12 @@ public abstract class Classificador {
 					matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
 				}
 			}
-			this.aleatorizaDados(10000);
 		}
 		
 		rc = new RespostaClassificador();
 		rc.setQtdAcertos(qtdAcertos);
 		rc.setQtdErros(qtdErros);
-		
-//		for(int i = matrizConfusao.length-1; i > -1; i--) {
-//			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
-//				matrizConfusao[i][j] /= 1000;
-//			}
-//		}
-		
-		rc.setMatrizConfusao(new MatrizConfusao(matrizConfusao));
+		rc.setMatrizConfusao(new MatrizConfusao(matrizConfusao, 1000));
 		
 		return rc;
 	}
@@ -165,6 +151,9 @@ public abstract class Classificador {
 					pesos = this.pesos.clone();
 					epocasTreina = 0;
 					acertosAnterior = respostaValida.getQtdAcertos();
+					if(respostaValida.getErroQuadrado() > 0.9F) {
+						epocasTreina = this.qtdEpocasTreinamento;
+					}
 				}else{
 					epocasTreina++;
 				}

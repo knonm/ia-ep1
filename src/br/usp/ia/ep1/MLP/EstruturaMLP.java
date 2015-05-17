@@ -113,6 +113,8 @@ public class EstruturaMLP {
 		RespostaClassificador resposta = new RespostaClassificador();
 		int qtdAcertos = 0;
 		int qtdErros = 0;
+		int resultadoEsperado;
+		double erroQuadrado = 0;
 		
 		int[][] matrizConfusao = new int[PreProcessamento.valorMaximoClasse + 1][PreProcessamento.valorMaximoClasse + 1];
 		
@@ -137,6 +139,13 @@ public class EstruturaMLP {
 			for (int j = 0; j < this.getTamanhoCamadaSaida(); j++) 
 			{
 				saidasCamSaida[j] += this.ExecutarFeedFowardCamadaSaida(saidasCamEscondida, j).getOutput();
+				
+				if(dados[i].getClasseReal() == j)
+					resultadoEsperado = 1;
+				else
+					resultadoEsperado = 0;
+				
+				erroQuadrado += (resultadoEsperado - saidasCamSaida[j]) * (resultadoEsperado - saidasCamSaida[j]);
 			}	
 
 			dados[i].setClassePredita(extrairMaiorValorDoArray(saidasCamSaida));
@@ -153,7 +162,7 @@ public class EstruturaMLP {
 		resposta.setMatrizConfusao(new MatrizConfusao(matrizConfusao));
 		resposta.setQtdAcertos(qtdAcertos);
 		resposta.setQtdErros(qtdErros);
-		resposta.setErroQuadrado(qtdAcertos - qtdErros);
+		resposta.setErroQuadrado((float) erroQuadrado);
 		resposta.setEpocasTreinoRede(qtdEpocaTreino);
 		
 		return resposta;

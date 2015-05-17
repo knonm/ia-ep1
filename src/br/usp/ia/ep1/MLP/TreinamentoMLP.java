@@ -1,5 +1,7 @@
 package br.usp.ia.ep1.MLP;
 
+import br.usp.ia.ep1.RespostaClassificador;
+
 public class TreinamentoMLP 
 {
 	private DadosDeEntradaProcessados[] entrada;
@@ -35,6 +37,7 @@ public class TreinamentoMLP
 	
 	public void Treinar(int quantidadeTreinos, int maximoFracassos, DadosDeTeste[] teste, DadosDeTeste[] validacao)
 	{
+		RespostaClassificador rc;
 		int epocasExecutadas = 0;
 		int fracassosAteAqui = 0;
 		double errosAtuais = 0;
@@ -55,7 +58,8 @@ public class TreinamentoMLP
 				epocasExecutadas++;
 			}
 			
-			errosAtuais = errosTreinamentoDaRedeAtual(validacao);
+			rc = errosTreinamentoDaRedeAtual(validacao);
+			errosAtuais = rc.getQtdErros()/validacao.length;
 			
 			if(errosAtuais < melhorResultado)
 			{
@@ -66,7 +70,8 @@ public class TreinamentoMLP
 			else
 				fracassosAteAqui++;
 			
-			if(fracassosAteAqui >= maximoFracassos)
+			if(fracassosAteAqui >= maximoFracassos ||
+					rc.getErroQuadrado() > 0.2)
 				redeEstaMelhorando = false;
 
 			paradaObrigatorio++;
@@ -83,19 +88,20 @@ public class TreinamentoMLP
 		mlp.setQtdEpocaTreino(epocasExecutadas);
 	}
 	
-	private double errosTreinamentoDaRedeAtual(DadosDeTeste[] entradas)
+	private RespostaClassificador errosTreinamentoDaRedeAtual(DadosDeTeste[] entradas)
 	{
-		double erros = 0;		
-		double tentativas = entradas.length;
+		int erros = 0;
 		
-		this.mlp.ExecutarRede(entradas);
+		RespostaClassificador rc = this.mlp.ExecutarRede(entradas);
 		
 		for(DadosDeTeste entrada : entradas)
 		{
 			if(!entrada.ClassePreditaEhIgualAClasseEncontrada())
 				erros++;
-		}		
-		return erros/tentativas;
+		}
+		
+		rc.setQtdErros(erros);
+		return rc;
 	}
 	
 	//Método que executa o treino da rede para cada epoca corrente no método Treinar()
@@ -120,7 +126,7 @@ public class TreinamentoMLP
 	{
 		int tamanhoCamEscondida = this.mlp.getTamanhoCamadaEscondida();
 		int tamanhoCamSaida = this.mlp.getTamanhoCamadaSaida();
-				
+		
 		//Equivale ao target pattern, Tk, especificado no livro de Laurene Fausett, "Fundamentals of Neural Networks"
 		double resultadoEsperado;
 
@@ -197,6 +203,6 @@ public class TreinamentoMLP
 			
 			for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
 				this.mlp.getNeuronioCamadaEscondida(j).setPeso(i, this.mlp.getNeuronioCamadaEscondida(j).getPeso(i) + correcaoPesoEscondida[j][i]);
-		}	
+		}
 	}
 }

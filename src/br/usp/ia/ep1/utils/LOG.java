@@ -126,4 +126,10 @@ public class LOG {
 			MN.EscreverRespostaTesteMLP(dadosDeTesteMLP, caminhoRespostasTeste);
 		}
 	}
+	
+	public void escreveLogRelatorio(boolean iniAleatoria) throws IOException {
+		String caminho = ("./out/"+this.tipo+".out");
+		String aux = iniAleatoria + "," + this.txAprendInicial + "," + this.qtdNeuroniosCamadaOculta + "," + this.qtdEpocas + "," + this.matrizC.getAcuracia() + "," + this.matrizC.getErro();
+		ES.escreverDadoAppend(caminho, aux);
+	}
 }

@@ -59,4 +59,10 @@ public class ES {
 		bw.close();
 	}
 	
+	public static void escreverDadoAppend(String caminho, String dado) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(caminho),true));
+		bw.write(dado);
+		bw.write(System.getProperty("line.separator"));
+		bw.close();
+	}
 }

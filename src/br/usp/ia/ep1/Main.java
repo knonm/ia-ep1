@@ -15,7 +15,7 @@ public class Main {
 		System.out.println("Iniciando procedimentos...");
 		//Scanner sc = new Scanner(System.in);
 		Scanner sc = new Scanner("out/treino.csv out/valida.csv out/teste.csv"
-				+ " 0,0000001 50 1 false");
+				+ " 0,2 50 1 false"); // 0,0000001
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -92,7 +92,7 @@ public class Main {
 		
 		System.out.println("Comecando treinamento MLP...");
 		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
-		treino.Treinar(10, 100, dadosTesteProcessados, dadosValidacaoProcessados);
+		treino.Treinar(1000, 100, dadosTesteProcessados, dadosValidacaoProcessados);
 		
 		System.out.println("Treinamento concluido.");
 		System.out.println();

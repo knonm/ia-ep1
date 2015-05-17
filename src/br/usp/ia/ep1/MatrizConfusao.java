@@ -10,6 +10,8 @@ public class MatrizConfusao {
 	private Integer acuracia;
 	private Integer erro;
 	
+	private int qtdExec;
+	
 	public float getTaxaVerdadeiros(int classe) {
 		if(this.taxaVerdadeiros == null) {
 			this.taxaVerdadeiros = new float[this.matrizConfusao.length];
@@ -116,5 +118,11 @@ public class MatrizConfusao {
 	
 	public MatrizConfusao(int[][] matrizConfusao) {
 		this.matrizConfusao = matrizConfusao;
+		qtdExec = 1;
+	}
+	
+	public MatrizConfusao(int[][] matrizConfusao, int qtdExec) {
+		this.matrizConfusao = matrizConfusao;
+		this.qtdExec = qtdExec;
 	}
 }

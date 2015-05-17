@@ -53,7 +53,7 @@ public class LVQ extends Classificador {
 		}
 		
 		resposta.setDados(dados);
-		resposta.setErroQuadrado(qtdAcertos - qtdErros);
+		resposta.setErroQuadrado(qtdAcertos/(qtdAcertos+qtdErros));
 		resposta.setQtdAcertos(qtdAcertos);
 		resposta.setQtdErros(qtdErros);
 		resposta.setTxAprend(super.txAprend);
