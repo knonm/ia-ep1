@@ -122,12 +122,6 @@ public class Main {
 		sc.close();
 		
 		System.out.println();
-		
-		for (txAprend = 0.05F; txAprend <= 1.0F; txAprend = txAprend + 0.05F) {			
-			for (int i = 0; i <= 1; i++) {
-				if (i == 0) iniPesos = true;
-				if (i == 1) iniPesos = false;
-		
 		new PreProcessamento(new String[] { Main.DIR_RESOURCE + "optdigits.tra", Main.DIR_RESOURCE + "optdigits.tes" },
 				new String[] { nmArqTreino, nmArqValida, nmArqTeste },
 				new float[] { 0.6F, 0.2F, 0.2F });
@@ -135,16 +129,20 @@ public class Main {
 		float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
 		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
 		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
-
-		executarLVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos, qntEpocasTotais, qntEpocasValidacao);
-		
-		for (numNeuroMLP = 2; numNeuroMLP <= 50; numNeuroMLP = numNeuroMLP + 2) {
 		
 		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
 		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
 		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
 		
-		// MLP
+		for (txAprend = 0.05F; txAprend <= 1.0F; txAprend = txAprend + 0.05F) {			
+			for (int i = 0; i <= 1; i++) {
+				if (i == 0) iniPesos = true;
+				if (i == 1) iniPesos = false;
+				
+		executarLVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos, qntEpocasTotais, qntEpocasValidacao);
+		
+		for (numNeuroMLP = 2; numNeuroMLP <= 16; numNeuroMLP = numNeuroMLP + 2) {
+		
 		executarMLP(dadosTreinamentoProcessados, dadosValidacaoProcessados, dadosTesteProcessados, 
 				txAprend, numNeuroMLP, iniPesos, qntEpocasTotais, qntEpocasValidacao);
 		
