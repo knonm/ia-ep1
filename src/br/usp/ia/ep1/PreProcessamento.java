@@ -34,26 +34,10 @@ public class PreProcessamento {
 	
 	public float[][][] dados;
 	
-	/*
-	 * Esse eh um dos requisitos desejaveis do pre-processamento
-	 * Selecao de Atributos
-	 * Usar arvore de decisao (?) - Entropia
-	 * Attribute Subset Selection
-	 * Bom link: http://www.public.asu.edu/~huanliu/papers/tkde05.pdf
-	*/
-	
-	private float[][] SelecionarAtributos(float[][] dados) {
-		return null;
-	}
-	
-	/*
-	 * Exclusao de atributos desnecessarios
-	 * Precisa dar uma ajeitada nisso aqui
-	 * Comeca a iterar partir da segunda dimensao da matriz, nao ficou mto bom
-	 */
+	/* Esclui o atributo se 90% dos valores dele forem iguais  */
 	private float[][] excluirAtrib(float[][] dados) {
 		float[] qtdVlr;
-		float limite = dados.length * 0.9F;
+		float limite = dados.length * 0.9F; // Determina o limite
 		boolean ehAtribOk;
 		List<Integer> atribsOk = new ArrayList<Integer>();
 		float[][] novosDados;
@@ -97,73 +81,67 @@ public class PreProcessamento {
 		return novosDados;
 	}
 	
-	// Normalizacao dos dados
+	/* NORMALIZAÇÃO */
+	
+	/* Estratégia MinMax, onde os dados ficam determinado entre os valores passados como parametro, iterando
+	por colunas, mantendo a proporção para o arquivo todo */
 	private void minMaxNormal(float[][] dados, float novoMin, float novoMax) {
 		float difNovo = novoMax - novoMin;
 		float maxColuna = 0;
 		float minColuna = PreProcessamento.valorMaximoAtributo;
 		
 		for(int i = 0; i < dados[0].length-1; i++){
-			for(int j = 0; j < dados.length; j++){ // encontra o maximo e minimo
+			for(int j = 0; j < dados.length; j++){ // Encontra o máximo e mínimo.
 				if(dados[j][i] > maxColuna) maxColuna = dados[j][i];
 				if(dados[j][i] < minColuna) minColuna = dados[j][i];
 			}
 			
 			for(int j = 0; j < dados.length; j++){
-				dados[j][i] = (((dados[j][i] - minColuna) / (maxColuna - minColuna)) * difNovo) + novoMin; // formula do minmax
+				dados[j][i] = (((dados[j][i] - minColuna) / (maxColuna - minColuna)) * difNovo) + novoMin; // Formula do MinMax.
 			}
 			
-			// reseta os valores de minimo e maximo das colunas antes de ir para a proxima coluna
+			// Reseta os valores de mínimo e máximo das colunas antes de ir para a próxima coluna.
 			maxColuna = 0;
 			minColuna = PreProcessamento.valorMaximoAtributo;
 			
 		}
-		/*
-		float difAnt = PreProcessamento.valorMaximoAtributo - PreProcessamento.valorMinimoAtributo;
-		float difNovo = novoMax - novoMin;
-		
-		for(int i = dados.length-1; i > -1; i--) {
-			for(int j = dados[i].length-2; j > -1; j--) {
-				dados[i][j] = (((dados[i][j] - PreProcessamento.valorMinimoAtributo) / difAnt) * difNovo) + novoMin;
-			}
-		}
-		*/
 	}
 	
+	/* Estratédia de zScore, iterando por colunas */
 	private void zScoreNormal(float[][] dados){
-		for(int i = 0; i < dados[0].length-1; i++){ // caminha todas as colunas menos a de classes
+		for(int i = 0; i < dados[0].length-1; i++){ // Caminha todas as colunas menos a de classes.
 			double media = 0;
-			for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
+			for(int j = 0; j < dados.length; j++){ // Pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis.
 				media += dados[j][i];
-			} media /= dados.length; // soma todos os valores reais e divide pelo total ( media )
+			} media /= dados.length; // Soma todos os valores reais e divide pelo total (média).
 						
 			double variancia = 0;
 			if(media != 0){
-				for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
+				for(int j = 0; j < dados.length; j++){ // Pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis.
 					variancia = variancia + ((dados[j][i]-media) * (dados[j][i]-media));
-				} variancia = Math.sqrt(variancia / (dados.length-1)); // acha a variancia ( Somatoria[valor-media^2] / (total de dados - 1))
+				} variancia = Math.sqrt(variancia / (dados.length-1)); // Acha a variancia (Somatoria[valor-media^2] / (total de dados - 1)).
 			}
 			
-			for(int j = 0; j < dados.length; j++){ // pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis
-				if(media != 0)	dados[j][i] = (float) ((dados[j][i] - media)/variancia); // zScore = (valor-media)/variancia
+			for(int j = 0; j < dados.length; j++){ // Pega todos os valores de "i" , por isso percorre e a coluna e não as variaveis.
+				if(media != 0)	dados[j][i] = (float) ((dados[j][i] - media)/variancia); // zScore = (valor-media)/variancia.
 			}
 		}		
 	}
 	
-	// Preprocessamento dos dados obtidos apos a leitura do arquivo
+	/* Método que Pré-Processa os dados, chamando os algoritimos auxiliares */
 	private float[][][] processarDados(String[] dados, float[] porcentagem) throws FileNotFoundException {
 		float[][] dadosCrus = MN.transformarArrayStringParaFloat(dados, PreProcessamento.CHR_DELIMIT);
-		dadosCrus = excluirAtrib(dadosCrus);
+		dadosCrus = excluirAtrib(dadosCrus); // Exclui os atributos sem importancia.
 		
-		//zScoreNormal(dadosCrus);
-		minMaxNormal(dadosCrus, -1, 1);
+		//zScoreNormal(dadosCrus); // Faz o zScore.
+		minMaxNormal(dadosCrus, -1, 1); // Faz o MinMax.
 		
-		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem);
+		float[][][] dadosParticionados = particaoBalanceada(dadosCrus, porcentagem); // Particiona os dados nos conjuntos, seguindo a determinada porcentagem.
 		        
 		return dadosParticionados;
 	}
 	
-	//Particao balanceada de arquivos
+	/* Particiona os dados seguindo a determinada porcentagem */
 	private float[][][] particaoBalanceada(float[][] dados, float[] porcentagem){
 		float[][][] dadosSeparados = new float[porcentagem.length][][]; // instancia a matriz tridimencional que vai amazenar os [arquivos][numero][atributos]
 		
@@ -175,32 +153,32 @@ public class PreProcessamento {
 			quantidadeClasse[aux]++;
 		}
                 
-		/* \/\/\/\/\/\/\/\/\/\/ NAO FUTUCA NISSO AQUI QUE VAI DA MERDA \/\/\/\/\/\/\/\/\/\/ */
-		int [][] quantidadesFinais = new int [3][10]; // array que contem quanto pode ter de cada atributo em cada arquivo
-		for (int i = 0; i < quantidadesFinais[0].length; i++){ // contas para determinar a quantidade de valores para cada arquivo
+		/* \/\/\/\/\/\/\/\/\/\/ CALCULOS IMPORTANTES \/\/\/\/\/\/\/\/\/\/ */
+		int [][] quantidadesFinais = new int [3][10]; // Array que contem quanto pode ter de cada atributo em cada arquivo.
+		for (int i = 0; i < quantidadesFinais[0].length; i++){ // Contas para determinar a quantidade de valores para cada arquivo.
 			quantidadesFinais[0][i] = (int) Math.round(quantidadeClasse[i]*porcentagem[0]);
 			quantidadesFinais[1][i] = quantidadeClasse[i] - quantidadesFinais[0][i] - (int) Math.round(quantidadeClasse[i]*porcentagem[2]);
 			quantidadesFinais[2][i] = quantidadeClasse[i] - quantidadesFinais[1][i] - quantidadesFinais[0][i];
 		}
-		/* /\/\/\/\/\/\/\/\/\/\ NAO FUTUCA NISSO AQUI QUE VAI DA MERDA /\/\/\/\/\/\/\/\/\/\ */
+		/* /\/\/\/\/\/\/\/\/\/\ CALCULOS IMPORTANTES /\/\/\/\/\/\/\/\/\/\ */
 	
-		// instanciando a matriz bidimensional de dados para cada arquivo
+		/* Instanciando a matriz bidimensional de dados para cada arquivo */ 
 		dadosSeparados[0] = new float[(int) Math.floor(quantidadeTotal*porcentagem[0])][dados[0].length];
 		dadosSeparados[1] = new float[(int) Math.floor(quantidadeTotal*porcentagem[1])][dados[0].length];
 		dadosSeparados[2] = new float[(int) Math.floor(quantidadeTotal*porcentagem[2])][dados[0].length];
 		
-		int[] posicoes = new int[3]; // array auxiliar que armazena quanto cada arquivo ja tem dentro dele
+		int[] posicoes = new int[3]; // Array auxiliar que armazena quanto cada arquivo ja tem dentro dele.
 		
-		for (int i = 0; i < dados.length; i++){ // percorre todos os dados
+		for (int i = 0; i < dados.length; i++){ // Percorre todos os dados.
 		
-			int aux = (int) dados[i][dados[i].length-1]; // valor da classe
+			int aux = (int) dados[i][dados[i].length-1]; // Valor da classe.
      
 			for (int j = 0; j < dadosSeparados.length; j++){
-				if(quantidadesFinais[j][aux] != 0 && posicoes[j] < Math.floor(quantidadeTotal*porcentagem[j])){ // ve se ja foram todos que devem ser no arquivo de treino (arredondado pro chao [?]) so deixa q ta funcionando
-					for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[j][posicoes[j]][aux2] = dados[i][aux2]; // copia todos os valores pra matriz final
-					posicoes[j]++; // acrecenta o contador para saber onde inserir o proximo
-					quantidadesFinais[j][aux]--; // diminui o contador pois acrecentamos um
-					break; // se teve sucesso quebra o laco pra procurar espaco valido
+				if(quantidadesFinais[j][aux] != 0 && posicoes[j] < Math.floor(quantidadeTotal*porcentagem[j])){ // Ve se ja foram todos que devem ser no arquivo (arredondado pro chão).
+					for(int aux2 = 0; aux2 < dados[i].length; aux2++)	dadosSeparados[j][posicoes[j]][aux2] = dados[i][aux2]; // Copia todos os valores para matriz final.
+					posicoes[j]++; // Acrescenta o contador para saber onde inserir o próximo.
+					quantidadesFinais[j][aux]--; // Diminui o contador pois acrecentamos um.
+					break; // Se teve sucesso quebra o laco pra procurar um espaco válido.
 				}
 			}	
 		}
@@ -208,7 +186,7 @@ public class PreProcessamento {
 		return dadosSeparados;
 	}
 
-	// Separa arquivos sem balancear
+	/* Separa arquivos sem balancear */
 	private float[][][] splitDados(float[][] dados, float[] pcts) {
 		float[][][] dadosSplit = new float[pcts.length][][];
 		int[] splitLengths = new int[pcts.length];
@@ -233,19 +211,20 @@ public class PreProcessamento {
 		return dadosSplit;
 	}
 	
+	/* Inicia o Pré-Processamento */
 	public PreProcessamento(String[] arqsDados, String[] arqsSaida, float[] pctsDadosSaida) throws IOException {
 		if(arqsSaida.length == pctsDadosSaida.length) {
 			System.out.println("Comecando Pre Processamento...");
-			//System.out.println(pctsDadosSaida[0]);
-			//System.out.println(pctsDadosSaida[1]);
-			//System.out.println(pctsDadosSaida[2]);
-			//System.out.println(pctsDadosSaida.length);
+			System.out.println(pctsDadosSaida[0]);
+			System.out.println(pctsDadosSaida[1]);
+			System.out.println(pctsDadosSaida[2]);
+			System.out.println(pctsDadosSaida.length);
 			
-			System.out.println("Normalizando dados...");
+			System.out.println("Normalizando e Separando os conjuntos...");
 			
-			float[][][] dadosSet = processarDados(ES.lerArquivos(arqsDados), pctsDadosSaida);
-			//float[][][] dadosSet = splitDados(processarDados(ES.lerArquivos(arqsDados)), pctsDadosSaida);
-			System.out.println("Dados normalizados.");
+			float[][][] dadosSet = processarDados(ES.lerArquivos(arqsDados), pctsDadosSaida); // Normaliza e separa os dados.
+			
+			System.out.println("Conjuntos normalizados e separados.");
 			
 			this.dados = dadosSet;
 			
