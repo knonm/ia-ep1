@@ -57,6 +57,7 @@ public class LOG {
 	}
 	
 	public void escreveLOG() throws IOException{
+		// Caminho para os dados principais da rede resultante.
 		String caminho = (Main.DIR_OUTPUT+this.tipo+"-"
 				+String.valueOf(this.qtdNeuronios)+"-"
 				+String.valueOf(this.txAprendInicial)+"-"
@@ -65,16 +66,19 @@ public class LOG {
 				+String.valueOf(this.qtdEpocasParada)+"-"
 				+String.valueOf(this.qtdAcertos)+".out");
 		
+		// Caminho para os pesos finais.
 		String caminhoPesosFinal = (Main.DIR_OUTPUT+this.tipo+"-"
 				+String.valueOf(this.qtdNeuronios)+"-"
 				+String.valueOf(this.qtdAcertos)+"-"
 				+String.valueOf(this.qtdEpocas)+".out");
 		
+		// Caminho para os pesos da camada escondida.
 		String caminhoPesosEscondidaFinal = (Main.DIR_OUTPUT+this.tipo+" (Oculta) "+
 				String.valueOf(this.qtdNeuroniosCamadaOculta)+" "+
 				String.valueOf(this.qtdAcertos)+" "+
 				String.valueOf(this.qtdEpocas)+".out");
 		
+		// Caminho com respostas para incrementar o relatório.
 		String caminhoRespostasTeste = (Main.DIR_OUTPUT+this.tipo+" (Respostas Teste) "+
 				String.valueOf(this.qtdNeuronios)+" " +
 				String.valueOf(this.qtdNeuroniosCamadaOculta)+"-"+
@@ -83,8 +87,6 @@ public class LOG {
 		
 		String[] aux = new String[13];
 		aux[0] = "Tipo: " + this.tipo + "\n";
-		//aux[1] = "Acuracia: " + String.valueOf(this.qtdAcertos) + "\n";
-		//aux[2] = "Erro: " + String.valueOf(this.matrizC.getErro()) + "\n";
 		aux[1] = "Acuracia: " + String.valueOf(this.matrizC.getAcuracia()) + "\n";
 		aux[2] = "Erro: " + String.valueOf(this.matrizC.getErro()) + "\n";
 		aux[3] = "Quantidade de Epocas: " + String.valueOf(this.qtdEpocas) + "\n";
@@ -113,16 +115,16 @@ public class LOG {
 
 		aux[11] = "\n\n";
 		for(int i = this.matrizC.getMatrizConfusao().length-1; i > -1; i--) {
-			aux[11] += "Medidas de avalia����o da classe " + i + "\n";
+			aux[11] += "Medidas de avaliação da classe " + i + "\n";
 			aux[11] += "Taxa de verdadeiros positivos e negativos: " + String.valueOf(this.matrizC.getTaxaVerdadeiros(i)) + "\n";
 			aux[11] += "Taxa de falsos positivos: " + String.valueOf(this.matrizC.getTaxaFalsos(i)) + "\n";
-			aux[11] += "Precis��o: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
+			aux[11] += "Precisão: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
 			aux[11] += "Taxa de falsas descobertas: " + String.valueOf(this.matrizC.getTaxaFalsasDescobertas(i)) + "\n";
 			aux[11] += "\n\n";
 		}
 		
-		aux[12] += "M��dia do n��mero de inst��ncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
-		aux[12] += "Desvio padr��o do n��mero de inst��ncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
+		aux[12] += "Média do número de instâncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
+		aux[12] += "Desvio padrão do número de instâncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
 		
 		ES.escreverDados(caminho, aux);
 	
@@ -133,6 +135,7 @@ public class LOG {
 		}
 	}
 	
+	/* Método que escreve conteúdos auxiliares para o Relatório */
 	public void escreveLogAuxRelatorio(boolean iniAleatoria) throws IOException {
 		String caminho = (Main.DIR_OUTPUT+this.tipo+"-TesteDeParametros.out");
 		String aux;
