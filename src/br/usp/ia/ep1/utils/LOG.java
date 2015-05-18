@@ -120,10 +120,10 @@ public class LOG {
 			aux[11] += "Taxa de falsos positivos: " + String.valueOf(this.matrizC.getTaxaFalsos(i)) + "\n";
 			aux[11] += "Precisão: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
 			aux[11] += "Taxa de falsas descobertas: " + String.valueOf(this.matrizC.getTaxaFalsasDescobertas(i)) + "\n";
-			aux[11] += "\n\n";
+			aux[11] += "\n";
 		}
 		
-		aux[12] += "Média do número de instâncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
+		aux[12] = "Média do número de instâncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
 		aux[12] += "Desvio padrão do número de instâncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
 		
 		ES.escreverDados(caminho, aux);
