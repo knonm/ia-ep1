@@ -11,31 +11,11 @@ import br.usp.ia.ep1.utils.*;
 
 public class Main {
 	
-	public static void main(String[] args) throws IOException {
-		System.out.println("Iniciando procedimentos...");
-		//Scanner sc = new Scanner(System.in);
-		Scanner sc = new Scanner("out/treino.csv out/valida.csv out/teste.csv"
-				+ " 0,2 10 1 false 10 50"); // 0,0000001
-
-		String nmArqTreino = sc.next();
-		String nmArqValida = sc.next();
-		String nmArqTeste = sc.next();
-		float txAprend = sc.nextFloat();
-		int numNeuroMLP = sc.nextInt();
-		int numNeuroLVQ = sc.nextInt();
-		boolean iniPesos = sc.nextBoolean();
-		int qntEpocasTotais = sc.nextInt();
-		int qntEpocasValidacao = sc.nextInt();
-		
-		System.out.println();
-		PreProcessamento pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
-								   new String[] { nmArqTreino, nmArqValida, nmArqTeste },
-								   new float[] { 0.6F, 0.2F, 0.2F });
-		System.out.println();
-		float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
-		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
-		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
-
+	public static String DIR_RESOURCE = "./res/";
+	public static String DIR_OUTPUT = "./out/";
+	
+	private static void executarLVQ(float[][] dadosTreina, float[][] dadosValida, float[][] dadosTeste,
+			float txAprend, int numNeuroLVQ, boolean iniPesos, int qntEpocasTotais, int qntEpocasValidacao) throws IOException {		
 		System.out.println("Instanciando LVQ...");
 		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos, qntEpocasTotais, qntEpocasValidacao);
 		System.out.println("Comecando treinamento LVQ...");
@@ -50,7 +30,7 @@ public class Main {
 		System.out.println("Teste completo.");
 		System.out.println();
 		System.out.println("Iniciando LOG...");
-		log.completaLog(lvq.pesos, rc.getQtdAcertos(), lvq.epocas, 0, lvq.txAprend, rc.getMatrizConfusao());
+		log.completaLog(lvq.getPesos(), rc.getQtdAcertos(), lvq.getEpocas(), 0, lvq.getTxAprend(), rc.getMatrizConfusao());
 		
 		System.out.println("Escrevendo LOG...");
 		log.escreveLOG();
@@ -61,8 +41,6 @@ public class Main {
 		System.out.println("Quantidade de acertos: " + rc.getQtdAcertos());
 		System.out.println("Quantidade de erros: " + rc.getQtdErros());
 		System.out.println("Epocas passadas: " + lvq.epocas);
-				
-		//lvq.imprimePesos();
 		
 		System.out.println();
 		System.out.println("Matriz confusao: ");
@@ -76,25 +54,23 @@ public class Main {
 			}
 			System.out.println();
 		}
-		
-		// MLP
-		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
-		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
-		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
-		
+	}
+	
+	private static void executarMLP(DadosDeEntradaProcessados[] dadosTreina, DadosDeTeste[] dadosValida, DadosDeTeste[] dadosTeste,
+			float txAprend, int numNeuroMLP, boolean iniPesos, int qntEpocasTotais, int qntEpocasValidacao) throws IOException {
 		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
 		System.out.println("Instanciando MLP...");
-		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 10, iniPesos, dadosTreinamentoProcessados[0].QuantidadeDadosEntrada());
+		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 10, iniPesos, dadosTreina[0].QuantidadeDadosEntrada());
 		
 		System.out.println("Comecando treinamento MLP...");
-		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
-		treino.Treinar(qntEpocasTotais, qntEpocasValidacao, dadosTesteProcessados, dadosValidacaoProcessados);
+		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreina, txAprend, iniPesos);
+		treino.Treinar(qntEpocasTotais, qntEpocasValidacao, dadosTeste, dadosValida);
 		
 		System.out.println("Treinamento concluido.");
 		System.out.println();
 		System.out.println("Testando resultado...");
 		LOG logMLP = new LOG(0, qntEpocasValidacao, qntEpocasTotais, numNeuroMLP, txAprend, 1);
-		RespostaClassificador respostaMLP = mlp.ExecutarRede(dadosTesteProcessados);
+		RespostaClassificador respostaMLP = mlp.ExecutarRede(dadosTeste);
 		
 		System.out.println("Teste completo.");
 		System.out.println();
@@ -123,6 +99,43 @@ public class Main {
 			}
 			System.out.println();
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		System.out.println("Iniciando procedimentos...");
+		//Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner("treino.csv valida.csv teste.csv"
+				+ " 0,1 10 1 true 10 50");
+
+		String nmArqTreino = Main.DIR_OUTPUT + sc.next();
+		String nmArqValida = Main.DIR_OUTPUT + sc.next();
+		String nmArqTeste = Main.DIR_OUTPUT + sc.next();
+		float txAprend = sc.nextFloat();
+		int numNeuroMLP = sc.nextInt();
+		int numNeuroLVQ = sc.nextInt();
+		boolean iniPesos = sc.nextBoolean();
+		int qntEpocasTotais = sc.nextInt();
+		int qntEpocasValidacao = sc.nextInt();
 		
+		sc.close();
+		
+		System.out.println();
+		new PreProcessamento(new String[] { Main.DIR_RESOURCE + "optdigits.tra", Main.DIR_RESOURCE + "optdigits.tes" },
+				new String[] { nmArqTreino, nmArqValida, nmArqTeste },
+				new float[] { 0.6F, 0.2F, 0.2F });
+		System.out.println();
+		float[][] dadosTreina = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTreino), PreProcessamento.CHR_DELIMIT);
+		float[][] dadosValida = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqValida), PreProcessamento.CHR_DELIMIT);
+		float[][] dadosTeste = MN.transformarArrayStringParaFloat(ES.lerArquivo(nmArqTeste), PreProcessamento.CHR_DELIMIT);
+
+		executarLVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos, qntEpocasTotais, qntEpocasValidacao);
+		
+		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
+		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
+		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
+		
+		// MLP
+		executarMLP(dadosTreinamentoProcessados, dadosValidacaoProcessados, dadosTesteProcessados, 
+				txAprend, numNeuroMLP, iniPesos, qntEpocasTotais, qntEpocasValidacao);
 	}
 }

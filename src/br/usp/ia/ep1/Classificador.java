@@ -64,46 +64,7 @@ public abstract class Classificador {
 	}
 	
 	public RespostaClassificador testar() {
-		RespostaClassificador rc;
-		
-		int qtdAcertos = 0;
-		int qtdErros = 0;
-		int[][] matrizConfusao = new int[PreProcessamento.valorMaximoClasse+1][PreProcessamento.valorMaximoClasse+1];
-		
-		for(int i = matrizConfusao.length-1; i > -1; i--) {
-			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
-				matrizConfusao[i][j] = 0;
-			}
-		}
-		
-		/* não precisa rodar 1000 vezes com o msm conjunto, o resultado e sempre o msm
-		for(int ind = 0; ind < 1000; ind++) {
-			rc = this.exec(this.dadosTeste, false);
-			qtdAcertos += rc.getQtdAcertos();
-			qtdErros += rc.getQtdErros();
-			for(int i = matrizConfusao.length-1; i > -1; i--) {
-				for(int j = matrizConfusao[i].length-1; j > -1; j--) {
-					matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
-				}
-			}
-		}
-		*/
-		
-		rc = this.exec(this.dadosTeste, false);
-		qtdAcertos += rc.getQtdAcertos();
-		qtdErros += rc.getQtdErros();
-		for(int i = matrizConfusao.length-1; i > -1; i--) {
-			for(int j = matrizConfusao[i].length-1; j > -1; j--) {
-				matrizConfusao[i][j] += rc.getMatrizConfusao().getMatrizConfusao()[i][j];
-			}
-		}
-		
-		rc = new RespostaClassificador();
-		rc.setQtdAcertos(qtdAcertos);
-		rc.setQtdErros(qtdErros);
-		rc.setMatrizConfusao(new MatrizConfusao(matrizConfusao, 1000));
-		
-		return rc;
+		return this.exec(this.dadosTeste, false);
 	}
 	
 	public void initPesos(float[][] dados, int qtdCamadas) {
@@ -116,8 +77,8 @@ public abstract class Classificador {
 		desc = MN.descDados(dados, dados[0].length-1);
 		//vlrMinDados = desc.getMinVlrAtrib();
 		//vlrMaxDados = desc.getMaxVlrAtrib();
-		vlrMinDados = 0;
-		vlrMaxDados = 1;
+		vlrMinDados = 0F;
+		vlrMaxDados = 0.3F;
 		
 		this.pesos = new float[qtdCamadas][this.qtdNeuronios*desc.getQtdVlrClasses()][desc.getQtdAtribs()];
 		
@@ -166,7 +127,7 @@ public abstract class Classificador {
 					pesos = this.pesos.clone();
 					epocasTreina = 0;
 					acertosAnterior = respostaValida.getQtdAcertos();
-					if(respostaValida.getErroQuadrado() > 0.9F) { // isso não ta fazendo nada
+					if(respostaValida.getErroQuadrado() > 0.9F) { // isso nï¿½o ta fazendo nada
 						epocasTreina = this.qtdEpocasTreinamento;
 					}
 				}else{
@@ -186,7 +147,19 @@ public abstract class Classificador {
 		this.epocas = epocasTotais;
 		this.pesos = pesos;
 	}
-	
+
+	public float[][][] getPesos() {
+		return pesos;
+	}
+
+	public float getTxAprend() {
+		return txAprend;
+	}
+
+	public int getEpocas() {
+		return epocas;
+	}
+
 	public Classificador(float[][] dadosTreinamento, float[][] dadosValidacao, float[][] dadosTeste,
 			float txAprend, int qtdNeuronios, boolean pesosAleatorios, int qtdEpocasTreinamento,
 			int qtdEpocasValidacao) {

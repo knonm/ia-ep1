@@ -2,6 +2,7 @@ package br.usp.ia.ep1.utils;
 
 import java.io.IOException;
 
+import br.usp.ia.ep1.Main;
 import br.usp.ia.ep1.MatrizConfusao;
 import br.usp.ia.ep1.MLP.DadosDeTeste;
 
@@ -51,11 +52,11 @@ public class LOG {
 		this.qtdEpocas = qtdEpocas;
 		this.qtdNeuroniosCamadaOculta = qtdNeuroniosCamadaOculta;
 		this.matrizC = matrizC;
-		this.dadosDeTesteMLP = dados;		
+		this.dadosDeTesteMLP = dados;
 	}
 	
 	public void escreveLOG() throws IOException{
-		String caminho = ("./out/"+this.tipo+"-"
+		String caminho = (Main.DIR_OUTPUT+this.tipo+"-"
 				+String.valueOf(this.qtdNeuronios)+"-"
 				+String.valueOf(this.txAprendInicial)+"-"
 				+String.valueOf(this.versao)+"-"
@@ -63,25 +64,27 @@ public class LOG {
 				+String.valueOf(this.qtdEpocasParada)+"-"
 				+String.valueOf(this.qtdAcertos)+".out");
 		
-		String caminhoPesosFinal = ("./out/"+this.tipo+"-"
+		String caminhoPesosFinal = (Main.DIR_OUTPUT+this.tipo+"-"
 				+String.valueOf(this.qtdNeuronios)+"-"
 				+String.valueOf(this.qtdAcertos)+"-"
 				+String.valueOf(this.qtdEpocas)+".out");
 		
-		String caminhoPesosEscondidaFinal = ("./out/"+this.tipo+" (Oculta) "+
+		String caminhoPesosEscondidaFinal = (Main.DIR_OUTPUT+this.tipo+" (Oculta) "+
 				String.valueOf(this.qtdNeuroniosCamadaOculta)+" "+
 				String.valueOf(this.qtdAcertos)+" "+
 				String.valueOf(this.qtdEpocas)+".out");
 		
-		String caminhoRespostasTeste = ("./out/"+this.tipo+" (Respostas Teste) "+
+		String caminhoRespostasTeste = (Main.DIR_OUTPUT+this.tipo+" (Respostas Teste) "+
 				String.valueOf(this.qtdNeuronios)+" " +
 				String.valueOf(this.qtdNeuroniosCamadaOculta)+"-"+
 				String.valueOf(this.qtdAcertos)+" "+
 				String.valueOf(this.qtdEpocas)+".out");
 		
-		String[] aux = new String[11];
+		String[] aux = new String[13];
 		aux[0] = "Tipo: " + this.tipo + "\n";
-		aux[1] = "Acuracia: " + String.valueOf(this.qtdAcertos) + "\n";
+		//aux[1] = "Acuracia: " + String.valueOf(this.qtdAcertos) + "\n";
+		//aux[2] = "Erro: " + String.valueOf(this.matrizC.getErro()) + "\n";
+		aux[1] = "Acuracia: " + String.valueOf(this.matrizC.getAcuracia()) + "\n";
 		aux[2] = "Erro: " + String.valueOf(this.matrizC.getErro()) + "\n";
 		aux[3] = "Quantidade de Epocas: " + String.valueOf(this.qtdEpocas) + "\n";
 		if(this.tipo == "LVQ"){
@@ -107,6 +110,19 @@ public class LOG {
 			
 		}
 
+		aux[11] = "\n\n";
+		for(int i = this.matrizC.getMatrizConfusao().length-1; i > -1; i--) {
+			aux[11] += "Medidas de avaliação da classe " + i + "\n";
+			aux[11] += "Taxa de verdadeiros positivos e negativos: " + String.valueOf(this.matrizC.getTaxaVerdadeiros(i)) + "\n";
+			aux[11] += "Taxa de falsos positivos: " + String.valueOf(this.matrizC.getTaxaFalsos(i)) + "\n";
+			aux[11] += "Precisão: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
+			aux[11] += "Taxa de falsas descobertas: " + String.valueOf(this.matrizC.getTaxaFalsasDescobertas(i)) + "\n";
+			aux[11] += "\n\n";
+		}
+		
+		aux[12] += "Média do número de instâncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
+		aux[12] += "Desvio padrão do número de instâncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
+		
 		ES.escreverDados(caminho, aux);
 	
 		if(this.tipo == "LVQ"){
@@ -117,7 +133,7 @@ public class LOG {
 	}
 	
 	public void escreveLogRelatorio(boolean iniAleatoria) throws IOException {
-		String caminho = ("./out/"+this.tipo+".out");
+		String caminho = (Main.DIR_OUTPUT+this.tipo+".out");
 		String aux = iniAleatoria + "," + this.txAprendInicial + "," + this.qtdNeuroniosCamadaOculta + "," + this.qtdEpocas + "," + this.matrizC.getAcuracia() + "," + this.matrizC.getErro();
 		ES.escreverDadoAppend(caminho, aux);
 	}

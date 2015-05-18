@@ -59,7 +59,7 @@ public class TreinamentoMLP
 				if(errosAtuais < melhorResultado){
 					backupMLP = this.mlp.ClonarRede(mlp);
 					epocasValidacao = 0;
-					if(melhorResultado - errosAtuais < 1F && epocasExecutadas != 1) epocasTreina = quantidadeTreinos; // se melhorou menos que 1 para
+					if(melhorResultado - errosAtuais < 1F) epocasTreina = quantidadeTreinos; // se melhorou menos que 1 para
 					melhorResultado = errosAtuais;
 				}else{
 					epocasTreina++;

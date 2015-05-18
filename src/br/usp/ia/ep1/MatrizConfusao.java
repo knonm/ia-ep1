@@ -9,14 +9,26 @@ public class MatrizConfusao {
 	private float[] taxaFalsasDescobertas;
 	private Integer acuracia;
 	private Integer erro;
-	
+	private Integer qtdInstancias;
 	private int qtdExec;
+	
+	private int getQtdInstancias() {
+		if(this.qtdInstancias == null) {
+			this.qtdInstancias = 0;
+			for(int[] linha : this.matrizConfusao) {
+				for(int coluna : linha) {
+					this.qtdInstancias += coluna;
+				}
+			}
+		}
+		return this.qtdInstancias;
+	}
 	
 	public float getTaxaVerdadeiros(int classe) {
 		if(this.taxaVerdadeiros == null) {
 			this.taxaVerdadeiros = new float[this.matrizConfusao.length];
 			
-			int falso;
+			float falso;
 			for(int classeReal = this.taxaVerdadeiros.length-1; classeReal > -1; classeReal--) {
 				falso = 0;
 				for(int classePredita = this.matrizConfusao[classeReal].length-1; classePredita > -1; classePredita--) {
@@ -25,7 +37,7 @@ public class MatrizConfusao {
 					}
 				}
 				this.taxaVerdadeiros[classeReal] = 
-						this.matrizConfusao[classeReal][classeReal] / (this.matrizConfusao[classeReal][classeReal] + falso);
+						((float) this.matrizConfusao[classeReal][classeReal]) / ((float) (this.matrizConfusao[classeReal][classeReal] + falso));
 			}
 		}
 		return this.taxaVerdadeiros[classe];
@@ -35,7 +47,7 @@ public class MatrizConfusao {
 		if(this.taxaFalsos == null) {
 			this.taxaFalsos = new float[this.matrizConfusao.length];
 			
-			int falso;
+			float falso;
 			for(int classeReal = this.taxaFalsos.length-1; classeReal > -1; classeReal--) {
 				falso = 0;
 				for(int classePredita = this.matrizConfusao[classeReal].length-1; classePredita > -1; classePredita--) {
@@ -44,7 +56,7 @@ public class MatrizConfusao {
 					}
 				}
 				this.taxaFalsos[classeReal] = 
-						falso / (this.matrizConfusao[classeReal][classeReal] + falso);
+						falso / (((float)this.matrizConfusao[classeReal][classeReal]) + falso);
 			}
 		}
 		return this.taxaFalsos[classe];
@@ -54,7 +66,7 @@ public class MatrizConfusao {
 		if(this.precisao == null) {
 			this.precisao = new float[this.matrizConfusao.length];
 			
-			int falso;
+			float falso;
 			for(int classePredita = this.matrizConfusao[0].length-1; classePredita > -1; classePredita--) {
 				falso = 0;
 				for(int classeReal = this.precisao.length-1; classeReal > -1; classeReal--) {
@@ -63,7 +75,8 @@ public class MatrizConfusao {
 					}
 				}
 				this.precisao[classePredita] = 
-						this.matrizConfusao[classePredita][classePredita] / (this.matrizConfusao[classePredita][classePredita] + falso);
+						((float) this.matrizConfusao[classePredita][classePredita]) / 
+						(((float)this.matrizConfusao[classePredita][classePredita]) + falso);
 			}
 		}
 		return this.precisao[classe];
@@ -73,7 +86,7 @@ public class MatrizConfusao {
 		if(this.taxaFalsasDescobertas == null) {
 			this.taxaFalsasDescobertas = new float[this.matrizConfusao.length];
 			
-			int falso;
+			float falso;
 			for(int classePredita = this.matrizConfusao[0].length-1; classePredita > -1; classePredita--) {
 				falso = 0;
 				for(int classeReal = this.taxaFalsasDescobertas.length-1; classeReal > -1; classeReal--) {
@@ -82,7 +95,7 @@ public class MatrizConfusao {
 					}
 				}
 				this.taxaFalsasDescobertas[classePredita] = 
-						falso / (this.matrizConfusao[classePredita][classePredita] + falso);
+						falso / (((float)this.matrizConfusao[classePredita][classePredita]) + falso);
 			}
 		}
 		return this.taxaFalsasDescobertas[classe];
@@ -112,17 +125,30 @@ public class MatrizConfusao {
 		return this.erro;
 	}
 	
+	public float getMedia() {
+		return ((float) this.getAcuracia()) / ((float) this.qtdExec);
+	}
+	
+	public float getDesvioPadrao() {
+		float media = this.getMedia();
+		float variancia = 0F;
+		for(int classe = this.matrizConfusao.length-1; classe > -1; classe--) {
+			variancia += (((float) this.matrizConfusao[classe][classe]) - media) * (((float) this.matrizConfusao[classe][classe]) - media);
+		}
+		return (float) Math.sqrt(variancia);
+	}
+	
 	public int[][] getMatrizConfusao() {
 		return this.matrizConfusao;
 	}
 	
 	public MatrizConfusao(int[][] matrizConfusao) {
-		this.matrizConfusao = matrizConfusao;
+		this.matrizConfusao = matrizConfusao.clone();
 		qtdExec = 1;
 	}
 	
 	public MatrizConfusao(int[][] matrizConfusao, int qtdExec) {
-		this.matrizConfusao = matrizConfusao;
+		this.matrizConfusao = matrizConfusao.clone();
 		this.qtdExec = qtdExec;
 	}
 }
