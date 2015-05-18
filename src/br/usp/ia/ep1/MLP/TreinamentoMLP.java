@@ -53,39 +53,38 @@ public class TreinamentoMLP
 			for(int epoca = 0; epoca < quantidadeTreinos; epoca++)
 			{
 				for(DadosDeEntradaProcessados dado: entrada)
-					this.executarTreino(dado);
-								
+					this.executarTreino(dado);	
+				
 				epocasExecutadas++;
 				
-				System.out.println("Epocas executadas: " + epocasExecutadas);
-				System.out.println("Taxa de aprendizado: " + this.taxaDeAprendizado);
-				System.out.println("Taxa de erro: " + errosTreinamentoDaRedeAtual(teste).getQtdErros());
-				System.out.println("Taxa de erro quadrado: ");
-				System.out.println();
-			}
-			
-			rc = errosTreinamentoDaRedeAtual(validacao);
-			errosAtuais = rc.getQtdErros()/validacao.length;
-			
-			if(errosAtuais < melhorResultado)
-			{
-				melhorResultado = errosAtuais;
-				backupMLP = this.mlp.ClonarRede(mlp);
-				fracassosAteAqui = 0;
-			}
-			else
-				fracassosAteAqui++;
-			
-			if(fracassosAteAqui >= maximoFracassos ||
-					rc.getErroQuadrado() > 0.2)
-				redeEstaMelhorando = false;
+				System.out.println("Epocas passadas: " + epocasExecutadas + " | Epocas de treinamento apos validacao: " + epoca);
+				System.out.println("Taxa de erro quadrado: " + errosTreinamentoDaRedeAtual(teste).getErroQuadrado() + " | Taxa de aprendizado: " + this.taxaDeAprendizado);
+				
+				rc = errosTreinamentoDaRedeAtual(validacao);
+				errosAtuais = rc.getErroQuadrado();
+				
+				if(errosAtuais < melhorResultado)
+				{
+					melhorResultado = errosAtuais;
+					backupMLP = this.mlp.ClonarRede(mlp);
+					fracassosAteAqui = 0;
+					this.taxaDeAprendizado *= 0.999F;
+				}
+				else
+					fracassosAteAqui++;
+				
+				if(fracassosAteAqui >= maximoFracassos ||
+						errosAtuais - rc.getErroQuadrado() < 0.2)
+					redeEstaMelhorando = false;
 
-			paradaObrigatorio++;
-			
-
-			
-			if(paradaObrigatorio >= 20)
-				redeEstaMelhorando = false;
+				paradaObrigatorio++;
+				
+ 
+				
+				if(paradaObrigatorio >= 20)
+					redeEstaMelhorando = false;
+				
+			}
 		}
 		mlp.setQtdEpocaTreino(epocasExecutadas);
 	}

@@ -92,7 +92,7 @@ public class Main {
 		
 		System.out.println("Comecando treinamento MLP...");
 		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
-		treino.Treinar(1000, 100, dadosTesteProcessados, dadosValidacaoProcessados);
+		treino.Treinar(100, 50, dadosTesteProcessados, dadosValidacaoProcessados);
 		
 		System.out.println("Treinamento concluido.");
 		System.out.println();

@@ -145,7 +145,7 @@ public class EstruturaMLP {
 				else
 					resultadoEsperado = 0;
 				
-				erroQuadrado += (resultadoEsperado - saidasCamSaida[j]) * (resultadoEsperado - saidasCamSaida[j]);
+				erroQuadrado += Math.sqrt((resultadoEsperado - saidasCamSaida[j]) * (resultadoEsperado - saidasCamSaida[j]));
 			}	
 
 			dados[i].setClassePredita(extrairMaiorValorDoArray(saidasCamSaida));
