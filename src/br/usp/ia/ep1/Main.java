@@ -16,6 +16,7 @@ public class Main {
 	
 	private static void executarLVQ(float[][] dadosTreina, float[][] dadosValida, float[][] dadosTeste,
 			float txAprend, int numNeuroLVQ, boolean iniPesos, int qntEpocasTotais, int qntEpocasValidacao) throws IOException {		
+		// Inicializa os pesos na rede de acordo com o valor requisitado pelo usuário.
 		System.out.println("Instanciando LVQ...");
 		LVQ lvq = new LVQ(dadosTreina, dadosValida, dadosTeste, txAprend, numNeuroLVQ, iniPesos, qntEpocasTotais, qntEpocasValidacao);
 		System.out.println("Comecando treinamento LVQ...");
@@ -58,7 +59,7 @@ public class Main {
 	
 	private static void executarMLP(DadosDeEntradaProcessados[] dadosTreina, DadosDeTeste[] dadosValida, DadosDeTeste[] dadosTeste,
 			float txAprend, int numNeuroMLP, boolean iniPesos, int qntEpocasTotais, int qntEpocasValidacao) throws IOException {
-		//Inicializa os pesos na rede de acordo com o valor requisitado pelo usuario
+		// Inicializa os pesos na rede de acordo com o valor requisitado pelo usuário.
 		System.out.println("Instanciando MLP...");
 		EstruturaMLP mlp = new EstruturaMLP(numNeuroMLP, 10, iniPesos, dadosTreina[0].QuantidadeDadosEntrada());
 		
