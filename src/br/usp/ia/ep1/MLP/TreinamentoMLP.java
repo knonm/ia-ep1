@@ -54,8 +54,8 @@ public class TreinamentoMLP
 		while(epocasTreina < quantidadeTreinos){
 			for(DadosDeEntradaProcessados dado: entrada) this.executarTreino(dado);
 			
-			//ES.escreverDadoAppend(Main.DIR_OUTPUT+"MLP - "+
-				//"PLOT_ERROSxEPOCA"+".out", epocasExecutadas + "," + (float)errosTreinamentoDaRedeAtual(dadosTreinoTeste).getQtdErros()/(float)dadosTreinoTeste.length + "," + (float)errosTreinamentoDaRedeAtual(validacao).getQtdErros()/(float)validacao.length);
+			ES.escreverDadoAppend(Main.DIR_OUTPUT+"MLP - "+
+				"PLOT_ERROSxEPOCA"+".out", epocasExecutadas + "," + (float)errosTreinamentoDaRedeAtual(dadosTreinoTeste).getQtdErros()/(float)dadosTreinoTeste.length + "," + (float)errosTreinamentoDaRedeAtual(validacao).getQtdErros()/(float)validacao.length);
 			
 			if(epocasValidacao == quantidadeValidacao){
 				rc = errosTreinamentoDaRedeAtual(validacao);
