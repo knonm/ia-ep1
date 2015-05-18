@@ -16,4 +16,6 @@
   5. Número de neurônios na cada escondida (para a rede MLP)
   6. Número de neurônios para cada classe (para a rede LVQ)
   7. Inicialização de pesos (zero/aleatória)
+  8. Quantidade de épocas com erro para continuar o treinamento
+  9. Quantidade de épocas para realizar a validação
 ```
