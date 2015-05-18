@@ -1,6 +1,10 @@
 package br.usp.ia.ep1.MLP;
 
+import java.io.IOException;
+
+import br.usp.ia.ep1.Main;
 import br.usp.ia.ep1.RespostaClassificador;
+import br.usp.ia.ep1.utils.ES;
 
 public class TreinamentoMLP 
 {
@@ -8,6 +12,7 @@ public class TreinamentoMLP
 	private EstruturaMLP mlp;
 	private double taxaDeAprendizado;
 	private EstruturaMLP backupMLP;
+	private DadosDeTeste[] dadosTreinoTeste;
 	
 	private boolean redeEstaMelhorando = true;
 		
@@ -25,6 +30,7 @@ public class TreinamentoMLP
 		this.mlp = mlp;		
 		this.entrada = new DadosDeEntradaProcessados[dadosEntrada.length];
 		this.taxaDeAprendizado = taxaAprendizado;
+		this.dadosTreinoTeste = DadosDeEntradaProcessadosParaDadosDeTeste(dadosEntrada); //objeto para testar a rede para os dados de treino
 		
 		this.PopularDadosDeEntrada(dadosEntrada);			
 	}
@@ -35,7 +41,7 @@ public class TreinamentoMLP
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
-	public void Treinar(int quantidadeTreinos, int quantidadeValidacao, DadosDeTeste[] teste, DadosDeTeste[] validacao)
+	public void Treinar(int quantidadeTreinos, int quantidadeValidacao, DadosDeTeste[] teste, DadosDeTeste[] validacao) throws IOException
 	{
 		RespostaClassificador rc;
 		int epocasExecutadas = 1;
@@ -47,6 +53,9 @@ public class TreinamentoMLP
 			
 		while(epocasTreina < quantidadeTreinos){
 			for(DadosDeEntradaProcessados dado: entrada) this.executarTreino(dado);
+			
+			//ES.escreverDadoAppend(Main.DIR_OUTPUT+"MLP - "+
+				//"PLOT_ERROSxEPOCA"+".out", epocasExecutadas + "," + (float)errosTreinamentoDaRedeAtual(dadosTreinoTeste).getQtdErros()/(float)dadosTreinoTeste.length + "," + (float)errosTreinamentoDaRedeAtual(validacao).getQtdErros()/(float)validacao.length);
 			
 			if(epocasValidacao == quantidadeValidacao){
 				rc = errosTreinamentoDaRedeAtual(validacao);
@@ -220,5 +229,21 @@ public class TreinamentoMLP
 			for(int i = 0; i < dados.QuantidadeDadosEntrada(); i++)
 				this.mlp.getNeuronioCamadaEscondida(j).setPeso(i, this.mlp.getNeuronioCamadaEscondida(j).getPeso(i) + correcaoPesoEscondida[j][i]);
 		}
+	}
+	
+	/* 
+	 * Metodo que transforma o objeto de dados de treino para um objeto de dados de teste para calcular o erro da rede
+	 * em uma determinada epoca para o conjunto de teste
+	 */
+	private DadosDeTeste[] DadosDeEntradaProcessadosParaDadosDeTeste (DadosDeEntradaProcessados[] dadosTreino) {
+		DadosDeTeste[] dadosTreinoTeste = new DadosDeTeste[dadosTreino.length];
+		for (int i = 0; i < dadosTreino.length; i++) {
+			dadosTreinoTeste[i] = new DadosDeTeste(dadosTreino[i].getClasse(),dadosTreino[i].getDadosDeEntrada());
+		}
+		return dadosTreinoTeste;
+	}
+
+	public double getTaxaDeAprendizado() {
+		return taxaDeAprendizado;
 	}
 }

@@ -47,12 +47,13 @@ public class LOG {
 		}
 	}
 	
-	public void completaLogMLP(int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, MatrizConfusao matrizC, DadosDeTeste[] dados){
+	public void completaLogMLP(int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, MatrizConfusao matrizC, DadosDeTeste[] dados, double txAprendFinal){
 		this.qtdAcertos = qtdAcertos;
 		this.qtdEpocas = qtdEpocas;
 		this.qtdNeuroniosCamadaOculta = qtdNeuroniosCamadaOculta;
 		this.matrizC = matrizC;
 		this.dadosDeTesteMLP = dados;
+		this.txAprendFinal = (float)txAprendFinal;
 	}
 	
 	public void escreveLOG() throws IOException{
@@ -112,16 +113,16 @@ public class LOG {
 
 		aux[11] = "\n\n";
 		for(int i = this.matrizC.getMatrizConfusao().length-1; i > -1; i--) {
-			aux[11] += "Medidas de avaliação da classe " + i + "\n";
+			aux[11] += "Medidas de avalia����o da classe " + i + "\n";
 			aux[11] += "Taxa de verdadeiros positivos e negativos: " + String.valueOf(this.matrizC.getTaxaVerdadeiros(i)) + "\n";
 			aux[11] += "Taxa de falsos positivos: " + String.valueOf(this.matrizC.getTaxaFalsos(i)) + "\n";
-			aux[11] += "Precisão: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
+			aux[11] += "Precis��o: " + String.valueOf(this.matrizC.getPrecisao(i)) + "\n";
 			aux[11] += "Taxa de falsas descobertas: " + String.valueOf(this.matrizC.getTaxaFalsasDescobertas(i)) + "\n";
 			aux[11] += "\n\n";
 		}
 		
-		aux[12] += "Média do número de instâncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
-		aux[12] += "Desvio padrão do número de instâncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
+		aux[12] += "M��dia do n��mero de inst��ncias classificadas corretamente: " + this.matrizC.getMedia() + "\n";
+		aux[12] += "Desvio padr��o do n��mero de inst��ncias classificadas corretamente: " + this.matrizC.getDesvioPadrao() + "\n";
 		
 		ES.escreverDados(caminho, aux);
 	
@@ -132,9 +133,15 @@ public class LOG {
 		}
 	}
 	
-	public void escreveLogRelatorio(boolean iniAleatoria) throws IOException {
-		String caminho = (Main.DIR_OUTPUT+this.tipo+".out");
-		String aux = iniAleatoria + "," + this.txAprendInicial + "," + this.qtdNeuroniosCamadaOculta + "," + this.qtdEpocas + "," + this.matrizC.getAcuracia() + "," + this.matrizC.getErro();
+	public void escreveLogAuxRelatorio(boolean iniAleatoria) throws IOException {
+		String caminho = (Main.DIR_OUTPUT+this.tipo+"-TesteDeParametros.out");
+		String aux;
+		if(tipo == "LVQ"){
+			aux = iniAleatoria + "," + this.txAprendInicial + "," + this.txAprendFinal + "," + this.qtdEpocas + "," + this.matrizC.getAcuracia() + "," + this.matrizC.getErro();
+		} else {
+			aux = iniAleatoria + "," + this.txAprendInicial + "," + this.txAprendFinal + "," + this.qtdNeuroniosCamadaOculta + "," + this.qtdEpocas + "," + this.matrizC.getAcuracia() + "," + this.matrizC.getErro();
+		}
+		
 		ES.escreverDadoAppend(caminho, aux);
 	}
 }
