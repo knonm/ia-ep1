@@ -106,23 +106,12 @@ public class LOG {
 			aux[10] += "\n";
 			
 		}
-		float[][] matrizAux = new float[this.matrizC.getMatrizConfusao().length][this.matrizC.getMatrizConfusao()[0].length];
-		for(int j = this.matrizC.getMatrizConfusao().length-1; j > -1; j--) {
-			for(int i = this.matrizC.getMatrizConfusao()[0].length-1; i > -1; i--) {
-				matrizAux[j][i] = (float) this.matrizC.getMatrizConfusao()[j][i];
-			}
-		}
-		
-		
+
 		ES.escreverDados(caminho, aux);
-		
-		MN.criarArquivo(matrizAux.clone(), "./out/MC "+this.qtdAcertos+".out");
-		
+	
 		if(this.tipo == "LVQ"){
 			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosFinal);
 		}else{
-			//MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosEscondidaFinal);
-			//MN.criarArquivo((MN.transformaBidimensional(this.pesos, 1)), caminhoPesosFinal);
 			MN.EscreverRespostaTesteMLP(dadosDeTesteMLP, caminhoRespostasTeste);
 		}
 	}

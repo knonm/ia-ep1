@@ -35,57 +35,72 @@ public class TreinamentoMLP
 			this.entrada[i] = new DadosDeEntradaProcessados(dadosEntrada[i].getClasse(), dadosEntrada[i].getDadosDeEntrada());
 	}
 	
-	public void Treinar(int quantidadeTreinos, int maximoFracassos, DadosDeTeste[] teste, DadosDeTeste[] validacao)
+	public void Treinar(int quantidadeTreinos, int quantidadeValidacao, DadosDeTeste[] teste, DadosDeTeste[] validacao)
 	{
 		RespostaClassificador rc;
-		int epocasExecutadas = 0;
-		int fracassosAteAqui = 0;
-		double errosAtuais = 0;
-		double melhorResultado = Double.MAX_VALUE;
+		int epocasExecutadas = 1;
+		int epocasValidacao = 0;
+		float errosAtuais = 0;
+		float melhorResultado = 999999;
 		
-		int paradaObrigatorio = 0;
-		
-		System.out.println("Iniciando Treinamento da MLP...");
-		System.out.println();
-		
-		while(redeEstaMelhorando)
-		{
-			for(int epoca = 0; epoca < quantidadeTreinos; epoca++)
-			{
-				for(DadosDeEntradaProcessados dado: entrada)
-					this.executarTreino(dado);	
-				
-				epocasExecutadas++;
-				
-				System.out.println("Epocas passadas: " + epocasExecutadas + " | Epocas de treinamento apos validacao: " + epoca);
-				System.out.println("Taxa de erro quadrado: " + errosTreinamentoDaRedeAtual(teste).getErroQuadrado() + " | Taxa de aprendizado: " + this.taxaDeAprendizado);
-				
+		int epocasTreina = 0;
+			
+		while(epocasTreina < quantidadeTreinos){
+			for(DadosDeEntradaProcessados dado: entrada) this.executarTreino(dado);
+			
+			if(epocasValidacao == quantidadeValidacao){
 				rc = errosTreinamentoDaRedeAtual(validacao);
 				errosAtuais = rc.getErroQuadrado();
 				
-				if(errosAtuais < melhorResultado)
-				{
-					melhorResultado = errosAtuais;
+				epocasExecutadas--;
+				System.out.println("Epocas passadas: " + epocasExecutadas + " | Epocas com fracasso: " + epocasTreina);
+				System.out.println("Erro anterior: " + melhorResultado + " | Taxa de erro quadrado: " + rc.getErroQuadrado() + " | Taxa de aprendizado: " + this.taxaDeAprendizado);
+								
+				if(errosAtuais < melhorResultado){
 					backupMLP = this.mlp.ClonarRede(mlp);
-					fracassosAteAqui = 0;
-					this.taxaDeAprendizado *= 0.999F;
+					epocasValidacao = 0;
+					if(melhorResultado - errosAtuais < 1F && epocasExecutadas != 1) epocasTreina = quantidadeTreinos; // se melhorou menos que 1 para
+					melhorResultado = errosAtuais;
+				}else{
+					epocasTreina++;
 				}
-				else
-					fracassosAteAqui++;
 				
-				if(fracassosAteAqui >= maximoFracassos ||
-						errosAtuais - rc.getErroQuadrado() < 0.2)
-					redeEstaMelhorando = false;
-
-				paradaObrigatorio++;
+				epocasValidacao = 0;
 				
- 
-				
-				if(paradaObrigatorio >= 20)
-					redeEstaMelhorando = false;
-				
-			}
+				this.taxaDeAprendizado *= 0.999F;
+			}else epocasValidacao++;
+			
+			epocasExecutadas++;
+			
 		}
+		
+		
+		/*while(redeEstaMelhorando)
+		{
+			for(int epocas = 1; epocas <= quantidadeTreinos; epocas++){
+				for(DadosDeEntradaProcessados dado: entrada) this.executarTreino(dado);	
+				epocasExecutadas++;
+			}
+			
+			System.out.println("Epocas passadas: " + epocasExecutadas + " | Epocas com fracasso: " + fracassosAteAqui);
+			System.out.println("Taxa de erro quadrado: " + errosTreinamentoDaRedeAtual(teste).getErroQuadrado() + " | Taxa de aprendizado: " + this.taxaDeAprendizado);
+			
+			rc = errosTreinamentoDaRedeAtual(validacao);
+			errosAtuais = rc.getErroQuadrado();
+			
+			if(errosAtuais < melhorResultado){
+				melhorResultado = errosAtuais;
+				backupMLP = this.mlp.ClonarRede(mlp);
+				fracassosAteAqui = 0;
+			} else fracassosAteAqui++;
+			
+			if(fracassosAteAqui >= maximoFracassos || errosAtuais - rc.getErroQuadrado() > 0.001){
+				redeEstaMelhorando = false;
+				break;
+			}
+			
+			this.taxaDeAprendizado *= 0.999F;
+		}*/
 		mlp.setQtdEpocaTreino(epocasExecutadas);
 	}
 	

@@ -15,7 +15,7 @@ public class Main {
 		System.out.println("Iniciando procedimentos...");
 		//Scanner sc = new Scanner(System.in);
 		Scanner sc = new Scanner("out/treino.csv out/valida.csv out/teste.csv"
-				+ " 0,2 50 1 false"); // 0,0000001
+				+ " 0,2 10 1 false 10 50"); // 0,0000001
 
 		String nmArqTreino = sc.next();
 		String nmArqValida = sc.next();
@@ -24,8 +24,8 @@ public class Main {
 		int numNeuroMLP = sc.nextInt();
 		int numNeuroLVQ = sc.nextInt();
 		boolean iniPesos = sc.nextBoolean();
-		int qntEpocasTotais = 10;
-		int qntEpocasValidacao = 50;
+		int qntEpocasTotais = sc.nextInt();
+		int qntEpocasValidacao = sc.nextInt();
 		
 		System.out.println();
 		PreProcessamento pre = new PreProcessamento(new String[] { "./res/optdigits.tra", "./res/optdigits.tes" },
@@ -78,10 +78,6 @@ public class Main {
 		}
 		
 		// MLP
-		txAprend = 0.5F;
-		numNeuroMLP = 20;
-		iniPesos = true;
-		
 		DadosDeEntradaProcessados[] dadosTreinamentoProcessados = MN.transformarDadosTreino(ES.lerArquivo(nmArqTreino));
 		DadosDeTeste[] dadosValidacaoProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqValida));
 		DadosDeTeste[] dadosTesteProcessados = MN.transformarDadosTeste(ES.lerArquivo(nmArqTeste));
@@ -92,7 +88,7 @@ public class Main {
 		
 		System.out.println("Comecando treinamento MLP...");
 		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreinamentoProcessados, txAprend, iniPesos);
-		treino.Treinar(100, 50, dadosTesteProcessados, dadosValidacaoProcessados);
+		treino.Treinar(qntEpocasTotais, qntEpocasValidacao, dadosTesteProcessados, dadosValidacaoProcessados);
 		
 		System.out.println("Treinamento concluido.");
 		System.out.println();

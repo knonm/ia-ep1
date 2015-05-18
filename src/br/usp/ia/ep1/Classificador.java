@@ -147,29 +147,32 @@ public abstract class Classificador {
 		int acertosAnterior = 0;
 		int epocasTreina = 0;
 		int epocasValida = 0;
-		int epocasTotais = 0;
+		int epocasTotais = 1;
 		RespostaClassificador respostaValida;
 		
 		this.initPesos(this.dadosTeste, qtdCamadas);
 		
 		while(epocasTreina < this.qtdEpocasTreinamento){
-			//System.out.println("Epoca atual: " + epocasTotais + " | Periodos de epocas ("+numEpocasTreina+") des do ultimo aprendizado: " + epocasTreina + " | Tx Aprend: " + this.txAprend + " | Epoca Validacao: " + epocasValida);
 			this.exec(this.dadosTreinamento, true);
 			
 			if(epocasValida == this.qtdEpocasValidacao){
 				respostaValida = this.exec(this.dadosValidacao, false);
+				
+				epocasTotais--;
+				System.out.println("Epocas passadas: " + epocasTotais + " | Epocas de treinamento apos validacao: " + epocasTreina);
+				System.out.println("Quantidade de acertos na validacao: " + acertosAnterior + " | Taxa de aprendizado: " + this.txAprend);
+				
 				if(respostaValida.getQtdAcertos() > acertosAnterior){
 					pesos = this.pesos.clone();
 					epocasTreina = 0;
 					acertosAnterior = respostaValida.getQtdAcertos();
-					if(respostaValida.getErroQuadrado() > 0.9F) {
+					if(respostaValida.getErroQuadrado() > 0.9F) { // isso não ta fazendo nada
 						epocasTreina = this.qtdEpocasTreinamento;
 					}
 				}else{
 					epocasTreina++;
 				}
-				System.out.println("Epocas passadas: " + epocasTotais + " | Epocas de treinamento apos validacao: " + epocasTreina);
-				System.out.println("Quantidade de acertos na validacao: " + acertosAnterior + " | Taxa de aprendizado: " + this.txAprend);
+			
 				epocasValida = 0;
 				
 				this.txAprend *= 0.99F;
