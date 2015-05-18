@@ -2,6 +2,7 @@ package br.usp.ia.ep1;
 
 public class LVQ extends Classificador {
 	
+	/* Faz a lógica de calculo de pesos da LVQ */
 	@Override
 	protected RespostaClassificador exec(float[][] dados, boolean ehTreino) {
 		RespostaClassificador resposta = new RespostaClassificador();
@@ -22,7 +23,7 @@ public class LVQ extends Classificador {
 		for(int dadoAtual = dados.length-1; dadoAtual > -1; dadoAtual--) {
 			menorDistPeso = 0;
 			menorDist = Float.MAX_VALUE;
-			for(int i = super.pesos[0].length-1; i > -1; i--) {
+			for(int i = super.pesos[0].length-1; i > -1; i--) { // Calcula a menor distancia.
 				menorDistAux = distEuclid(dados[dadoAtual], super.pesos[0][i]);
 				if(menorDistAux < menorDist) {
 					menorDistPeso = i;
@@ -30,7 +31,7 @@ public class LVQ extends Classificador {
 				}
 			}
 			
-			if(ehTreino) {
+			if(ehTreino) { // Se for treino aplica as formulas da lógica da LVQ
 				if(super.pesos[0][menorDistPeso][super.pesos[0][menorDistPeso].length-1] == dados[dadoAtual][dados[dadoAtual].length-1]) { // se o neuronio representa a classe do dado
 					for(int i = super.pesos[0][menorDistPeso].length-2; i > -1; i--) {
 						super.pesos[0][menorDistPeso][i] += super.txAprend*(dados[dadoAtual][i] - this.pesos[0][menorDistPeso][i]);
@@ -62,6 +63,7 @@ public class LVQ extends Classificador {
 		return resposta;
 	}
 	
+	/* Calcula a distancia euclidiana */
 	public float distEuclid(float[] v1, float[] v2) {
 		float dist = -1;
 		if(v1.length == v2.length) {
