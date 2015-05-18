@@ -11,6 +11,7 @@ import br.usp.ia.ep1.MLP.DadosDeTeste;
 
 public class MN {
 	
+	/* Transforma uma String em um Array de Floats, separando os valores pelo char escolhido para limite */
 	public static float[][] transformarArrayStringParaFloat(String[] dados, String chrDelimit) {
 		float[][] dadosFloat = new float[dados.length][];
 		float[] dadoFloat;
@@ -44,31 +45,28 @@ public class MN {
 		return valorMinimo;
 	}
 	
-	// transforma uma matriz tridimencional em bidimencional, em relacao a qual arquivo escolhido
+	// Transforma uma matriz tridimencional em bidimencional, em relação a qual arquivo escolhido.
 	public static float[][] transformaBidimensional(float[][][] tridimencional, int arquivo){
-			float[][] aux = new float[tridimencional[arquivo].length][tridimencional[arquivo][0].length];
+		float[][] aux = new float[tridimencional[arquivo].length][tridimencional[arquivo][0].length];
 		
-            //System.out.println("Transformando Bidimencional");
-			//System.out.println(aux.length);
-			//System.out.println(aux[0].length);
-			for(int i = 0; i < aux.length; i++){
-				for( int j = 0; j < aux[i].length; j++){
-					aux[i][j] = tridimencional [arquivo][i][j]; // passa o valor de um para o outro
-				}
+		for(int i = 0; i < aux.length; i++){
+			for( int j = 0; j < aux[i].length; j++){
+				aux[i][j] = tridimencional [arquivo][i][j]; // Passa o valor de um para o outro.
 			}
+		}
 		
 		return aux;
 	}
 	
-	// transforma tres matrizes tridimencionais em uma tridimencional
+	// Transforma tres matrizes tridimencionais em uma tridimencional.
 	public static float[][][] transformaTridimensional(float[][] primeira, float[][] segunda, float[][] terceira){
-			float[][][] aux = new float[3][][]; // instancia a auxiliar (a terceira dimencao, que e a dos arquivos)
+			float[][][] aux = new float[3][][]; // Instancia a auxiliar (a terceira dimencao, que é a dos arquivos).
 		
-			aux[0] = new float[primeira.length][primeira[0].length]; // instancia a dimencao dos dados dos valores
+			aux[0] = new float[primeira.length][primeira[0].length]; // Instancia a dimenção dos dados dos valores.
 			aux[1] = new float[segunda.length][segunda[0].length];
 			aux[2] = new float[terceira.length][terceira[0].length];
 		
-			for(int i = 0; i < primeira.length; i++){ // copia o valor para a auxiliar
+			for(int i = 0; i < primeira.length; i++){ // Copia o valor para a auxiliar.
 				for( int j = 0; j < primeira[i].length; j++){
 					aux[0][i][j] = primeira[i][j];
 				}
@@ -87,6 +85,7 @@ public class MN {
 		return aux;
 	}
 	
+	/* Método que escreve os arquivos, usando métodos auxiliares da classe "ES" */
 	public static void criarArquivo(float[][] dados, String arq) throws IOException {
 		String dado = new String();
 		int limite = Math.round(dados.length * 0.1F);
@@ -113,6 +112,7 @@ public class MN {
 		ES.escreverDados(arq, dadosArq);
 	}
 	
+	/* Método que retorna a descrição dos dados para usar em log e prints eventualmente */
 	public static DescDados descDados(float[][] dados, int posClasse) {
 		DescDados desc = new DescDados();
 		
@@ -225,6 +225,7 @@ public class MN {
 		return resultadoEmString;
 	}
 	
+	/* Transforma uma String em array em uma String */
 	public static String StringArrayParaSring(String[] array) {
 		StringBuffer resultado = new StringBuffer();
 		for (int i = 0; i < array.length; i++) {
