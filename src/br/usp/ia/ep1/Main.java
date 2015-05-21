@@ -66,6 +66,7 @@ public class Main {
 		System.out.println("Comecando treinamento MLP...");
 		TreinamentoMLP treino = new TreinamentoMLP(mlp, dadosTreina, txAprend, iniPesos);
 		treino.Treinar(qntEpocasTotais, qntEpocasValidacao, dadosTeste, dadosValida);
+		mlp = treino.getBackupMLP();
 		
 		System.out.println("Treinamento concluido.");
 		System.out.println();
@@ -76,7 +77,10 @@ public class Main {
 		System.out.println("Teste completo.");
 		System.out.println();
 		System.out.println("Iniciando LOG...");
-		logMLP.completaLogMLP(respostaMLP.getQtdAcertos(), respostaMLP.getEpocasTreinoRede(), mlp.getCamadaEscondida().length, respostaMLP.getMatrizConfusao(), respostaMLP.getDadosDeTesteMLP(), treino.getTaxaDeAprendizado());
+		logMLP.completaLogMLP(respostaMLP.getQtdAcertos(), respostaMLP.getEpocasTreinoRede(), 
+				mlp.getCamadaEscondida().length, respostaMLP.getMatrizConfusao(), 
+				respostaMLP.getDadosDeTesteMLP(), treino.getTaxaDeAprendizado(),
+				mlp.getCamadaEscondida(), mlp.getCamadaSaida());
 		
 		System.out.println("Escrevendo LOG...");
 		logMLP.escreveLOG();

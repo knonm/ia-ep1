@@ -246,4 +246,8 @@ public class TreinamentoMLP
 	public double getTaxaDeAprendizado() {
 		return taxaDeAprendizado;
 	}
+	
+	public EstruturaMLP getBackupMLP() {
+		return backupMLP;
+	}
 }

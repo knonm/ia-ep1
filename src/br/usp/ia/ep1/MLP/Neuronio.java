@@ -129,4 +129,15 @@ public class Neuronio {
 		
 		return valorMinimoDesejado + (valorMaximoDesejado - valorMinimoDesejado) * r.nextDouble();
 	}
+	
+	public float[] toFloatArray() {
+		float[] result = new float[this.pesos.length+1];
+		result[0] = (float) this.bias;
+		
+		for(int i = 1; i < result.length; i++) {
+			result[i] = (float) this.pesos[i-1];
+		}
+		
+		return result;
+	}
 }

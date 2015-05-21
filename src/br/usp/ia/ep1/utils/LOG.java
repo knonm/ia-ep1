@@ -5,6 +5,7 @@ import java.io.IOException;
 import br.usp.ia.ep1.Main;
 import br.usp.ia.ep1.MatrizConfusao;
 import br.usp.ia.ep1.MLP.DadosDeTeste;
+import br.usp.ia.ep1.MLP.Neuronio;
 
 public class LOG {
 	private int versao;
@@ -47,13 +48,27 @@ public class LOG {
 		}
 	}
 	
-	public void completaLogMLP(int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, MatrizConfusao matrizC, DadosDeTeste[] dados, double txAprendFinal){
+	public void completaLogMLP(int qtdAcertos, int qtdEpocas, int qtdNeuroniosCamadaOculta, 
+			MatrizConfusao matrizC, DadosDeTeste[] dados, double txAprendFinal, 
+			Neuronio[] camadaEscondida, Neuronio[] camadaSaida){
 		this.qtdAcertos = qtdAcertos;
 		this.qtdEpocas = qtdEpocas;
 		this.qtdNeuroniosCamadaOculta = qtdNeuroniosCamadaOculta;
 		this.matrizC = matrizC;
 		this.dadosDeTesteMLP = dados;
 		this.txAprendFinal = (float)txAprendFinal;
+		
+		this.pesos = new float[2][][];
+		this.pesos[0] = new float[camadaEscondida.length][];
+		this.pesos[1] = new float[camadaSaida.length][];
+		
+		for(int i = 0; i < this.pesos[0].length; i++) {
+			this.pesos[0][i] = camadaEscondida[i].toFloatArray();
+		}
+		
+		for(int i = 0; i < this.pesos[1].length; i++) {
+			this.pesos[1][i] = camadaSaida[i].toFloatArray();
+		}
 	}
 	
 	public void escreveLOG() throws IOException{
@@ -131,7 +146,9 @@ public class LOG {
 		if(this.tipo == "LVQ"){
 			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosFinal);
 		}else{
-			MN.EscreverRespostaTesteMLP(dadosDeTesteMLP, caminhoRespostasTeste);
+			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 0)), caminhoPesosEscondidaFinal);
+			MN.criarArquivo((MN.transformaBidimensional(this.pesos, 1)), caminhoPesosFinal);
+			//MN.EscreverRespostaTesteMLP(dadosDeTesteMLP, caminhoRespostasTeste);
 		}
 	}
 	
